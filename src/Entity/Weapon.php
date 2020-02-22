@@ -81,6 +81,91 @@ class Weapon
      */
     private $roundsPerMinuteModifier;
 
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $ineffectiveDistanceDamageFactor;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $aimTime;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $breathVibrationFactor;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $movementSpeedModifier;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $accuracyNonmovingModifier;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $aimZoomFactor;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $unmaskingRadius;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $chamberARoundTime;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $weaponFovFactor;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $tacticalReloadTime;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $aimedMovementSpeedFactor;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $showTime;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $staminaDamage;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $type;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $meleeTime;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $throwGrenadeTime;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $hideTime;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -238,6 +323,210 @@ class Weapon
     public function setRoundsPerMinuteModifier(int $roundsPerMinuteModifier): self
     {
         $this->roundsPerMinuteModifier = $roundsPerMinuteModifier;
+
+        return $this;
+    }
+
+    public function getIneffectiveDistanceDamageFactor(): ?float
+    {
+        return $this->ineffectiveDistanceDamageFactor;
+    }
+
+    public function setIneffectiveDistanceDamageFactor(float $ineffectiveDistanceDamageFactor): self
+    {
+        $this->ineffectiveDistanceDamageFactor = $ineffectiveDistanceDamageFactor;
+
+        return $this;
+    }
+
+    public function getAimTime(): ?float
+    {
+        return $this->aimTime;
+    }
+
+    public function setAimTime(float $aimTime): self
+    {
+        $this->aimTime = $aimTime;
+
+        return $this;
+    }
+
+    public function getBreathVibrationFactor(): ?float
+    {
+        return $this->breathVibrationFactor;
+    }
+
+    public function setBreathVibrationFactor(float $breathVibrationFactor): self
+    {
+        $this->breathVibrationFactor = $breathVibrationFactor;
+
+        return $this;
+    }
+
+    public function getMovementSpeedModifier(): ?float
+    {
+        return $this->movementSpeedModifier;
+    }
+
+    public function setMovementSpeedModifier(float $movementSpeedModifier): self
+    {
+        $this->movementSpeedModifier = $movementSpeedModifier;
+
+        return $this;
+    }
+
+    public function getAccuracyNonmovingModifier(): ?float
+    {
+        return $this->accuracyNonmovingModifier;
+    }
+
+    public function setAccuracyNonmovingModifier(float $accuracyNonmovingModifier): self
+    {
+        $this->accuracyNonmovingModifier = $accuracyNonmovingModifier;
+
+        return $this;
+    }
+
+    public function getAimZoomFactor(): ?float
+    {
+        return $this->aimZoomFactor;
+    }
+
+    public function setAimZoomFactor(float $aimZoomFactor): self
+    {
+        $this->aimZoomFactor = $aimZoomFactor;
+
+        return $this;
+    }
+
+    public function getUnmaskingRadius(): ?float
+    {
+        return $this->unmaskingRadius;
+    }
+
+    public function setUnmaskingRadius(float $unmaskingRadius): self
+    {
+        $this->unmaskingRadius = $unmaskingRadius;
+
+        return $this;
+    }
+
+    public function getChamberARoundTime(): ?float
+    {
+        return $this->chamberARoundTime;
+    }
+
+    public function setChamberARoundTime(float $chamberARoundTime): self
+    {
+        $this->chamberARoundTime = $chamberARoundTime;
+
+        return $this;
+    }
+
+    public function getWeaponFovFactor(): ?float
+    {
+        return $this->weaponFovFactor;
+    }
+
+    public function setWeaponFovFactor(float $weaponFovFactor): self
+    {
+        $this->weaponFovFactor = $weaponFovFactor;
+
+        return $this;
+    }
+
+    public function getTacticalReloadTime(): ?float
+    {
+        return $this->tacticalReloadTime;
+    }
+
+    public function setTacticalReloadTime(float $tacticalReloadTime): self
+    {
+        $this->tacticalReloadTime = $tacticalReloadTime;
+
+        return $this;
+    }
+
+    public function getAimedMovementSpeedFactor(): ?float
+    {
+        return $this->aimedMovementSpeedFactor;
+    }
+
+    public function setAimedMovementSpeedFactor(float $aimedMovementSpeedFactor): self
+    {
+        $this->aimedMovementSpeedFactor = $aimedMovementSpeedFactor;
+
+        return $this;
+    }
+
+    public function getShowTime(): ?float
+    {
+        return $this->showTime;
+    }
+
+    public function setShowTime(float $showTime): self
+    {
+        $this->showTime = $showTime;
+
+        return $this;
+    }
+
+    public function getStaminaDamage(): ?float
+    {
+        return $this->staminaDamage;
+    }
+
+    public function setStaminaDamage(float $staminaDamage): self
+    {
+        $this->staminaDamage = $staminaDamage;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getMeleeTime(): ?float
+    {
+        return $this->meleeTime;
+    }
+
+    public function setMeleeTime(float $meleeTime): self
+    {
+        $this->meleeTime = $meleeTime;
+
+        return $this;
+    }
+
+    public function getThrowGrenadeTime(): ?float
+    {
+        return $this->throwGrenadeTime;
+    }
+
+    public function setThrowGrenadeTime(float $throwGrenadeTime): self
+    {
+        $this->throwGrenadeTime = $throwGrenadeTime;
+
+        return $this;
+    }
+
+    public function getHideTime(): ?float
+    {
+        return $this->hideTime;
+    }
+
+    public function setHideTime(float $hideTime): self
+    {
+        $this->hideTime = $hideTime;
 
         return $this;
     }

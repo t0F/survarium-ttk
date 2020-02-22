@@ -1,0 +1,50 @@
+{# templates/stats.html.twig #}
+{% extends "base.html.twig" %}
+{% block title %}Weapons{% endblock %}
+{% block stylesheets %}
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+{% endblock %}
+{% block body %}
+<h1>Survarium 0.61 Weapons Stats </h1>
+<h3>Work in Progress</h3>
+<div style="background-color: #CCC;">
+	<div>
+		<table id='weaponsStats'>
+			<thead style="font-weight: bold;">
+				 <tr class="row100 head">
+				 	   {% for key, value in weapons[0]|cast_to_array %}
+			   		    <td id="col" class="cell100 columnHeader">{{ key }}</td>
+						{% endfor %}
+						<td id="col" class="cell100 columnHeader">Name</td>
+				 </tr>
+			</thead>
+			<tbody>
+			    {% for weapon in weapons %}    
+			        <tr class="row100 body">
+				      {% for key, value in weapon|cast_to_array %}
+			   		    <td class="cell100 column" id="col">{{ value }}</td>
+						{% endfor %}
+						<td class="cell100 column" id="col">{{ weapon['Name'] }}</td>
+			        </tr>
+			    {% endfor %}
+	    </tbody>
+	    <tfoot style="font-weight: bold;">
+				 <tr class="row100 head">
+				 	   {% for key, value in weapons[0]|cast_to_array %}
+			   		    <td id="col" class="cell100 columnHeader">{{ key }}</td>
+						{% endfor %}
+						 <td id="col" class="cell100 columnHeader">Name</td>
+				 </tr>
+			</tfoot>
+		</table>
+	</div>	
+</div>
+{% block javascripts %}
+				<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+				<script>
+					$(document).ready( function () {
+					    $('#weaponsStats').DataTable();
+					} );
+				</script>
+        {% endblock %}
+{% endblock %}
