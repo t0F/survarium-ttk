@@ -71,6 +71,8 @@ class WeaponService
 					$weaponArray['Magazine Capacity'] = $weapon->getMagazineCapacity();
 					$weaponArray['Reload Time'] = $weapon->getReloadTime();
 					$weaponArray['Real DPS'] = $this->getRealDPS($weapon);
+					$weaponArray['Tactical Reload Time'] = $weapon->getTacticalReloadTime();
+					$weaponArray['Tactical DPS'] = $this->getTacticalDPS($weapon);
 					$weaponArray['Armor Penetration'] = $weapon->getPlayerPierce();
 					$weaponArray['Bullet Speed'] = $weapon->getBulletSpeed();
 					$weaponArray['Effective Distance'] = $weapon->getEffectiveDistance();
@@ -102,5 +104,11 @@ class WeaponService
     		$timePerBullet = 1 / ( $weapon->getRoundsPerMinute() / 60);
     		$timeWithReloading = ($timePerBullet * $weapon->getMagazineCapacity()) + $weapon->getReloadTime();
     		return round(((100 * $weapon->getBulletDamage()) * $weapon->getMagazineCapacity()) / $timeWithReloading, 2);
+    }
+    
+        public function getTacticalDPS(Weapon $weapon) {
+    		$timePerBullet = 1 / ( $weapon->getRoundsPerMinute() / 60);
+    		$timeWithReloading = ($timePerBullet * ($weapon->getMagazineCapacity() - 1)) + $weapon->getTacticalReloadTime();
+    		return round(((100 * $weapon->getBulletDamage()) * ($weapon->getMagazineCapacity() -1 )) / $timeWithReloading, 2);
     }
 }
