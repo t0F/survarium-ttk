@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use App\Service\WeaponService;
-
+ 	
 class defaultController extends AbstractController
 {
 	
@@ -22,7 +22,7 @@ class defaultController extends AbstractController
     }
     
 	 /**
-     * @Route("/second", name="index")
+     * @Route("/", name="index")
      */
     public function index(WeaponService $weaponService)
     {
@@ -30,7 +30,7 @@ class defaultController extends AbstractController
     }    
     
 	 /**
-     * @Route("/", name="stats")
+     * @Route("/stats", name="stats")
      */
     public function stats(WeaponService $weaponService)
     {

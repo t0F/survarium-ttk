@@ -44,10 +44,6 @@ class ImportOptionsCommand extends Command
 			$formatedWeapons[$weapon] = $allstats['parameters'];
 		}
 		$weapons  = null;	
-		
-		foreach ($formatedWeapons as $weapon => $stats){
-			$output->writeln($weapon);
-		}
 		$this->weaponService->makeNewWeapons($formatedWeapons);
 		$output->writeln('nb weapons : '.count($formatedWeapons));
 		$output->writeln('done.');

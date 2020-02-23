@@ -1,8 +1,8 @@
 {# templates/stats.html.twig #}
 {% extends "base.html.twig" %}
-{% block title %}Weapons{% endblock %}
+{% block title %}Survarium Weapons{% endblock %}
 {% block stylesheets %}
-	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+	<link rel="stylesheet" type="text/css" href="/assets/vendor/DataTables/datatables.min.css"/>
 {% endblock %}
 {% block body %}
 <h1>Survarium 0.61 Weapons Stats </h1>
@@ -40,11 +40,47 @@
 	</div>	
 </div>
 {% block javascripts %}
-				<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-				<script>
-					$(document).ready( function () {
-					    $('#weaponsStats').DataTable();
-					} );
+				<script type="text/javascript">
+				
+					function defer(method) {
+					    if (window.jQuery) {
+					        method();
+					    } else {
+					        setTimeout(function() { defer(method) }, 50);
+					    }
+					}			
+					
+					defer(function () {
+						if ( $.fn.dataTable.isDataTable( '#weaponsStats' ) ) {
+						    table = $('#weaponsStats').DataTable();
+						}
+						else {
+						    table = $('#weaponsStats').DataTable( {
+						        select: 		 true,
+						        initComplete: function () {
+						            this.api().columns().every( function () {
+						            	 var collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
+						                var column = this;
+						                var select = $('<select><option value=""></option></select>')
+						                    .appendTo( $(column.footer()).empty() )
+						                    .on( 'change', function () {
+						                        var val = $.fn.dataTable.util.escapeRegex(
+						                            $(this).val()
+						                        );
+						 
+						                        column
+						                            .search( val ? '^'+val+'$' : '', true, false )
+						                            .draw();
+						                    } );
+						 
+						                column.data().unique().sort(collator.compare).each( function ( d, j ) {
+						                    select.append( '<option value="'+d+'">'+d+'</option>' )
+						                } );
+						            } );
+						        }
+						    } );
+						}					
+					});	
 				</script>
         {% endblock %}
 {% endblock %}
