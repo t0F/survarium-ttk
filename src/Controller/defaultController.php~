@@ -22,7 +22,7 @@ class defaultController extends AbstractController
     }
     
 	 /**
-     * @Route("/second/", name="index")
+     * @Route("/", name="index")
      */
     public function index(WeaponService $weaponService)
     {
@@ -30,7 +30,7 @@ class defaultController extends AbstractController
     }    
     
 	 /**
-     * @Route("/", name="stats")
+     * @Route("/stats", name="stats")
      */
     public function stats(WeaponService $weaponService)
     {
@@ -38,6 +38,9 @@ class defaultController extends AbstractController
     	  $weaponsEnt = $weaponRepo->findAll();
     	  $weaponsArr = $this->weaponService->weaponsToArray( $weaponsEnt );
 
+    	  $equipmentRepo = $this->getDoctrine()->getRepository('App:Equipment');
+    	  $equipmentsEnt = $equipmentRepo->findOneByDictId(1269);
+			//dump($equipmentsEnt);die;
         return $this->render('stats.html.twig', [
             'weapons' => $weaponsArr,
         ]);

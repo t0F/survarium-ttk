@@ -38,6 +38,9 @@ class defaultController extends AbstractController
     	  $weaponsEnt = $weaponRepo->findAll();
     	  $weaponsArr = $this->weaponService->weaponsToArray( $weaponsEnt );
 
+    	  $equipmentRepo = $this->getDoctrine()->getRepository('App:Equipment');
+    	  $equipmentsEnt = $equipmentRepo->findOneByDictId(1269);
+			//dump($equipmentsEnt);die;
         return $this->render('stats.html.twig', [
             'weapons' => $weaponsArr,
         ]);
