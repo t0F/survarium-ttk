@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -45,6 +46,17 @@ class Equipment
      * @ORM\ManyToOne(targetEntity="App\Entity\GearSet", inversedBy="gears")
      */
     private $gearSet;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\GameVersion", inversedBy="equipments")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $gameVersion;
+
+    public function __construct()
+    {
+        $this->gameVersions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -91,7 +103,7 @@ class Equipment
     {
         return $this->type;
     }
-    
+
     public function getFormattedType(): ?string
     {
         return strtoupper(str_replace('arm_', '', $this->type));
@@ -124,6 +136,18 @@ class Equipment
     public function setGearSet(?GearSet $gearSet): self
     {
         $this->gearSet = $gearSet;
+
+        return $this;
+    }
+
+    public function getGameVersion(): ?GameVersion
+    {
+        return $this->gameVersion;
+    }
+
+    public function setGameVersion(?GameVersion $gameVersion): self
+    {
+        $this->gameVersion = $gameVersion;
 
         return $this;
     }

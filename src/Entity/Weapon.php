@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -171,6 +172,17 @@ class Weapon
      */
     private $materialPierce;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\GameVersion", inversedBy="weapons")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $gameVersion;
+
+    public function __construct()
+    {
+        $this->gearSets = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -276,7 +288,7 @@ class Weapon
     {
         return $this->name;
     }
-    
+
     public function getFormattedName(): ?string
     {
         return strtoupper(str_replace('_', ' ', $this->name));
@@ -550,6 +562,18 @@ class Weapon
     public function setMaterialPierce(float $materialPierce): self
     {
         $this->materialPierce = $materialPierce;
+
+        return $this;
+    }
+
+    public function getGameVersion(): ?GameVersion
+    {
+        return $this->gameVersion;
+    }
+
+    public function setGameVersion(?GameVersion $gameVersion): self
+    {
+        $this->gameVersion = $gameVersion;
 
         return $this;
     }
