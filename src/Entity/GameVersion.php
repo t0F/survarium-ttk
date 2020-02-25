@@ -26,7 +26,7 @@ class GameVersion
     /**
      * @ORM\Column(type="datetime")
      */
-    private $Date;
+    private $date;
 
     /**
      * @ORM\Column(type="boolean")
@@ -41,7 +41,7 @@ class GameVersion
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\GearSet", mappedBy="gameVersion", orphanRemoval=true)
      */
-    private $GearSets;
+    private $gearSets;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Equipment", mappedBy="gameVersion", orphanRemoval=true)
@@ -51,7 +51,7 @@ class GameVersion
     public function __construct()
     {
         $this->weapons = new ArrayCollection();
-        $this->GearSets = new ArrayCollection();
+        $this->gearSets = new ArrayCollection();
         $this->equipments = new ArrayCollection();
     }
 
@@ -74,12 +74,12 @@ class GameVersion
 
     public function getDate(): ?\DateTimeInterface
     {
-        return $this->Date;
+        return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $Date): self
+    public function setDate(\DateTimeInterface $date): self
     {
-        $this->Date = $Date;
+        $this->date = $date;
 
         return $this;
     }
@@ -132,13 +132,13 @@ class GameVersion
      */
     public function getGearSets(): Collection
     {
-        return $this->GearSets;
+        return $this->gearSets;
     }
 
     public function addGearSet(GearSet $gearSet): self
     {
-        if (!$this->GearSets->contains($gearSet)) {
-            $this->GearSets[] = $gearSet;
+        if (!$this->gearSets->contains($gearSet)) {
+            $this->gearSets[] = $gearSet;
             $gearSet->setGameVersion($this);
         }
 
@@ -147,8 +147,8 @@ class GameVersion
 
     public function removeGearSet(GearSet $gearSet): self
     {
-        if ($this->GearSets->contains($gearSet)) {
-            $this->GearSets->removeElement($gearSet);
+        if ($this->gearSets->contains($gearSet)) {
+            $this->gearSets->removeElement($gearSet);
             // set the owning side to null (unless already changed)
             if ($gearSet->getGameVersion() === $this) {
                 $gearSet->setGameVersion(null);
@@ -188,5 +188,5 @@ class GameVersion
 
         return $this;
     }
-    
+
 }

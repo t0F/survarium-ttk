@@ -56,7 +56,7 @@ class GearSet
 
         return $this;
     }
-    
+
     public function getFormattedName(): ?string
     {
         return strtoupper(str_replace('_', ' ', str_replace('gear_set_', '', $this->name)));

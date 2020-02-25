@@ -20,14 +20,14 @@ class GearSetRepository extends ServiceEntityRepository
     }
 
     /**
-      * @return GearSet[] Returns an array of GearSet objects, including equipments of sets
-      */
+     * @return GearSet[] Returns an array of GearSet objects, including equipments of sets
+     */
     public function getGearSets()
     {
-			$queryBuilder = $this->createQueryBuilder('gs');
-			$queryBuilder->select('gs','g')
-			   			 ->leftJoin('gs.gears', 'g');
+        $queryBuilder = $this->createQueryBuilder('gs');
+        $queryBuilder->select('gs', 'g')
+            ->leftJoin('gs.gears', 'g');
 
-			return $queryBuilder->getQuery()->getResult();
+        return $queryBuilder->getQuery()->getResult();
     }
 }

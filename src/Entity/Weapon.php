@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -289,7 +288,7 @@ class Weapon
     {
         return $this->name;
     }
-    
+
     public function getFormattedName(): ?string
     {
         return strtoupper(str_replace('_', ' ', $this->name));

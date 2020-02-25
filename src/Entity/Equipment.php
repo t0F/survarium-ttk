@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -104,7 +103,7 @@ class Equipment
     {
         return $this->type;
     }
-    
+
     public function getFormattedType(): ?string
     {
         return strtoupper(str_replace('arm_', '', $this->type));
