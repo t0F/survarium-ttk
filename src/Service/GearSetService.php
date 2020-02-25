@@ -28,10 +28,9 @@ class GearSetService
 				$gearset->addGear($equipmentToAdd);
 			}		
 
-			$this->em->persist($gearset);
-         $this->em->flush();
+			$this->em->persist($gearset);   
 		}
-
-        return true;
+		$this->em->flush();
+      return true;
     }
 }

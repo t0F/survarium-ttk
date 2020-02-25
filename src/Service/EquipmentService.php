@@ -27,9 +27,9 @@ class EquipmentService
 			$equipment->setGameId($stats['id']);
 			
 			$this->em->persist($equipment);
-         $this->em->flush();
+         
 		}
-
-        return true;
+		$this->em->flush();
+      return true;
     }
 }

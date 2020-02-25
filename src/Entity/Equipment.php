@@ -91,6 +91,11 @@ class Equipment
     {
         return $this->type;
     }
+    
+    public function getFormattedType(): ?string
+    {
+        return strtoupper(str_replace('arm_', '', $this->type));
+    }
 
     public function setType(string $type): self
     {

@@ -5,82 +5,110 @@
 	<link rel="stylesheet" type="text/css" href="/assets/vendor/DataTables/datatables.min.css"/>
 {% endblock %}
 {% block body %}
-<h1>Survarium 0.61 Weapons Stats </h1>
-<h3>Work in Progress</h3>
-<div style="background-color: #CCC;">
-	<div>
-		<table id='weaponsStats'>
-			<thead style="font-weight: bold;">
-				 <tr class="row100 head">
-				 	   {% for key, value in weapons[0]|cast_to_array %}
-			   		    <td id="col" class="cell100 columnHeader">{{ key }}</td>
+	<h1>Survarium 0.61 Weapons Stats </h1>
+	<h3>Work in Progress</h3>
+	<div style="background-color: #CCC;">
+		<div>
+			<table id='weaponsStats'>
+				<thead style="font-weight: bold;">
+				<tr class="row100 head">
+					{% for key, value in weapons[0]|cast_to_array %}
+						{% if key != 'id' %}
+							<th class="cell100 columnHeader {% if key == 'Sample TimeToKill' %}border1px{% endif %} ">{{ key }}</th>
+						{% endif%}
+					{% endfor %}
+				</tr>
+				</thead>
+				<tbody>
+				{% for weapon in weapons %}
+					<tr class="row100 body">
+						{% for stat, value in weapon|cast_to_array %}
+							{% if stat != 'id' %}
+								<td class="cell100 column  {% if stat == 'Sample TimeToKill' %}border1px{% endif %}" id="col">{{ value }}</td>
+							{% endif%}
 						{% endfor %}
-						<td id="col" class="cell100 columnHeader">Name</td>
-				 </tr>
-			</thead>
-			<tbody>
-			    {% for weapon in weapons %}    
-			        <tr class="row100 body">
-				      {% for key, value in weapon|cast_to_array %}
-			   		    <td class="cell100 column" id="col">{{ value }}</td>
-						{% endfor %}
-						<td class="cell100 column" id="col">{{ weapon['Name'] }}</td>
-			        </tr>
-			    {% endfor %}
-	    </tbody>
-	    <tfoot style="font-weight: bold;">
-				 <tr class="row100 head">
-				 	   {% for key, value in weapons[0]|cast_to_array %}
-			   		    <td id="col" class="cell100 columnHeader">{{ key }}</td>
-						{% endfor %}
-						 <td id="col" class="cell100 columnHeader">Name</td>
-				 </tr>
-			</tfoot>
-		</table>
-	</div>	
-</div>
-{% block javascripts %}
-				<script type="text/javascript">
-				
-					function defer(method) {
-					    if (window.jQuery) {
-					        method();
-					    } else {
-					        setTimeout(function() { defer(method) }, 50);
-					    }
-					}			
-					
-					defer(function () {
-						if ( $.fn.dataTable.isDataTable( '#weaponsStats' ) ) {
-						    table = $('#weaponsStats').DataTable();
+					</tr>
+				{% endfor %}
+				</tbody>
+				<tfoot style="font-weight: bold;">
+				<tr class="row100 head">
+					{% for key, value in weapons[0]|cast_to_array %}
+						{% if key != 'id' %}
+							<td class="cell100 columnHeader {% if key == 'Sample TimeToKill' %}border1px{% endif %}">{{ key }}</td>
+						{% endif%}
+					{% endfor %}
+				</tr>
+				</tfoot>
+			</table>
+		</div>
+		<span style='font-weight: bold;'>
+			{{ message }}
+		</span>
+		<span style='font-weight: bold;color: red;'>
+			CURRENTLY NOT WORKING
+		</span>
+		<div class="row">
+			<div class="col centerContent">
+				<div>
+					{{ form_start(form, {'attr': {'class': 'form-inline'}}) }}
+						{{ form_label(form.equipment) }} {{ form_widget(form.equipment, {'attr': {'class': 'select2JS paddingInput '}}) }}<p style='margin-right: 20px'></p><br />
+						{{ form_label(form.onyx) }} {{ form_widget(form.onyx, {'attr': {'class': 'paddingInput form-inline'}}) }}<p style='margin-right: 20px'>%</p>
+						{{ form_label(form.bonusArmor) }} {{ form_widget(form.bonusArmor, {'attr': {'class': 'paddingInput form-inline'}}) }}<p style='margin-right: 20px'>%</p>
+						{{ form_label(form.range) }} {{ form_widget(form.range, {'attr': {'class': 'paddingInput form-inline'}}) }}<p style='margin-right: 20px'>m</p>
+					{{ form_end(form) }}
+				</div>
+			</div>
+			<div class="col centerContent">
+				<div>
+					div Body parts Damages
+				</div>
+			</div>
+		</div>
+	</div>
+	{% block javascripts %}
+		<script type="text/javascript">
+
+			function defer(method) {
+				if (window.jQuery) {
+					method();
+				} else {
+					setTimeout(function() { defer(method) }, 50);
+				}
+			}
+
+			defer(function () {
+				if ( $.fn.dataTable.isDataTable( '#weaponsStats' ) ) {
+					table = $('#weaponsStats').DataTable();
+				}
+				else {
+					table = $('#weaponsStats').DataTable( {
+						select: 		 true,
+						initComplete: function () {
+							this.api().columns().every( function () {
+								var collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
+								var column = this;
+								var select = $('<select><option value=""></option></select>')
+										.appendTo( $(column.footer()).empty() )
+										.on( 'change', function () {
+											var val = $.fn.dataTable.util.escapeRegex(
+													$(this).val()
+											);
+
+											column
+													.search( val ? '^'+val+'$' : '', true, false )
+													.draw();
+										} );
+
+								column.data().unique().sort(collator.compare).each( function ( d, j ) {
+									select.append( '<option value="'+d+'">'+d+'</option>' )
+								} );
+							} );
 						}
-						else {
-						    table = $('#weaponsStats').DataTable( {
-						        select: 		 true,
-						        initComplete: function () {
-						            this.api().columns().every( function () {
-						            	 var collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
-						                var column = this;
-						                var select = $('<select><option value=""></option></select>')
-						                    .appendTo( $(column.footer()).empty() )
-						                    .on( 'change', function () {
-						                        var val = $.fn.dataTable.util.escapeRegex(
-						                            $(this).val()
-						                        );
-						 
-						                        column
-						                            .search( val ? '^'+val+'$' : '', true, false )
-						                            .draw();
-						                    } );
-						 
-						                column.data().unique().sort(collator.compare).each( function ( d, j ) {
-						                    select.append( '<option value="'+d+'">'+d+'</option>' )
-						                } );
-						            } );
-						        }
-						    } );
-						}					
-					});	
-				</script>
-        {% endblock %}
+					} );
+					//$('#toDelete select').width(170);
+					//$('#toDelete select').css("visibility", "hidden");
+				}
+			});
+		</script>
+	{% endblock %}
 {% endblock %}

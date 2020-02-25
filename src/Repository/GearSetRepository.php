@@ -19,32 +19,15 @@ class GearSetRepository extends ServiceEntityRepository
         parent::__construct($registry, GearSet::class);
     }
 
-    // /**
-    //  * @return GearSet[] Returns an array of GearSet objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+      * @return GearSet[] Returns an array of GearSet objects, including equipments of sets
+      */
+    public function getGearSets()
     {
-        return $this->createQueryBuilder('g')
-            ->andWhere('g.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('g.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+			$queryBuilder = $this->createQueryBuilder('gs');
+			$queryBuilder->select('gs','g')
+			   			 ->leftJoin('gs.gears', 'g');
 
-    /*
-    public function findOneBySomeField($value): ?GearSet
-    {
-        return $this->createQueryBuilder('g')
-            ->andWhere('g.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+			return $queryBuilder->getQuery()->getResult();
     }
-    */
 }

@@ -166,6 +166,11 @@ class Weapon
      */
     private $hideTime;
 
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $materialPierce;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -271,6 +276,12 @@ class Weapon
     {
         return $this->name;
     }
+    
+    public function getFormattedName(): ?string
+    {
+        return strtoupper(str_replace('_', ' ', $this->name));
+    }
+
 
     public function setName(string $name): self
     {
@@ -527,6 +538,18 @@ class Weapon
     public function setHideTime(float $hideTime): self
     {
         $this->hideTime = $hideTime;
+
+        return $this;
+    }
+
+    public function getMaterialPierce(): ?float
+    {
+        return $this->materialPierce;
+    }
+
+    public function setMaterialPierce(float $materialPierce): self
+    {
+        $this->materialPierce = $materialPierce;
 
         return $this;
     }
