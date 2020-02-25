@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Equipment;
+use App\Entity\GameVersion;
 use Doctrine\ORM\EntityManagerInterface;
 
 
@@ -16,7 +17,7 @@ class EquipmentService
     }
 	
 	
-    public function makeNewEquipement(array $equipmentsArray)
+    public function makeNewEquipement(array $equipmentsArray, GameVersion $version)
     {
     	foreach ($equipmentsArray as $name => $stats){
 			$equipment = new equipment();
@@ -25,6 +26,7 @@ class EquipmentService
 			$equipment->setDictId($stats['dict_id']);
 			$equipment->setType($stats['type']);
 			$equipment->setGameId($stats['id']);
+			$equipment->setGameVersion($version);
 			
 			$this->em->persist($equipment);
          

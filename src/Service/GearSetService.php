@@ -2,6 +2,7 @@
 // src/Service/GearSetService.php
 namespace App\Service;
 
+use App\Entity\GameVersion;
 use App\Entity\GearSet;
 use App\Entity\Equipment;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,12 +18,13 @@ class GearSetService
     }
 	
 	
-    public function makeNewGearSet(array $gearsetArray)
+    public function makeNewGearSet(array $gearsetArray, GameVersion $version)
     {
     	$equipmentRepository = $this->em->getRepository('App:Equipment');
     	foreach ($gearsetArray as $name => $stats){
 			$gearset = new gearSet();
 			$gearset->setName($name);
+			$gearset->setGameVersion($version);
 			foreach ($stats['items'] as $idEquipment){
 				$equipmentToAdd = $equipmentRepository->findOneByDictId($idEquipment);
 				$gearset->addGear($equipmentToAdd);

@@ -2,6 +2,7 @@
 // src/Service/WeaponService.php
 namespace App\Service;
 
+use App\Entity\GameVersion;
 use App\Entity\Weapon;
 use App\Entity\Equipment;
 use App\Entity\GearSet;
@@ -44,7 +45,7 @@ class WeaponService
     }
 	
 	
-    public function makeNewWeapons(array $weaponsArray)
+    public function makeNewWeapons(array $weaponsArray, GameVersion $version)
     {
     	foreach ($weaponsArray as $name => $stats){
 			$weapon = new weapon();
@@ -79,6 +80,7 @@ class WeaponService
 			$weapon->setThrowGrenadeTime($stats['throw_grenade_time']);
 			$weapon->setHideTime($stats['hide_time']);
 			$weapon->setMaterialPierce($stats['material_pierce']);
+			$weapon->setGameVersion($version);
 			
 			$this->em->persist($weapon);
 		}

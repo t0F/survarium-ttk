@@ -28,9 +28,16 @@ class GearSet
      */
     private $gears;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\GameVersion", inversedBy="GearSets")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $gameVersion;
+
     public function __construct()
     {
         $this->gears = new ArrayCollection();
+        $this->gameVersions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -82,6 +89,18 @@ class GearSet
                 $gear->setGearSet(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getGameVersion(): ?GameVersion
+    {
+        return $this->gameVersion;
+    }
+
+    public function setGameVersion(?GameVersion $gameVersion): self
+    {
+        $this->gameVersion = $gameVersion;
 
         return $this;
     }
