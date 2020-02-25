@@ -36,7 +36,10 @@ class WeaponService
             $this->sampleVersion = $sample['version'];
             $this->sampleRange = $sample['range'];
             $this->sampleBonusArmor = $sample['bonusArmor'];
-            $this->sampleOnyx = $sample['onyx'];
+            $this->sampleOnyx = $sample['onyxPass'];
+            if($sample['onyxAct'] > $this->sampleOnyx) {
+                $this->sampleOnyx = $sample['onyxAct'];
+            }
         }
     }
 

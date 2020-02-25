@@ -21,7 +21,7 @@ class ImportOptionsCommand extends Command
     {
         $this
             ->setDescription('Import game.options file.')
-            ->setHelp('No help yet, read src file to locate game.option file');
+            ->setHelp('Sorry no options, read/edit execute function to locate game.option file');
     }
 
     public function __construct(WeaponService $weaponService, EquipmentService $equipmentService, GearSetService $gearSetService, GameVersionService $gameVersionService)

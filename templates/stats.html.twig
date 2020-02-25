@@ -49,25 +49,40 @@
 			CURRENTLY NOT WORKING
 		</span>
         <div class="row">
-            <div class="col centerContent">
-                <div>
-                    {{ form_start(form, {'attr': {'class': 'form-inline'}}) }}
-                    {{ form_label(form.equipment) }} {{ form_widget(form.equipment, {'attr': {'class': 'select2JS paddingInput '}}) }}
-                    <p style='margin-right: 20px'></p><br/>
-                    {{ form_label(form.onyx) }} {{ form_widget(form.onyx, {'attr': {'class': 'paddingInput form-inline'}}) }}
-                    <p style='margin-right: 20px'>%</p>
-                    {{ form_label(form.bonusArmor) }} {{ form_widget(form.bonusArmor, {'attr': {'class': 'paddingInput form-inline'}}) }}
-                    <p style='margin-right: 20px'>%</p>
-                    {{ form_label(form.range) }} {{ form_widget(form.range, {'attr': {'class': 'paddingInput form-inline'}}) }}
-                    <p style='margin-right: 20px'>m</p>
-                    {{ form_end(form) }}
+            <div style="width: 500px;" class="container">
+            {{ form_start(form, {'attr': {'class': 'form-inline'}}) }}
+                <div class="form-row">
+                    <div class="col">
+                        {{ form_label(form.version, null, {'attr': {'class': 'sr-only'}}) }}
+                        {{ form_widget(form.version, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                    <div class="col">
+                        {{ form_label(form.equipment, null, {'attr': {'class': 'sr-only'}}) }}
+                        {{ form_widget(form.equipment, {'attr': {'class': 'form-control select2JS'}}) }}
+                    </div>
                 </div>
-            </div>
-            <div class="col centerContent">
-                <div>
-                    div Body parts Damages
+                <div class="form-row">
+                    <div class="col">
+                        {{ form_label(form.onyxPass, null, {'attr': {'class': 'sr-only'}}) }}
+                        {{ form_widget(form.onyxPass, {'attr': {'class': 'form-number'}}) }}
+                    </div>
+                    <div class="col">
+                        {{ form_label(form.onyxAct, null, {'attr': {'class': 'sr-only'}}) }}
+                        {{ form_widget(form.onyxAct, {'attr': {'class': 'form-number'}}) }}
+                    </div>
+                    <div class="col">
+                        {{ form_label(form.bonusArmor, null, {'attr': {'class': 'sr-only'}}) }}
+                        {{ form_widget(form.bonusArmor, {'attr': {'class': 'form-number'}}) }}
+                    </div>
+                    <div class="col">
+                    {{ form_label(form.range, null, {'attr': {'class': 'sr-only'}}) }}
+                    {{ form_widget(form.range, {'attr': {'class': 'form-number'}}) }}
+                    </div>
+                    <div class="col">
+                        {{ form_widget(form.save, { 'label': 'SAVE', 'attr': {'class': 'saveMarging btn btn-secondary'}}) }}
+                    </div>
                 </div>
-            </div>
+            {{ form_end(form) }}
         </div>
     </div>
     {% block javascripts %}

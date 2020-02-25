@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 use App\Entity\Equipment;
+use App\Entity\GameVersion;
 use App\Service\WeaponService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -39,11 +40,13 @@ class defaultController extends AbstractController
     {
 
         $form = $this->createFormBuilder()
-            ->add('equipment', EntityType::class, ['label' => 'Armor WIP : ', 'class' => Equipment::class, 'choice_label' => 'name']) // 'formattedName'])
-            ->add('onyx', NumberType::class, ['label' => 'Onix armorWIP : ', 'empty_data' => 0, 'scale' => 1, 'attr' => ['class' => 'form-inline'], 'attr' => ['value' => 0, 'step' => 0.1, 'min' => 0, 'max' => 8], 'html5' => true, 'required' => false,])
-            ->add('range', NumberType::class, ['label' => 'RangeWIP : ', 'attr' => ['class' => 'form-inline'], 'scale' => 1, 'attr' => ['value' => 20, 'step' => 1, 'min' => 1, 'max' => 500], 'html5' => true, 'required' => false,])
-            ->add('bonusArmor', NumberType::class, ['label' => 'Armor modifierWIP : ', 'attr' => ['class' => 'form-inline'], 'scale' => 1, 'attr' => ['value' => 5, 'step' => 1, 'min' => 0, 'max' => 5], 'html5' => true, 'required' => false,])
-            ->add('save', SubmitType::class, ['label' => 'Change Sample', 'attr' => ['class' => 'form-inline btn btn-secondary btn-sm']])
+            ->add('version', EntityType::class, ['label' => 'Version ', 'class' => GameVersion::class, 'choice_label' => 'name'])
+            ->add('equipment', EntityType::class, ['label' => 'Armor ', 'class' => Equipment::class, 'choice_label' => 'name'])
+            ->add('onyxPass', NumberType::class, ['label' => 'OnixPass ', 'empty_data' => 0, 'scale' => 1, 'attr' => ['value' => 0, 'step' => 0.1, 'min' => 4, 'max' => 11], 'html5' => true, 'required' => false,])
+            ->add('onyxAct', NumberType::class, ['label' => 'OnixAct ', 'empty_data' => 0, 'scale' => 1, 'attr' => ['value' => 0, 'step' => 0.1, 'min' => 40, 'max' => 94], 'html5' => true, 'required' => false,])
+            ->add('range', NumberType::class, ['label' => 'Range', 'scale' => 1, 'attr' => ['value' => 20, 'step' => 1, 'min' => 1, 'max' => 500], 'html5' => true, 'required' => false,])
+            ->add('bonusArmor', NumberType::class, ['label' => '+Armor', 'scale' => 1, 'attr' => ['value' => 5, 'step' => 1, 'min' => 0, 'max' => 5], 'html5' => true, 'required' => false,])
+            ->add('save', SubmitType::class, ['label' => 'Change Sample'])
             ->getForm();
 
         $form->handleRequest($request);
