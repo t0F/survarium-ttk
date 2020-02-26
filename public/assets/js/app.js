@@ -4,23 +4,12 @@ require('../css/util.css');
 window.$ = require('jquery');
 var dt = require('datatables.net');
 window.$.DataTable = dt;
-
 var boostrap = require('bootstrap')
-window.$.boostrap = boostrap;
-
 var boostrapCss = require('bootstrap/dist/css/bootstrap.min.css');
-window.$.boostrapCss = boostrapCss;
-
+var select2 = require('@popperjs/core');
 var select2 = require('select2');
-window.$.DataTable = select2;
+var fontawesome = require('@fortawesome/fontawesome-free');
 var animate = require('animate');
-window.$.DataTable = animate;
-
-
-//var fontAwesome = require('font-awesome');
-//var popper = require('popper');
-//.addEntry('perfect-scrollbar', './assets/vendor/perfect-scrollbar/perfect-scrollbar.css"');
-//var perfectScrollbar = require('perfect-scrollbar');
 
 $(document).ready(function () {
     $('.select2JS').select2();
