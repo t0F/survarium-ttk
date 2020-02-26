@@ -14,8 +14,7 @@
     <link rel="apple-touch-icon" sizes="144x144" href="https://pi4.freeboxos.fr/assets/favico/apple-icon-144x144.png">
     <link rel="apple-touch-icon" sizes="152x152" href="https://pi4.freeboxos.fr/assets/favico/apple-icon-152x152.png">
     <link rel="apple-touch-icon" sizes="180x180" href="https://pi4.freeboxos.fr/assets/favico/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"
-          href="https://pi4.freeboxos.fr/assets/favico/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="https://pi4.freeboxos.fr/assets/favico/android-icon-192x192.png">
     <link rel="icon" type="image/png" sizes="32x32" href="https://pi4.freeboxos.fr/assets/favico/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="96x96" href="https://pi4.freeboxos.fr/assets/favico/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="https://pi4.freeboxos.fr/assets/favico/favicon-16x16.png">
@@ -23,35 +22,16 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="https://pi4.freeboxos.fr/assets/favico/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
-
-
-    <link rel="stylesheet" type="text/css"
-          href="https://pi4.freeboxos.fr/assets/vendor/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css"
-          href="https://pi4.freeboxos.fr/assets/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="https://pi4.freeboxos.fr/assets/vendor/animate/animate.css">
-    <link rel="stylesheet" type="text/css" href="https://pi4.freeboxos.fr/assets/vendor/select2/select2.min.css">
-    <link rel="stylesheet" type="text/css" href="https://pi4.freeboxos.fr/assets/css/util.css">
-    <link rel="stylesheet" type="text/css" href="https://pi4.freeboxos.fr/assets/css/main.css">
-    {% block stylesheets %}{% endblock %}
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
 </head>
 <body style="background-color: #CCC;">
 <div class="container-fluid">
     {% block body %}{% endblock %}
-    <script type="text/javascript"
-            src="{{ app.request.getBaseURL() }}/assets/vendor/jquery/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="{{ app.request.getBaseURL() }}/assets/vendor/bootstrap/js/popper.js"></script>
-    <script type="text/javascript"
-            src="{{ app.request.getBaseURL() }}/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script type="text/javascript"
-            src="{{ app.request.getBaseURL() }}/assets/vendor/DataTables/datatables.min.js"></script>
-    <script type="text/javascript" src="{{ app.request.getBaseURL() }}/assets/vendor/select2/select2.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('.select2JS').select2();
-        });
     </script>
     {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
     {% endblock %}
 </div>
 </body>
