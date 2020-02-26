@@ -13,8 +13,13 @@ var select2 = require('select2');
 var fontawesome = require('@fortawesome/fontawesome-free');
 var animate = require('animate');
 
+$(document).ready(function () {
+    $('.select2JS').select2();
+});
+
 table = $('#weaponsStats').DataTable({
     select: true,
+
     initComplete: function () {
         this.api().columns().every(function () {
             var collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});

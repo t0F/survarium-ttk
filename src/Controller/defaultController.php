@@ -18,6 +18,7 @@ class defaultController extends AbstractController
 {
 
     private $em;
+    private $weaponService;
 
     public function __construct(EntityManagerInterface $em, WeaponService $weaponService)
     {
@@ -47,25 +48,20 @@ class defaultController extends AbstractController
             ->add('onyxPass', NumberType::class, ['label' => 'Onix %', 'empty_data' => 0, 'scale' => 1, 'attr' => ['step' => 0.1, 'min' => 0, 'max' => 99], 'html5' => true, 'required' => false,])
            // ->add('onyxAct', NumberType::class, ['label' => 'OnixAct ', 'empty_data' => 0, 'scale' => 1, 'attr' => ['step' => 0.1, 'min' => 40, 'max' => 94], 'html5' => true, 'required' => false,])
             ->add('range', NumberType::class, ['label' => 'Range', 'scale' => 1, 'attr' => ['step' => 1, 'min' => 1, 'max' => 500], 'html5' => true, 'required' => false,])
-            ->add('bonusArmor', NumberType::class, ['label' => '+Armor', 'scale' => 1, 'attr' => ['step' => 1, 'min' => 0, 'max' => 5], 'html5' => true, 'required' => false,])
+            ->add('bonusArmor', NumberType::class, ['label' => '+Armor', 'empty_data' => 5, 'scale' => 1, 'attr' => ['step' => 1, 'min' => 0, 'max' => 5], 'html5' => true, 'required' => false,])
             ->add('save', SubmitType::class, ['label' => 'UPDATE'])
             ->getForm();
 
         $form->handleRequest($request);
 
-        if ($request->isMethod('POST')) {
-            //$form->submit($request->request->get($form->getName()));
-            if ($form->isSubmitted() && $form->isValid()) {
-                $weaponService->setSample($form->getData());
-            }
-
-
+        if ($request->isMethod('POST') && $form->isSubmitted() && $form->isValid()) {
+            $this->weaponService->setSample($form->getData());
+        } else {
+            $this->weaponService->setSample(null);
         }
 
-        $message = $weaponService->getSampleMessage();
-        $weaponRepo = $this->getDoctrine()->getRepository('App:Weapon');
-        $weaponsEnt = $weaponRepo->findAll();
-        $weaponsArr = $weaponService->weaponsToArray($weaponsEnt);
+        $message = $this->weaponService->getSampleMessage();
+        $weaponsArr = $this->weaponService->getWeaponsStats();
         return $this->render('stats.html.twig', [
             'weapons' => $weaponsArr,
             'message' => $message,

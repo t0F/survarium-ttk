@@ -26,7 +26,7 @@ class WeaponService
         $sampleRepo = $this->em->getRepository('App:GameVersion');
         $this->sampleVersion = $sampleRepo->findOneBy([], ['date' => 'DESC']);
         $equipmentRepo = $this->em->getRepository('App:Equipment');
-        $this->sampleEquipment = $equipmentRepo->findOneBy(['name' => 'renesanse_torso_10', 'gameVersion' => $this->sampleVersion]);
+         $this->sampleEquipment = $equipmentRepo->findOneBy(['name' => 'renesanse_torso_10', 'gameVersion' => $this->sampleVersion]);
     }
 
     public function setSample($sample)
@@ -45,8 +45,20 @@ class WeaponService
 
     public function getSampleMessage()
     {
+        // body part ratio
+        $ratioWeapon = 1;
+        if ($this->sampleEquipment->getFormattedType() == 'HLMT' || $this->sampleEquipment->getFormattedType() == 'MASK')
+            $ratioWeapon = 3;
+        elseif ($this->sampleEquipment->getFormattedType() == 'BOOT')
+        $ratioWeapon = 0.8;
+
         //"Sample is base on ZUBR body armor, with +5 amor, no onyx, no skills armor bonus, point blank.";
-        return "Sample is base on " . $this->sampleEquipment->getName() . ", with +" . $this->sampleBonusArmor . " armor, " . (($this->sampleOnyx == 0) ? 'no' : $this->sampleOnyx . '%') . ' onyx, no skills armor bonus, ' . $this->sampleRange . 'm range.';
+        return "Sample is base on " . $this->sampleEquipment->getName() . ", "
+            . $this->sampleEquipment->getFormattedType() . ' '
+            . $ratioWeapon * 100 .'%, '
+            . $this->sampleEquipment->getArmor() * 100 . " + " . $this->sampleBonusArmor . " armor, "
+            . (($this->sampleOnyx == 0) ? 'no' : $this->sampleOnyx . '%') . ' onyx, no skills armor bonus, '
+            . $this->sampleRange . 'm range.';
     }
 
 
@@ -93,6 +105,14 @@ class WeaponService
         return true;
     }
 
+    public function getWeaponsStats() {
+        $versionRepo = $this->em->getRepository('App:GameVersion');
+        $version = $versionRepo->findOneBy( array(), array('id' => 'DESC') );
+        $weaponRepo = $this->em->getRepository('App:Weapon');
+        $weaponsEnt = $weaponRepo->findByGameVersion($version);
+        return $this->weaponsToArray($weaponsEnt);
+    }
+
     public function weaponsToArray($weapons)
     {
         $weaponsArray = [];
@@ -111,7 +131,7 @@ class WeaponService
             $weaponArray['Weight'] = $weapon->getWeight();
             $weaponArray['Reload Time'] = $weapon->getReloadTime();
             $weaponArray['Muzzle Velocity'] = $weapon->getBulletSpeed();
-            $weaponArray['Sample Body Damage'] = round($this->getArmorDamage($weapon, $this->sampleEquipment), 2);
+            $weaponArray['Sample Damage'] = round($this->getArmorDamage($weapon, $this->sampleEquipment));
             $weaponArray['Sample Bullets To Kill'] = $this->getArmorBTK($weapon, $this->sampleEquipment);
             $weaponArray['Sample TimeToKill'] = $this->getArmorTimeToKill($weapon, $this->sampleEquipment);
             $weaponArray['id'] = $weapon->getId();
@@ -121,30 +141,47 @@ class WeaponService
         return $weaponsArray;
     }
 
-    public function getRangeRatio(Weapon $weapon)
-    {
-        if ($weapon->getEffectiveDistance() > $this->sampleRange) {
-            return 1;
-        } elseif ($this->sampleRange > $weapon->getIneffectiveDistance()) {
-            return $weapon->getIneffectiveDistanceDamageFactor();
-        } else {
-            $damageRange = $this->sampleRange - $weapon->getEffectiveDistance();
-            $ratioRange = $damageRange / ($weapon->getIneffectiveDistance() - $weapon->getEffectiveDistance());
-
-            return 1 - ((1 - $weapon->getIneffectiveDistanceDamageFactor()) * $ratioRange);
-        }
-    }
-
     public function getArmorDamage(Weapon $weapon, Equipment $equipment)
     {
-        // todo add onix, skills, modifier,range
+        // body part ratio
         $ratioWeapon = 1;
         if ($equipment->getFormattedType() == 'HLMT' || $equipment->getFormattedType() == 'MASK')
             $ratioWeapon = 3;
         elseif ($equipment->getFormattedType() == 'BOOT')
             $ratioWeapon = 0.8;
 
-        return $this->getRangeRatio($weapon) * $ratioWeapon * (100 * $weapon->getBulletDamage() * (1 - ($equipment->getArmor() - $weapon->getPlayerPierce())));
+        // range ratio
+        if($weapon->getEffectiveDistance() >= $this->sampleRange)
+            $range = 1;
+        elseif($weapon->getIneffectiveDistance() <= $this->sampleRange) {
+            $range = $weapon->getIneffectiveDistanceDamageFactor();
+        } else {
+            $damageRange = $this->sampleRange - $weapon->getEffectiveDistance();
+            $rangeReductionRatio = $damageRange / ($weapon->getIneffectiveDistance() - $weapon->getEffectiveDistance());
+            if ($rangeReductionRatio > 1 ) $rangeReductionRatio = 1;
+
+            $range =  1 - (1 - $weapon->getIneffectiveDistanceDamageFactor()) * $rangeReductionRatio;
+        }
+
+        // onyx ratio (user input, passive to active)
+        $onyx = 1 - ($this->sampleOnyx / 100);
+
+        //armor ratio : armor + armor modifier - armor penetration
+        $armor = 1 - (($this->sampleBonusArmor / 100) + $equipment->getArmor() - $weapon->getPlayerPierce());
+
+/*
+        if($weapon->getFormattedName() == "A545 NEWYEAR2018") {
+            dump($weapon->getName());
+            dump($armor);
+            dump($onyx);
+            dump($range);
+            dump($ratioWeapon);
+            dump($weapon->getBulletDamage() * 100);
+            dump($armor * $onyx * $range * $ratioWeapon * ($weapon->getBulletDamage() * 100));
+         }
+*/
+
+        return $armor * $ratioWeapon * $range * $onyx * $weapon->getBulletDamage() * 100;
     }
 
     public function getArmorBTK(Weapon $weapon, Equipment $equipment)
@@ -154,7 +191,8 @@ class WeaponService
 
     public function getArmorTimeToKill(Weapon $weapon, Equipment $equipment)
     {
-        return round(($this->getArmorBTK($weapon, $equipment) - 1) * 1 / ($weapon->getRoundsPerMinute() / 60), 3);
+        return round(($this->getArmorBTK($weapon, $equipment) - 1)
+            * 1 / ($weapon->getRoundsPerMinute() / 60), 3);
     }
 
     public function weaponTTKToArray(Weapon $weapon)
