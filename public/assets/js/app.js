@@ -19,6 +19,7 @@ $(document).ready(function () {
 
 table = $('#weaponsStats').DataTable({
     select: true,
+
     initComplete: function () {
         this.api().columns().every(function () {
             var collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
