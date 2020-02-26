@@ -66,17 +66,28 @@ Encore
     //.enableIntegrityHashes(Encore.isProduction())
 
     // uncomment if you're having problems with a jQuery plugin
-    //.autoProvidejQuery()
+    .autoProvidejQuery()
 
     // uncomment if you use API Platform Admin (composer req api-admin)
     //.enableReactPreset()
     //.addEntry('admin', './assets/js/admin.js')
-    .autoProvidejQuery()
     .autoProvideVariables({
         $: 'jquery',
         jQuery: 'jquery',
         'window.jQuery': 'jquery',
     })
 ;
+
+module.exports = {
+    module: {
+        rules: [
+            {
+                test: /\.css$/i,
+                use: ['style-loader', 'css-loader'],
+            },
+        ],
+    },
+};
+
 
 module.exports = Encore.getWebpackConfig();
