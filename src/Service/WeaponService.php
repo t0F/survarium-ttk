@@ -37,9 +37,9 @@ class WeaponService
             $this->sampleRange = $sample['range'];
             $this->sampleBonusArmor = $sample['bonusArmor'];
             $this->sampleOnyx = $sample['onyxPass'];
-            if($sample['onyxAct'] > $this->sampleOnyx) {
+           /* if($sample['onyxAct'] > $this->sampleOnyx) {
                 $this->sampleOnyx = $sample['onyxAct'];
-            }
+            }*/
         }
     }
 
@@ -111,9 +111,9 @@ class WeaponService
             $weaponArray['Weight'] = $weapon->getWeight();
             $weaponArray['Reload Time'] = $weapon->getReloadTime();
             $weaponArray['Muzzle Velocity'] = $weapon->getBulletSpeed();
-            $weaponArray['Sample Body Damage'] = round($this->getSampleDamage($weapon), 2);
-            $weaponArray['Sample Bullets To Kill'] = $this->getSampleBTK($weapon);
-            $weaponArray['Sample TimeToKill'] = $this->getSampleTimeToKill($weapon);
+            $weaponArray['Sample Body Damage'] = round($this->getArmorDamage($weapon, $this->sampleEquipment), 2);
+            $weaponArray['Sample Bullets To Kill'] = $this->getArmorBTK($weapon, $this->sampleEquipment);
+            $weaponArray['Sample TimeToKill'] = $this->getArmorTimeToKill($weapon, $this->sampleEquipment);
             $weaponArray['id'] = $weapon->getId();
             $weaponsArray[] = $weaponArray;
         }
@@ -135,22 +135,6 @@ class WeaponService
         }
     }
 
-    public function getSampleDamage(Weapon $weapon)
-    {
-        $armor = $this->sampleEquipment->getArmor() * ($this->sampleBonusArmor / 100);
-        return $this->getRangeRatio($weapon) * (100 * $weapon->getBulletDamage() * (1 - ($armor - $weapon->getPlayerPierce())));
-    }
-
-    public function getSampleBTK(Weapon $weapon)
-    {
-        return ceil(100 / $this->getSampleDamage($weapon));
-    }
-
-    public function getSampleTimeToKill(Weapon $weapon)
-    {
-        return round(($this->getSampleBTK($weapon) - 1) * 1 / ($weapon->getRoundsPerMinute() / 60), 3);
-    }
-
     public function getArmorDamage(Weapon $weapon, Equipment $equipment)
     {
         // todo add onix, skills, modifier,range
@@ -160,7 +144,7 @@ class WeaponService
         elseif ($equipment->getFormattedType() == 'BOOT')
             $ratioWeapon = 0.8;
 
-        return $ratioWeapon * (100 * $weapon->getBulletDamage() * (1 - ($equipment->getArmor() - $weapon->getPlayerPierce())));
+        return $this->getRangeRatio($weapon) * $ratioWeapon * (100 * $weapon->getBulletDamage() * (1 - ($equipment->getArmor() - $weapon->getPlayerPierce())));
     }
 
     public function getArmorBTK(Weapon $weapon, Equipment $equipment)

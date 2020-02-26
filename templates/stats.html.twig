@@ -51,7 +51,7 @@
                 <div class="form-row">
                     <div class="col">
                         {{ form_label(form.version, null, {'attr': {'class': 'sr-only'}}) }}
-                        {{ form_widget(form.version, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_widget(form.version, {'attr': {'class': 'form-control select2JS'}}) }}
                     </div>
                     <div class="col">
                         {{ form_label(form.equipment, null, {'attr': {'class': 'sr-only'}}) }}
@@ -63,10 +63,7 @@
                         {{ form_label(form.onyxPass, null, {'attr': {'class': 'sr-only'}}) }}
                         {{ form_widget(form.onyxPass, {'attr': {'class': 'form-number'}}) }}
                     </div>
-                    <div class="col">
-                        {{ form_label(form.onyxAct, null, {'attr': {'class': 'sr-only'}}) }}
-                        {{ form_widget(form.onyxAct, {'attr': {'class': 'form-number'}}) }}
-                    </div>
+
                     <div class="col">
                         {{ form_label(form.bonusArmor, null, {'attr': {'class': 'sr-only'}}) }}
                         {{ form_widget(form.bonusArmor, {'attr': {'class': 'form-number'}}) }}
@@ -76,7 +73,7 @@
                     {{ form_widget(form.range, {'attr': {'class': 'form-number'}}) }}
                     </div>
                     <div class="col">
-                        {{ form_widget(form.save, { 'label': 'SAVE', 'attr': {'class': 'saveMarging btn btn-secondary'}}) }}
+                        {{ form_widget(form.save, { 'label': 'UPDATE', 'attr': {'class': 'saveMarging btn btn-secondary'}}) }}
                     </div>
                 </div>
             {{ form_end(form) }}
