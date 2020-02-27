@@ -13,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ImportOptionsCommand extends Command
 {
     // the name of the command (the part after "bin/console")
-    protected static $defaultName = 'app:import-options';
+    protected static $defaultName = 'app:import';
 
     private $weaponService;
 
@@ -36,7 +36,6 @@ class ImportOptionsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        //$gameJson = file_get_contents('/var/www/sovApp/src/Command/game.json'); // linux
         if (!file_exists('src/Command/game.json')) {
             $output->writeln('No file to Upload.');
             return 0;
