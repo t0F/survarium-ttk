@@ -208,8 +208,9 @@ th, td {
 .formContainer{
 	width: 420px;
 	padding: 15px;
-	border: 1px solid white;
+	border: 1px solid #6c757d;
 	border-radius: 7px;
+    background-color: #AAA;
 }
 
 /*==================================================================

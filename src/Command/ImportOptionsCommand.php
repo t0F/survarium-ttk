@@ -72,6 +72,9 @@ class ImportOptionsCommand extends Command
         $this->equipmentService->makeNewEquipement($formattedEquipments, $version);
         $this->gearSetService->makeNewGearSet($gearsets, $version);
 
+        // now that we have created gear set, we can update display Name on equipments
+        $this->gearSetService->updateEquipmentsDisplay();
+
         $output->writeln('');
         $output->writeln('=======================================================');
         $output->writeln('Nb weapons : ' . count($formatedWeapons));
