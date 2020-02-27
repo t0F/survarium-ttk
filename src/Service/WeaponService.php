@@ -26,7 +26,7 @@ class WeaponService
         $sampleRepo = $this->em->getRepository('App:GameVersion');
         $this->sampleVersion = $sampleRepo->findOneBy([], ['date' => 'DESC']);
         $equipmentRepo = $this->em->getRepository('App:Equipment');
-         $this->sampleEquipment = $equipmentRepo->findOneBy(['name' => 'renesanse_torso_10', 'gameVersion' => $this->sampleVersion]);
+        $this->sampleEquipment = $equipmentRepo->findOneBy(['name' => 'renesanse_torso_10', 'gameVersion' => $this->sampleVersion]);
     }
 
     public function setSample($sample)
@@ -36,10 +36,7 @@ class WeaponService
             $this->sampleVersion = $sample['version'];
             $this->sampleRange = $sample['range'];
             $this->sampleBonusArmor = $sample['bonusArmor'];
-            $this->sampleOnyx = $sample['onyxPass'];
-           /* if($sample['onyxAct'] > $this->sampleOnyx) {
-                $this->sampleOnyx = $sample['onyxAct'];
-            }*/
+            $this->sampleOnyx = $sample['onyx'];
         }
     }
 
@@ -50,12 +47,13 @@ class WeaponService
         if ($this->sampleEquipment->getFormattedType() == 'HLMT' || $this->sampleEquipment->getFormattedType() == 'MASK')
             $ratioWeapon = 3;
         elseif ($this->sampleEquipment->getFormattedType() == 'BOOT')
-        $ratioWeapon = 0.8;
+            $ratioWeapon = 0.8;
 
         //"Sample is base on ZUBR body armor, with +5 amor, no onyx, no skills armor bonus, point blank.";
-        return "Sample is base on " . $this->sampleEquipment->getName() . ", "
+        return "Sample is base on "
+            . $this->sampleEquipment->getName() . ", "
             . $this->sampleEquipment->getFormattedType() . ' '
-            . $ratioWeapon * 100 .'%, '
+            . $ratioWeapon * 100 . '%, '
             . $this->sampleEquipment->getArmor() * 100 . " + " . $this->sampleBonusArmor . " armor, "
             . (($this->sampleOnyx == 0) ? 'no' : $this->sampleOnyx . '%') . ' onyx, no skills armor bonus, '
             . $this->sampleRange . 'm range.';
@@ -105,9 +103,10 @@ class WeaponService
         return true;
     }
 
-    public function getWeaponsStats() {
+    public function getWeaponsStats()
+    {
         $versionRepo = $this->em->getRepository('App:GameVersion');
-        $version = $versionRepo->findOneBy( array(), array('id' => 'DESC') );
+        $version = $versionRepo->findOneBy(array(), array('id' => 'DESC'));
         $weaponRepo = $this->em->getRepository('App:Weapon');
         $weaponsEnt = $weaponRepo->findByGameVersion($version);
         return $this->weaponsToArray($weaponsEnt);
@@ -151,16 +150,16 @@ class WeaponService
             $ratioWeapon = 0.8;
 
         // range ratio
-        if($weapon->getEffectiveDistance() >= $this->sampleRange)
+        if ($weapon->getEffectiveDistance() >= $this->sampleRange)
             $range = 1;
-        elseif($weapon->getIneffectiveDistance() <= $this->sampleRange) {
+        elseif ($weapon->getIneffectiveDistance() <= $this->sampleRange) {
             $range = $weapon->getIneffectiveDistanceDamageFactor();
         } else {
             $damageRange = $this->sampleRange - $weapon->getEffectiveDistance();
             $rangeReductionRatio = $damageRange / ($weapon->getIneffectiveDistance() - $weapon->getEffectiveDistance());
-            if ($rangeReductionRatio > 1 ) $rangeReductionRatio = 1;
+            if ($rangeReductionRatio > 1) $rangeReductionRatio = 1;
 
-            $range =  1 - (1 - $weapon->getIneffectiveDistanceDamageFactor()) * $rangeReductionRatio;
+            $range = 1 - (1 - $weapon->getIneffectiveDistanceDamageFactor()) * $rangeReductionRatio;
         }
 
         // onyx ratio (user input, passive to active)
@@ -169,17 +168,17 @@ class WeaponService
         //armor ratio : armor + armor modifier - armor penetration
         $armor = 1 - (($this->sampleBonusArmor / 100) + $equipment->getArmor() - $weapon->getPlayerPierce());
 
-/*
-        if($weapon->getFormattedName() == "A545 NEWYEAR2018") {
-            dump($weapon->getName());
-            dump($armor);
-            dump($onyx);
-            dump($range);
-            dump($ratioWeapon);
-            dump($weapon->getBulletDamage() * 100);
-            dump($armor * $onyx * $range * $ratioWeapon * ($weapon->getBulletDamage() * 100));
-         }
-*/
+        /*
+                if($weapon->getFormattedName() == "A545 NEWYEAR2018") {
+                    dump($weapon->getName());
+                    dump($armor);
+                    dump($onyx);
+                    dump($range);
+                    dump($ratioWeapon);
+                    dump($weapon->getBulletDamage() * 100);
+                    dump($armor * $onyx * $range * $ratioWeapon * ($weapon->getBulletDamage() * 100));
+                 }
+        */
 
         return $armor * $ratioWeapon * $range * $onyx * $weapon->getBulletDamage() * 100;
     }
