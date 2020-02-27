@@ -46,7 +46,7 @@
 			FIXED
 		</span>
         <div class="row">
-            <div style="width: 500px;" class="container">
+            <div class="formContainer container">
             {{ form_start(form, {'attr': {'class': 'form-inline'}}) }}
                 <div class="form-row">
                     <div class="col">
@@ -61,16 +61,17 @@
                 <div class="form-row">
                     <div class="col">
                         {{ form_label(form.onyx, null, {'attr': {'class': 'sr-only'}}) }}
-                        {{ form_widget(form.onyx, {'attr': {'class': 'form-number'}}) }}
+                        {{ form_widget(form.onyx, {'attr': {'class': 'form-control form-number'}}) }}
+
                     </div>
 
                     <div class="col">
                         {{ form_label(form.bonusArmor, null, {'attr': {'class': 'sr-only'}}) }}
-                        {{ form_widget(form.bonusArmor, {'attr': {'class': 'form-number'}}) }}
+                        {{ form_widget(form.bonusArmor, {'attr': {'class': 'marginRight form-control form-number'}}) }}
                     </div>
                     <div class="col">
                     {{ form_label(form.range, null, {'attr': {'class': 'sr-only'}}) }}
-                    {{ form_widget(form.range, {'attr': {'class': 'form-number'}}) }}
+                    {{ form_widget(form.range, {'attr': {'class': 'marginRight form-control form-number'}}) }}
                     </div>
                     <div class="col">
                         {{ form_widget(form.save, { 'label': 'UPDATE', 'attr': {'class': 'saveMarging btn btn-secondary'}}) }}
