@@ -48,19 +48,19 @@ class GearSetService
             foreach ($gearSet->getGears() as $equipment) {
                 switch ($equipment->getType()) {
                     case 'arm_tors':
-                        $displayType = 'TORSO';
+                        $displayType = 'VEST';
                         break;
                     case 'arm_boot':
                         $displayType = 'BOOTS';
                         break;
                     case 'arm_hlmt':
-                        $displayType = 'TORS';
+                        $displayType = 'HELMET';
                         break;
                     case 'arm_hand':
                         $displayType = 'GLOVES';
                         break;
                     case 'arm_legs':
-                        $displayType = 'LEGS';
+                        $displayType = 'PANTS';
                         break;
                     case 'arm_mask':
                         $displayType = 'MASK';

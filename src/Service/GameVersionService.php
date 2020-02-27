@@ -19,7 +19,7 @@ class GameVersionService
     public function makeNewVersion()
     {
         $version = new GameVersion();
-        $version->setName('Where do I find version in .options ? ');
+        $version->setName('CURRENT');
         $version->setIsActive(true);
         $version->setDate(new \DateTime());
 
