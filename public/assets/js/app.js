@@ -1,17 +1,19 @@
+require('../css/app.scss');
 require('../css/main.css');
 require('../css/util.css');
 
+
 window.$ = require('jquery');
-var dt = require('datatables.net');
-window.$.DataTable = dt;
 var boostrap = require('bootstrap')
-var datatablesbs = require('datatables.net-bs')
 var datatablesbs4 = require('datatables.net-bs4')
-var boostrapCss = require('bootstrap/dist/css/bootstrap.min.css');
-var popperjs = require('@popperjs/core');
-var select2 = require('select2');
-var fontawesome = require('@fortawesome/fontawesome-free');
-var animate = require('animate');
+window.$.DataTable = datatablesbs4;
+require('bootstrap/dist/css/bootstrap.min.css');
+require('@popperjs/core');
+require('select2');
+require('@fortawesome/fontawesome-free');
+require('animate');
+
+require('../css/select2.css');
 
 $(document).ready(function () {
     $('.select2JS').select2();
