@@ -21,10 +21,15 @@ class WeaponRepository extends ServiceEntityRepository
 
     // /**
     //  * @return Weapon[] Returns an array of Weapon objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    //  *
+    public function findAllWeaponSWithSets($value)
     {
+
+        return $queryBuilder->select('w', 'gs')
+            ->from('App\Entity\Weapon', 'w')
+            ->leftJoin('c.gear_set', 'gs');
+
+        /*$results = $queryBuilder->getQuery()->getResult();
         return $this->createQueryBuilder('w')
             ->andWhere('w.exampleField = :val')
             ->setParameter('val', $value)
@@ -32,9 +37,9 @@ class WeaponRepository extends ServiceEntityRepository
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
-        ;
+        ;*/
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?Weapon

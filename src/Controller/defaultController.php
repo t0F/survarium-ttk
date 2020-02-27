@@ -7,6 +7,7 @@ use App\Entity\Equipment;
 use App\Entity\GameVersion;
 use App\Service\WeaponService;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -42,10 +43,12 @@ class defaultController extends AbstractController
         $sampleRepo = $this->em->getRepository('App:GameVersion');
         $sampleVersion = $sampleRepo->findOneBy([], ['date' => 'DESC']);
         $equipmentRepo = $this->em->getRepository('App:Equipment');
-        $sampleEquipment = $equipmentRepo->findOneBy(array('name' => 'renesanse_torso_10', 'gameVersion' => $sampleVersion));
-        $sampleRange = 40;
-        $sampleBonusArmor = 5;
-        $sampleOnyx = 4;
+        $sampleEquipment = $equipmentRepo->findOneBy(array(
+            'name' => 'renesanse_torso_10',
+            'gameVersion' => $sampleVersion));
+        $sampleRange = "40";
+        $sampleBonusArmor = "5";
+        $sampleOnyx = "4";
         $defaultData = array(
             'version' => $sampleVersion,
             'bonusArmor' => $sampleBonusArmor,
@@ -54,12 +57,43 @@ class defaultController extends AbstractController
             'onyx' => $sampleOnyx
         );
 
+
         $form = $this->createFormBuilder($defaultData)
-            ->add('version', EntityType::class, ['label' => 'Version ', 'class' => GameVersion::class, 'choice_label' => 'name'])
-            ->add('equipment', EntityType::class, ['label' => 'Armor ', 'class' => Equipment::class, 'choice_label' => 'name'])
-            ->add('onyx', NumberType::class, ['label' => 'Onix %', 'empty_data' => 0, 'scale' => 1, 'attr' => ['step' => 0.1, 'min' => 0, 'max' => 99], 'html5' => true, 'required' => false,])
-            ->add('range', NumberType::class, ['data' => 40, 'label' => 'Range', 'scale' => 1, 'attr' => ['step' => 1, 'min' => 1, 'max' => 500], 'html5' => true, 'required' => false,])
-            ->add('bonusArmor', NumberType::class, ['label' => '+Armor', 'empty_data' => 5, 'scale' => 1, 'attr' => ['step' => 1, 'min' => 0, 'max' => 5], 'html5' => true, 'required' => false,])
+            ->add('version', EntityType::class, [
+                'label' => 'Version ',
+                'class' => GameVersion::class,
+                'choice_label' => 'name'])
+            ->add('equipment', EntityType::class, [
+                'label' => 'Armor ',
+                'class' => Equipment::class,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')
+                        ->orWhere('u.displayName IS NOT NULL')
+                        ->orderBy('u.gearSet', 'ASC');
+                },
+                'choice_label' => function (Equipment $equipment) {
+                    return $equipment->getDisplayName();
+                }])
+            ->add('onyx', NumberType::class, [
+                'label' => 'Onix %',
+                'empty_data' => 0,
+                'scale' => 1,
+                'attr' => ['step' => 0.1, 'min' => 0, 'max' => 99],
+                'html5' => true,
+                'required' => false,])
+            ->add('range', NumberType::class, [
+                'label' => 'Range',
+                'scale' => 1,
+                'attr' => ['step' => 1, 'min' => 1, 'max' => 500],
+                'html5' => true,
+                'required' => false,])
+            ->add('bonusArmor', NumberType::class, [
+                'label' => '+Armor',
+                'empty_data' => 5,
+                'scale' => 1,
+                'attr' => ['step' => 1, 'min' => 0, 'max' => 5],
+                'html5' => true,
+                'required' => false,])
             ->add('save', SubmitType::class, ['label' => 'UPDATE'])
             ->getForm();
 

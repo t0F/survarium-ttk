@@ -96,6 +96,7 @@ class WeaponService
             $weapon->setHideTime($stats['hide_time']);
             $weapon->setMaterialPierce($stats['material_pierce']);
             $weapon->setGameVersion($version);
+            $weapon->setDisplayType($this->displayType($stats['type']));
 
             $this->em->persist($weapon);
         }
@@ -115,11 +116,11 @@ class WeaponService
     public function weaponsToArray($weapons)
     {
         $weaponsArray = [];
-
+        /** @var Weapon $weapon */
         foreach ($weapons as $weapon) {
             $weaponArray = [];
             $weaponArray['Name'] = $weapon->getFormattedName();
-            $weaponArray['Type'] = $weapon->getType();
+            $weaponArray['Type'] = $weapon->getDisplayType();
             $weaponArray['Damage'] = 100 * $weapon->getBulletDamage();
             $weaponArray['Armor Penetration'] = 100 * $weapon->getPlayerPierce();
             $weaponArray['Rate of Fire'] = $weapon->getRoundsPerMinute();
@@ -212,5 +213,40 @@ class WeaponService
         }
 
         return $formatGearSet;
+    }
+
+    public function displayType($type) {
+        switch ($type) {
+            case 'wpn_aslt':
+                $displayType = 'ASSAULT RIFLE';
+                break;
+            case 'wpn_smg':
+                $displayType = 'SMG';
+                break;
+            case 'wpn_bolt':
+            case 'wpn_ablt':
+                $displayType = 'SNIPER RIFLE';
+                break;
+            case 'wpn_cara':
+                $displayType = 'CARBINE';
+                break;
+            case 'wpn_apst':
+            case 'wpn_rvlr':
+            case 'wpn_pstl':
+                $displayType = 'GUNS';
+                break;
+            case 'wpn_dbrl':
+            case 'wpn_stgn':
+            case 'wpn_asgn':
+                $displayType = 'SHOTGUN';
+                break;
+            case 'wpn_bstgn':
+                $displayType = 'OXY';
+                break;
+            default:
+                $displayType = 'TYPE UNKNOWN';
+                break;
+        }
+        return $displayType;
     }
 }
