@@ -26,7 +26,7 @@ table = $('#weaponsStats').DataTable({
         this.api().columns().every(function () {
             var collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
             var column = this;
-            var select = $('<select><option value=""></option></select>')
+            var select = $('<select class="form-control"><option value=""></option></select>')
                 .appendTo($(column.footer()).empty())
                 .on('change', function () {
                     var val = $.fn.dataTable.util.escapeRegex(
