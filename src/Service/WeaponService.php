@@ -143,8 +143,7 @@ class WeaponService
 
     public function getArmorDamage(Weapon $weapon, Equipment $equipment)
     {
-        // body part ratio
-        $ratioWeapon = 1;
+        $ratioWeapon = 1;        // body part ratio
         if ($equipment->getFormattedType() == 'HLMT' || $equipment->getFormattedType() == 'MASK')
             $ratioWeapon = 3;
         elseif ($equipment->getFormattedType() == 'BOOT')
