@@ -11,7 +11,7 @@ Currently able to calculate and display Time to kill for each weapons on each ar
 - You can use the search function for a specific weapon.
 - You can change target armor and more under the table. It doesn't reset filters in array. 
 
-## Next update, if any, will probably add one or more of thoses features : 
+## In todo list
 - a page to show hidden stats from weapon. 
 - a page to compare time to kill on all sets in a table, by selected a weapon. 
 - a more visual page to let users selects every armors of a full build, then select / customize a weapon to show damages.
