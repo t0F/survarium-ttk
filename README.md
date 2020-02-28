@@ -24,7 +24,7 @@ Any suggestions / bug reports are welcome ! Contact me here or in survarium disc
 Also feel free to help on dev, just contact me for installation support and repository rights. Both PHP and Symfony have very helpfull documentations. 
 
 How to install extract part on a server : 
-- install a php environmnent with a database (eg : xamp on windows) You don't have to create schema database, it will create it.
+- install a php environment with a database (eg : xamp on windows) You don't have to create schema database, it will create it.
 - clone repository
 - edit database url in .env file to suit your installation
 ```bash
