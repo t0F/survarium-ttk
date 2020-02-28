@@ -18,6 +18,7 @@ Next update will probably add one (or more) of thoses features :
 - a dark them, the target is the current render with hacker vision Chrome extension  (https://pi4.freeboxos.fr/assets/img/survariumStatsHV.jpg )
 - attachments customisation
 - translations
+- ...
 
 How to install extract part on a server : 
 - install a php environmnent and a database
