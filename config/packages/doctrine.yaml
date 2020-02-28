@@ -3,9 +3,9 @@ doctrine:
         url : 'mysql://root:toff@localhost/sovApp'
         dbname:               sovApp
         host:                 localhost
-        port:                 1234
+        port:                 3306
         user:                 root
-        password:             toor
+        password:             toff
         driver:               pdo_mysql
 
         # IMPORTANT: You MUST configure your server version,

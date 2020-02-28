@@ -49,11 +49,10 @@ class WeaponService
         elseif ($this->sampleEquipment->getFormattedType() == 'BOOT')
             $ratioWeapon = 0.8;
 
-        //"Sample is base on ZUBR body armor, with +5 amor, no onyx, no skills armor bonus, point blank.";
+        //"Sample is base on ZUBR VEST (100% damage), with +5 armor, no onyx, no skills armor bonus, point blank.";
         return "Sample is base on "
-            . $this->sampleEquipment->getDisplayName() . ", "
-            . $this->sampleEquipment->getFormattedType() . ' '
-            . $ratioWeapon * 100 . '%, '
+            . $this->sampleEquipment->getDisplayName() . " ("
+            . $ratioWeapon * 100 . '% damage), '
             . $this->sampleEquipment->getArmor() * 100 . " + " . $this->sampleBonusArmor . " armor, "
             . (($this->sampleOnyx == 0) ? 'no' : $this->sampleOnyx . '%') . ' onyx, no skills armor bonus, '
             . $this->sampleRange . 'm range.';
@@ -96,7 +95,7 @@ class WeaponService
             $weapon->setHideTime($stats['hide_time']);
             $weapon->setMaterialPierce($stats['material_pierce']);
             $weapon->setGameVersion($version);
-            $weapon->setDisplayType($this->displayType($stats['type']));
+            $weapon->setDisplayType($this->displayType($stats['type'], $stats['magazine_capacity']));
 
             $this->em->persist($weapon);
         }
@@ -214,10 +213,14 @@ class WeaponService
         return $formatGearSet;
     }
 
-    public function displayType($type) {
+    public function displayType($type, $magazine) {
         switch ($type) {
             case 'wpn_aslt':
-                $displayType = 'ASSAULT RIFLE';
+                if ($magazine > 40) {
+                    $displayType = 'MACHINE GUNS';
+                } else {
+                    $displayType = 'ASSAULT RIFLE';
+                }
                 break;
             case 'wpn_smg':
                 $displayType = 'SMG';
