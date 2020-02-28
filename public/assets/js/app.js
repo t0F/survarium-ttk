@@ -48,7 +48,7 @@ $('#ajaxForm').submit(function(e) {
     e.preventDefault();
     var formSerialize = $(this).serialize();
     //ajaxStatsUrl defined in twig template
-    $.post(window.ajaxStatsUrl, formSerialize, function(response) {
+    $.post(ajaxStatsUrl, formSerialize, function(response) {
         //your callback here
         window.table.clear();
         window.table.rows.add(response);
