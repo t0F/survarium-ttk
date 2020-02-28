@@ -233,3 +233,18 @@ th, td {
 .page-link:focus, .page-link:hover {
 	color: #AAA;
 }
+
+#progress {
+  z-index: 9999;
+  	position: absolute;
+	top:0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+  	
+	margin: auto;
+}
+
+.select2-container {
+	min-width: 180px;
+}

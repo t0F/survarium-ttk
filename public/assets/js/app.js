@@ -15,14 +15,10 @@ require('animate');
 
 require('../css/select2.css');
 
-$(document).ready(function () {
-    $('.select2JS').select2();
-});
-
 table = $('#weaponsStats').DataTable({
     select: true,
-
     initComplete: function () {
+    	  $('.select2JS').select2();
         this.api().columns().every(function () {
             var collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
             var column = this;
@@ -41,6 +37,9 @@ table = $('#weaponsStats').DataTable({
             column.data().unique().sort(collator.compare).each(function (d, j) {
                 select.append('<option value="' + d + '">' + d + '</option>')
             });
-        });
+        });    
+
+        $("#contentBody").show();
+ 		  $("#progress").hide();
     }
 });
