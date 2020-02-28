@@ -14,7 +14,7 @@ How to use :
 Next update, if any, will probably add one or more of thoses features : 
 - a page to show hidden stats from weapon. 
 - a page to compare time to kill on all sets in a table, by selected a weapon. 
-- a more visual page to let users selects every armor of them set, then select a weapon to show damages.
+- a more visual page to let users selects every armors of a full build, then select / customize a weapon to show damages.
 - a dark theme, the visual target is the current render with hacker vision Chrome extension  (https://pi4.freeboxos.fr/assets/img/survariumStatsHV.jpg ).
 - attachments customisation
 - translations
