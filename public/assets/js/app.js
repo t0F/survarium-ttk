@@ -41,9 +41,6 @@ window.table = $('#weaponsStats').dataTable({
                 });
 
             column.data().unique().sort(collator.compare).each(function (d, j) {
-            	if(j == 0) {
-            	} else {
-            	}
                 select.append('<option value="' + d + '">' + d + '</option>')
             });
         });    
