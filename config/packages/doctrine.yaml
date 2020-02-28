@@ -1,11 +1,6 @@
 doctrine:
     dbal:
-        url : 'mysql://root:toff@localhost/sovApp'
-        dbname:               sovApp
-        host:                 localhost
-        port:                 3306
-        user:                 root
-        password:             toff
+        url : '%env(resolve:DATABASE_URL)%'
         driver:               pdo_mysql
 
         # IMPORTANT: You MUST configure your server version,

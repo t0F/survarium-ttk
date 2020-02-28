@@ -213,7 +213,8 @@ class WeaponService
         return $formatGearSet;
     }
 
-    public function displayType($type, $magazine) {
+    public function displayType($type, $magazine)
+    {
         switch ($type) {
             case 'wpn_aslt':
                 if ($magazine > 40) {
