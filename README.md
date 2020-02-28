@@ -28,7 +28,7 @@ php bin/console d:d:c
 php bin/console d:s:u --force
 php bin/console app:import
 ```
-It will create three tables : equipment, gearget, and weapon. At current version only usefull stats for the time to kill comparator page is available. 
+It will create three tables : equipment, gearset, and weapon. At current version only usefull stats for the time to kill comparator page is available. 
 
 If you want a fresh game.json file, you need to extract db files to json, using quickbms then a nodejs tool available on survarium forum. (TODO:add link). You can change game.json path in src\Command\ImportOptionsCommand.php, first line of execute.
 
