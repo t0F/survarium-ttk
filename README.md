@@ -7,7 +7,7 @@ Currently able to calculate and display Time to kill for each weapons on each ar
 How to use : 
 - Go to https://pi4.freeboxos.fr/
 - Clic on table headers to short the table
-- You can filter by weapon and weapon type in table footer.
+- You can filter weapon types in table footer.
 - You can use the search function for a specific weapon.
 - You can change target armor and more under the table. It doesn't reset filters in array. 
 
