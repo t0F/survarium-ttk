@@ -15,15 +15,21 @@ require('animate');
 
 require('../css/select2.css');
 
-window.table = $('#weaponsStats').DataTable({
+window.table = $('#weaponsStats').dataTable({
     select: true,
     initComplete: function () {
     	  $('.select2JS').select2();
-        this.api().columns().every(function () {
+        this.api().columns([0,1]).every(function (indexCol) {
             var collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
             var column = this;
-            var select = $('<select class="form-control"><option value=""></option></select>')
-                .appendTo($(column.footer()).empty())
+            
+            if(indexCol == 0) {
+            	var select = $('<select class="form-control"><option value="">Select Weapon</option></select>')
+            }
+            else {
+            	var select = $('<select class="form-control"><option value="">Select Type</option></select>')
+            }
+            select.appendTo($(column.footer()).empty())
                 .on('change', function () {
                     var val = $.fn.dataTable.util.escapeRegex(
                         $(this).val()
@@ -35,6 +41,9 @@ window.table = $('#weaponsStats').DataTable({
                 });
 
             column.data().unique().sort(collator.compare).each(function (d, j) {
+            	if(j == 0) {
+            	} else {
+            	}
                 select.append('<option value="' + d + '">' + d + '</option>')
             });
         });    
@@ -44,15 +53,28 @@ window.table = $('#weaponsStats').DataTable({
     }
 });
 
+$('#weaponsStats').on( 'draw.dt', function () {
+        $('#weaponsStats tbody tr td:nth-child(15)').addClass('border1px'); //HightLight Time To Kill
+        $('#weaponsStats tbody tr td').addClass('column');
+} );
+
 $('#ajaxForm').submit(function(e) {
     e.preventDefault();
     var formSerialize = $(this).serialize();
     //ajaxStatsUrl defined in twig template
     $.post(ajaxStatsUrl, formSerialize, function(response) {
-        //your callback here
-        window.table.clear();
-        var weapons = JSON.parse(response.data);
-        window.table.rows.add(weapons);
-        window.table.draw();
+			$('#form_save').addClass('disabled');
+        window.table.fnClearTable();
+        var weapons = response.data;
+        $.each(weapons, function () {        	
+	     		var values = $.map( $.makeArray( this )[0], function( value, key ) {
+				  return value;
+				});
+        		window.table.fnAddData(values, false);
+        });        
+        window.table.fnDraw();
+
+        $('#message').text(response.message);
+        $('#form_save').removeClass('disabled');
     }, 'JSON');
 });
