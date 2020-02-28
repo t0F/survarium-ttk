@@ -1,12 +1,10 @@
 # Survarium Stats
-Symfony Php 5 app to extract and display weapons data from game.json Survarium file. 
-Currently able to calculate and display Time to kill for each weapons on each armor set piece.
+Time to kill Calculator - php symfony 5 application. 
 
 ## Demo 
 https://pi4.freeboxos.fr/ 
 
 ## Usage : 
-- Go to https://pi4.freeboxos.fr/
 - Clic on table headers to short the table
 - You can filter weapon types in table footer.
 - You can use the search function for a specific weapon.
