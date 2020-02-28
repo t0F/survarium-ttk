@@ -1,5 +1,5 @@
 # Survarium Stats
-Time to kill Calculator - php symfony 5 application. 
+Time to kill Calculator for the game Survarium - php symfony 5 application. 
 
 ## Demo 
 https://pi4.freeboxos.fr/ 
