@@ -32,6 +32,9 @@
     {% block body %}{% endblock %}
     {% block javascripts %}
         {{ encore_entry_script_tags('app') }}
+        <script type="text/javascript">
+            var ajaxStatsUrl = "{{ path('ajaxstats') }}";
+        </script>
     {% endblock %}
 </div>
 </body>
