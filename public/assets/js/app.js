@@ -4,7 +4,7 @@ require('../css/util.css');
 
 
 window.$ = require('jquery');
-var boostrap = require('bootstrap')
+require('bootstrap')
 var datatablesbs4 = require('datatables.net-bs4')
 window.$.DataTable = datatablesbs4;
 require('bootstrap/dist/css/bootstrap.min.css');
@@ -15,7 +15,7 @@ require('animate');
 
 require('../css/select2.css');
 
-table = $('#weaponsStats').DataTable({
+window.table = $('#weaponsStats').DataTable({
     select: true,
     initComplete: function () {
     	  $('.select2JS').select2();
@@ -42,4 +42,16 @@ table = $('#weaponsStats').DataTable({
         $("#contentBody").show();
  		  $("#progress").hide();
     }
+});
+
+$('#ajaxForm').submit(function(e) {
+    e.preventDefault();
+    var formSerialize = $(this).serialize();
+    //ajaxStatsUrl defined in twig template
+    $.post(ajaxStatsUrl, formSerialize, function(response) {
+        //your callback here
+        window.table.clear();
+        window.table.rows.add(response);
+        window.table.draw();
+    }, 'JSON');
 });
