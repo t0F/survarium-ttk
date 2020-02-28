@@ -51,7 +51,8 @@ $('#ajaxForm').submit(function(e) {
     $.post(ajaxStatsUrl, formSerialize, function(response) {
         //your callback here
         window.table.clear();
-        window.table.rows.add(response);
+        var weapons = JSON.parse(response.data);
+        window.table.rows.add(weapons);
         window.table.draw();
     }, 'JSON');
 });
