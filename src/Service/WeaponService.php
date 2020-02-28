@@ -51,7 +51,7 @@ class WeaponService
 
         //"Sample is base on ZUBR body armor, with +5 amor, no onyx, no skills armor bonus, point blank.";
         return "Sample is base on "
-            . $this->sampleEquipment->getName() . ", "
+            . $this->sampleEquipment->getDisplayName() . ", "
             . $this->sampleEquipment->getFormattedType() . ' '
             . $ratioWeapon * 100 . '%, '
             . $this->sampleEquipment->getArmor() * 100 . " + " . $this->sampleBonusArmor . " armor, "
