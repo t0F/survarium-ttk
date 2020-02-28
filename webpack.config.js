@@ -3,10 +3,10 @@ let $ = require("jquery");
 let dotenv = require("dotenv");
 const env = dotenv.config();
 
-if (env.parsed.ENVIRONMENT === 'prod') {
+if (env.parsed.ENVIRONMENT == 'prod') {
     publicPath = "/build";
 } else {
-    publicPath = "/sovapp/public/build/";
+    publicPath = "/build/";
 }
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
