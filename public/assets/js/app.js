@@ -24,10 +24,10 @@ window.table = $('#weaponsStats').dataTable({
             var column = this;
             
             if(indexCol == 0) {
-            	var select = $('<select class="form-control"><option value="">Select Weapon</option></select>')
+            	var select = $('<select style="width:300px;" class="form-control"><option value="">Select Weapon</option></select>')
             }
             else {
-            	var select = $('<select class="form-control"><option value="">Select Type</option></select>')
+            	var select = $('<select style="width:152px;"class="form-control"><option value="">Select Type</option></select>')
             }
             select.appendTo($(column.footer()).empty())
                 .on('change', function () {
@@ -56,11 +56,13 @@ $('#weaponsStats').on( 'draw.dt', function () {
 } );
 
 $('#ajaxForm').submit(function(e) {
+	 $('#form_save').addClass('disabled');
+	 $('#form_save').removeClass('btn-secondary');
+    $('#form_save').addClass('btn-outline-secondary');
     e.preventDefault();
     var formSerialize = $(this).serialize();
     //ajaxStatsUrl defined in twig template
     $.post(ajaxStatsUrl, formSerialize, function(response) {
-			$('#form_save').addClass('disabled');
         window.table.fnClearTable();
         var weapons = response.data;
         $.each(weapons, function () {        	
@@ -72,6 +74,8 @@ $('#ajaxForm').submit(function(e) {
         window.table.fnDraw();
 
         $('#message').text(response.message);
+        $('#form_save').removeClass('btn-outline-secondary');
+        $('#form_save').addClass('btn-secondary');
         $('#form_save').removeClass('disabled');
     }, 'JSON');
 });

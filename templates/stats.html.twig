@@ -3,7 +3,7 @@
 {% block title %}Survarium Weapons{% endblock %}
 {% block body %}
     <h1>Survarium 0.61 Weapons Stats </h1>
-    <h3>Work in Progress</h3>
+    <h3>Last stage before release</h3>
     <div style="background-color: #CCC;">
         <div>
             <table id='weaponsStats'>
@@ -45,7 +45,7 @@
         <div class="row">
             <div class="formContainer container">
             {{ form_start(form, {'attr': {'id': 'ajaxForm', 'class': 'form-inline'}}) }}
-                <div class="form-row">
+                <div class="form-row customFormRow">
                     <div class="col">
                         {{ form_label(form.version, null, {'attr': {'class': 'sr-only'}}) }}
                         {{ form_widget(form.version, {'attr': {'class': 'form-control select2JS'}}) }}
@@ -55,7 +55,7 @@
                         {{ form_widget(form.equipment, {'attr': {'class': 'form-control select2JS'}}) }}
                     </div>
                 </div>
-                <div class="form-row">
+                <div class="form-row customFormRow">
                     <div class="col">
                         {{ form_label(form.onyx, null, {'attr': {'class': 'sr-only'}}) }}
                         {{ form_widget(form.onyx, {'attr': {'class': 'form-control form-number'}}) }}
