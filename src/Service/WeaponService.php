@@ -121,12 +121,12 @@ class WeaponService
             $weaponArray = [];
             $weaponArray['Name'] = $weapon->getFormattedName();
             $weaponArray['Type'] = $weapon->getDisplayType();
-            $weaponArray['Damage'] = 100 * $weapon->getBulletDamage();
-            $weaponArray['Armor Penetration'] = 100 * $weapon->getPlayerPierce();
+            $weaponArray['Damage'] = round(100 * $weapon->getBulletDamage());
+            $weaponArray['Armor Penetration'] = round(100 * $weapon->getPlayerPierce());
             $weaponArray['Rate of Fire'] = $weapon->getRoundsPerMinute();
             $weaponArray['Effective Range'] = $weapon->getEffectiveDistance();
             $weaponArray['Magazine Size'] = $weapon->getMagazineCapacity();
-            $weaponArray['Bleed Chance'] = 100 * $weapon->getBleedingChance();
+            $weaponArray['Bleed Chance'] = round(100 * $weapon->getBleedingChance());
             $weaponArray['Material Penetration'] = $weapon->getMaterialPierce();
             $weaponArray['Weight'] = $weapon->getWeight();
             $weaponArray['Reload Time'] = $weapon->getReloadTime();
