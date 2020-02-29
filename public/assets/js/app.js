@@ -17,62 +17,47 @@ require('animate');
 
 require('../css/select2.css');
 
-function getHeadersIndex() {
-    let headerIndex = [];
-    $('#weaponsStats thead tr th').each(function (indexCol, val) {
-        headerIndex[indexCol] = val.textContent;
-    });
-    return headerIndex;
-}
+window.weaponStats = $('#weaponsStats');
+window.headersIndex = [];
 
-/*
-$(window).on('resize', function() {
-    if($(window).height() > 700) {
-        $('#body').addClass('limit1200');
-        $('#body').removeClass('limit400');
-    }else{
-        $('#body').addClass('limit400');
-        $('#body').removeClass('limit1200');
-    }
-})
-*/
+$('#weaponsStats thead tr th').each(function (indexCol, val) {
+    window.headersIndex[indexCol] = val.textContent;
+});
+
+
 
 function createColSelector() {
     let appendTo = $('.dataTables_length').parent();
-    appendTo.removeClass(['col-sm-12', 'col-md-6']).addClass(['col-sm-8', 'col-md-4']);
-    $('#weaponsStats_filter').parent().removeClass(['col-sm-12', 'col-md-6']).addClass(['col-sm-8', 'col-md-4'])
-    let indexes = getHeadersIndex();
-    let select = '<select multiple="multiple" id="colSelector" class="selectpicker btselect" multiple" name="colSelector[]">' +
-        '<option value=null>Show All</option>';
-    $.each(indexes, function (index, value) {
-        select = select + '<option value="' + value + '">' + value + '</option>'
+    appendTo.removeClass(['col-sm-12', 'col-md-6']).addClass(['col']);
+    $('#weaponsStats_filter').parent().removeClass(['col-sm-12', 'col-md-6']).addClass(['col', 'textRight'])
+
+    let select = '<select multiple id="colSelector" class="displayBlock selectpicker btselect">';
+    $.each(window.headersIndex, function (index, value) {
+        select = select + '<option class="colToHide" value="' + value + '">' + value + '</option>'
     });
     select = select + '</select>';
 
-    let newHtml = '<div class="col-sm-8 col-md-4" style="margin-top: -5px; padding: 0;">' +
+    let newHtml = '<div class="col textCenter" style="margin-top: -5px; padding: 0;">' +
         '<div class="dataTables_length" id="weaponsStats_selector">' +
         '<label>Select to hide column(s) (use ctrl):' + select + '</label>' +
         '</div>' +
         '</div>';
     $(newHtml).insertAfter(appendTo);
 
-    $('#colSelector').change(function (e) {
+    /*$('#colSelector').change(function (e) {
         let selected = $(e.target).val();
 
-        $.each(indexes, function (a, val) {
-            if (selected.includes(val)) {
-                window.table.fnSetColumnVis(a, false)
-            } else {
-                window.table.fnSetColumnVis(a, true);
-            }
+        $.each(window.headersIndex, function (a, val) {
+            window.table.fnSetColumnVis(a, (!selected.includes(val)));
         });
         $('#weaponsStats').css('width', 'auto');
-    });
-    $('#weaponsStats').css('min-width', '780px;');
-    $('#weaponsStats').css('width', 'auto');
+    });*/
+    window.weaponStats.css('min-width', '780px;');
+    window.weaponStats.css('width', 'auto');
 }
 
-window.table = $('#weaponsStats').dataTable({
+//CREATE DATATABLE
+window.table = window.weaponStats.dataTable({
     select: true,
     initComplete: function () {
         $('.select2JS').select2();
@@ -80,22 +65,18 @@ window.table = $('#weaponsStats').dataTable({
         this.api().columns([0, 1]).every(function (indexCol) {
             let collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
             let column = this;
-            let select = $('<select class="form-control"><option value="">Select Weapon</option></select>')
-            /* fix width are bad
-            if(indexCol == 0) {
-                var select = $('<select style="width:300px;" class="form-control"><option value="">Select Weapon</option></select>')
-            }
-            else {
-            	var select = $('<select style="width:152px;"class="form-control"><option value="">Select Type</option></select>')
-            }
-            */
-            $('#weaponsStats').css('width', 'auto');
+
+            let select = $('<select multiple class="form-control selectpicker customWidth"></select>')
+            window.weaponStats.css('width', 'auto');
 
             select.appendTo($(column.footer()).empty())
                 .on('change', function () {
-                    let val = $.fn.dataTable.util.escapeRegex(
-                        $(this).val()
-                    );
+                    let val = '';
+                    let first = true;
+                    $.each($(this).val(), function (i, d) {
+                        val = val +((first === true) ? '': '|') + $.fn.dataTable.util.escapeRegex( d );
+                        first = false;
+                    });
 
                     column
                         .search(val ? '^' + val + '$' : '', true, false)
@@ -108,27 +89,31 @@ window.table = $('#weaponsStats').dataTable({
         });
         createColSelector();
 
-        $("#contentBody").show();
+        $("#contentBody").css('display', 'table');
         $("#progress").hide();
        // $('.btselect').selectpicker();
     }
 });
 
-$('#weaponsStats').on('draw.dt', function () {
-    let index = getHeadersIndex();
-    $('#weaponsStats tbody tr td:nth-child(' + (index.indexOf("Sample TimeToKill") + 1) + ')').addClass('border1px'); //HightLight Time To Kill
-    $('#weaponsStats tbody tr td').addClass('column');
+window.weaponStats.on('draw.dt', function () {
+    //HightLight Time To Kill by selector .border1px
+    $('#weaponsStats tbody tr td:nth-child('+($("#weaponsStats thead tr th.border1px").index()+1)+')')
+        .addClass('border1px');
+    $('#weaponsStats tbody tr').addClass('column');
 });
 
-/*
-function decimalDatatable() {
-    //reduce decimals
-    $('#weaponsStats tbody tr td:nth-child(13)').each(function () {
-        let val = $(this).text().split('.');
-        $(this).html(val[0]+'<span class="smallDemicals">.'+val[1]+"</span>");
+$('#colSelector').change(function() {
+    let selected = $(this).val();
+    $.each(window.headersIndex, function (a, val) {
+        let visible = window.table.fnSettings().aoColumns[a].bVisible;
+        if(!selected.includes(val) && !visible) {
+                window.table.fnSetColumnVis(a, true);
+        } else if(selected.includes(val) && visible) {
+            window.table.fnSetColumnVis(a, false);
+        }
     });
-}
-*/
+    window.weaponStats.css('width', 'auto');
+});
 
 $('#ajaxForm').submit(function (e) {
     $('#form_save').addClass('disabled');
@@ -147,7 +132,6 @@ $('#ajaxForm').submit(function (e) {
             window.table.fnAddData(values, false);
         });
         window.table.fnDraw();
-
         $('#message').text(response.message);
         $('#form_save').removeClass('btn-outline-secondary');
         $('#form_save').addClass('btn-secondary');
