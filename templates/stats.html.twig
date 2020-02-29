@@ -61,7 +61,10 @@
                     {{ form_widget(form.onyx, {'attr': {'class': 'form-control form-number'}}) }}
 
                 </div>
-
+                <div class="col">
+                    {{ form_label(form.bonusROF, null, {'attr': {'class': 'sr-only'}}) }}
+                    {{ form_widget(form.bonusROF, {'attr': {'class': 'marginRight form-control form-number'}}) }}
+                </div>
                 <div class="col">
                     {{ form_label(form.bonusArmor, null, {'attr': {'class': 'sr-only'}}) }}
                     {{ form_widget(form.bonusArmor, {'attr': {'class': 'marginRight form-control form-number'}}) }}
@@ -70,8 +73,10 @@
                     {{ form_label(form.range, null, {'attr': {'class': 'sr-only'}}) }}
                     {{ form_widget(form.range, {'attr': {'class': 'marginRight form-control form-number'}}) }}
                 </div>
-                <div class="col">
-                    {{ form_widget(form.save, { 'label': 'UPDATE', 'attr': {'class': 'saveMarging btn btn-secondary'}}) }}
+            </div>
+            <div class="form-row customFormRow width100 paddingBot0">
+                <div class="col centerCol">
+                    {{ form_widget(form.save, { 'label': 'UPDATE', 'attr': {'class': 'btn btn-secondary'}}) }}
                 </div>
             </div>
             {{ form_end(form) }}

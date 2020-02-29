@@ -20,6 +20,7 @@
         "@popperjs/core": "^2.0.6",
         "animate": "^1.0.0",
         "bootstrap": "^4.4.1",
+        "bootstrap-select": "^1.13.12",
         "child_process": "^1.0.2",
         "css-loader": "2",
         "datatables.net-bs4": "^1.10.20",
