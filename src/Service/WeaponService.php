@@ -23,6 +23,7 @@ class WeaponService
         $this->sampleRange = 1;
         $this->sampleOnyx = 0;
         $this->sampleBonusArmor = 5;
+        $this->sampleBonusROF = 5;
         $sampleRepo = $this->em->getRepository('App:GameVersion');
         $this->sampleVersion = $sampleRepo->findOneBy([], ['date' => 'DESC']);
         $equipmentRepo = $this->em->getRepository('App:Equipment');
@@ -35,6 +36,7 @@ class WeaponService
             $this->sampleEquipment = $sample['equipment'];
             $this->sampleVersion = $sample['version'];
             $this->sampleRange = $sample['range'];
+            $this->sampleBonusROF = $sample['bonusROF'];
             $this->sampleBonusArmor = $sample['bonusArmor'];
             $this->sampleOnyx = $sample['onyx'];
         }
@@ -95,7 +97,7 @@ class WeaponService
             $weapon->setHideTime($stats['hide_time']);
             $weapon->setMaterialPierce($stats['material_pierce']);
             $weapon->setGameVersion($version);
-            $weapon->setDisplayType($this->displayType($stats['type'], $stats['magazine_capacity']));
+            $weapon->setDisplayType($this->displayType($stats['type'], $stats['magazine_capacity'], $name));
 
             $this->em->persist($weapon);
         }
@@ -122,7 +124,7 @@ class WeaponService
             $weaponArray['Type'] = $weapon->getDisplayType();
             $weaponArray['Damage'] = round(100 * $weapon->getBulletDamage());
             $weaponArray['Armor Penetration'] = round(100 * $weapon->getPlayerPierce());
-            $weaponArray['Rate of Fire'] = $weapon->getRoundsPerMinute();
+            $weaponArray['Rate of Fire'] = round($this->getROFWithBonus($weapon));
             $weaponArray['Effective Range'] = $weapon->getEffectiveDistance();
             $weaponArray['Magazine Size'] = $weapon->getMagazineCapacity();
             $weaponArray['Bleed Chance'] = round(100 * $weapon->getBleedingChance());
@@ -130,9 +132,9 @@ class WeaponService
             $weaponArray['Weight'] = $weapon->getWeight();
             $weaponArray['Reload Time'] = $weapon->getReloadTime();
             $weaponArray['Muzzle Velocity'] = $weapon->getBulletSpeed();
-            $weaponArray['Sample Damage'] = round($this->getArmorDamage($weapon, $this->sampleEquipment));
+            $weaponArray['Sample Damage'] = round($this->getArmorDamage($weapon, $this->sampleEquipment),2);
             $weaponArray['Sample Bullets To Kill'] = $this->getArmorBTK($weapon, $this->sampleEquipment);
-            $weaponArray['Sample TimeToKill'] = $this->getArmorTimeToKill($weapon, $this->sampleEquipment);
+            $weaponArray['Sample TimeToKill'] = round($this->getArmorTimeToKill($weapon, $this->sampleEquipment),2);
             $weaponArray['id'] = $weapon->getId();
             $weaponsArray[] = $weaponArray;
         }
@@ -187,10 +189,17 @@ class WeaponService
         return ceil(100 / $this->getArmorDamage($weapon, $equipment));
     }
 
+    public function getROFWithBonus(Weapon $weapon)
+    {
+        $bonus = 1 + ($this->sampleBonusROF / 100);
+        return $bonus * $weapon->getRoundsPerMinute();
+    }
+
+
     public function getArmorTimeToKill(Weapon $weapon, Equipment $equipment)
     {
         return round(($this->getArmorBTK($weapon, $equipment) - 1)
-            * 1 / ($weapon->getRoundsPerMinute() / 60), 3);
+            * 1 / ( $this->getROFWithBonus($weapon) / 60), 3);
     }
 
     public function weaponTTKToArray(Weapon $weapon)
@@ -213,15 +222,19 @@ class WeaponService
         return $formatGearSet;
     }
 
-    public function displayType($type, $magazine)
+    public function displayType($type, $magazine, $name)
     {
         switch ($type) {
             case 'wpn_aslt':
+                if(stripos($name, 'mp7') !== false) {
+                    $displayType = 'SMG';
+                    break;
+                }
                 if ($magazine > 40) {
                     $displayType = 'MACHINE GUNS';
-                } else {
-                    $displayType = 'ASSAULT RIFLE';
+                    break;
                 }
+                $displayType = 'ASSAULT RIFLE';
                 break;
             case 'wpn_smg':
                 $displayType = 'SMG';

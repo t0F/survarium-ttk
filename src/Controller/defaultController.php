@@ -49,10 +49,12 @@ class defaultController extends AbstractController
             'gameVersion' => $sampleVersion));
         $sampleRange = "40";
         $sampleBonusArmor = "5";
+        $sampleBonusROF = "5";
         $sampleOnyx = "4";
         $defaultData = array(
             'version' => $sampleVersion,
             'bonusArmor' => $sampleBonusArmor,
+            'bonusROF' => $sampleBonusROF,
             'range' => $sampleRange,
             'equipment' => $sampleEquipment,
             'onyx' => $sampleOnyx
@@ -75,6 +77,13 @@ class defaultController extends AbstractController
                 'choice_label' => function (Equipment $equipment) {
                     return $equipment->getDisplayName();
                 }])
+            ->add('bonusROF', NumberType::class, [
+                'label' => '+RoF %',
+                'empty_data' => 5,
+                'scale' => 1,
+                'attr' => ['step' => 0.1, 'min' => 0, 'max' => 5],
+                'html5' => true,
+                'required' => false,])
             ->add('onyx', NumberType::class, [
                 'label' => 'Onix %',
                 'empty_data' => 0,
@@ -128,10 +137,12 @@ class defaultController extends AbstractController
             'gameVersion' => $sampleVersion));
         $sampleRange = "40";
         $sampleBonusArmor = "5";
+        $sampleBonusROF = "5";
         $sampleOnyx = "4";
         $defaultData = array(
             'version' => $sampleVersion,
             'bonusArmor' => $sampleBonusArmor,
+            'bonusROF' => $sampleBonusROF,
             'range' => $sampleRange,
             'equipment' => $sampleEquipment,
             'onyx' => $sampleOnyx
@@ -154,6 +165,13 @@ class defaultController extends AbstractController
                 'choice_label' => function (Equipment $equipment) {
                     return $equipment->getDisplayName();
                 }])
+            ->add('bonusROF', NumberType::class, [
+                'label' => '+RoF %',
+                'empty_data' => 5,
+                'scale' => 1,
+                'attr' => ['step' => 0.1, 'min' => 0, 'max' => 5],
+                'html5' => true,
+                'required' => false,])
             ->add('onyx', NumberType::class, [
                 'label' => 'Onix %',
                 'empty_data' => 0,

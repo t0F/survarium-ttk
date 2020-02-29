@@ -253,3 +253,17 @@ th, td {
 	margin-left: 0px !important;
 	padding-bottom: 10px;
 }
+
+.width100 {
+    width: 100%;
+    text-align: center;
+}
+
+.centerCol {
+    margin: 0 auto;
+    float: none;
+}
+
+.paddingBot0 {
+    padding-bottom: 0;
+}

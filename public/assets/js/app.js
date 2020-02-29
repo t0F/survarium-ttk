@@ -15,20 +15,69 @@ require('animate');
 
 require('../css/select2.css');
 
+function getHeadersIndex () {
+    let headerIndex = [];
+    $('#weaponsStats thead tr th').each(function (indexCol, val) {
+        headerIndex[indexCol] = val.textContent;
+    });
+    return headerIndex;
+}
+
+function createColSelector() {
+    let elemToChange = $('.dataTables_length').parent().parent();
+    let indexes = getHeadersIndex();
+    let select = '<select multiple="multiple" id="colSelector" class="custom-select" multiple" name="colSelector[]">' +
+        '<option value=null>Show All</option>';
+    $.each(indexes, function (index, value) {
+        select = select + '<option value="'+value+'">' + value + '</option>'
+    });
+    select = select + '</select>';
+
+    let newHtml = '<div class="col-sm-8 col-md-4">' +
+        '<div class="dataTables_length" id="weaponsStats_length"><label>Show <select name="weaponsStats_length" aria-controls="weaponsStats" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div>' +
+        '</div>' +
+        '<div class="col-sm-8 col-md-4" style="margin-top: -40px; padding: 0;">' +
+        '<div class="dataTables_length" id="weaponsStats_selector"><label>Select to hide column(s) (use ctrl):' + select + '</label></div>' +
+        '</div>' +
+        '<div class="col-sm-8 col-md-4">' +
+        '<div id="weaponsStats_filter" class="dataTables_filter"><label>Search:<input type="search" class="form-control form-control-sm" placeholder="" aria-controls="weaponsStats"></label></div>' +
+        '</div>';
+    elemToChange.html(newHtml);
+
+    $('#colSelector').change(function(e) {
+        let selected = $(e.target).val();
+
+        $.each(indexes, function (a, val) {
+            if (selected.includes(val)) {
+                window.table.fnSetColumnVis(a, false)
+            } else {
+                window.table.fnSetColumnVis(a, true);
+            }
+        });
+        $('#weaponsStats').css('width', 'auto');
+    });
+    $('#weaponsStats').css('min-width', '780px;');
+    $('#weaponsStats').css('width', 'auto');
+}
+
 window.table = $('#weaponsStats').dataTable({
     select: true,
     initComplete: function () {
     	  $('.select2JS').select2();
         this.api().columns([0,1]).every(function (indexCol) {
-            var collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
-            var column = this;
-            
+            let collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
+            let column = this;
+            let select = $('<select class="form-control"><option value="">Select Weapon</option></select>')
+            /* fix width are bad
             if(indexCol == 0) {
-            	var select = $('<select style="width:300px;" class="form-control"><option value="">Select Weapon</option></select>')
+                var select = $('<select style="width:300px;" class="form-control"><option value="">Select Weapon</option></select>')
             }
             else {
             	var select = $('<select style="width:152px;"class="form-control"><option value="">Select Type</option></select>')
             }
+            */
+            $('#weaponsStats').css('width', 'auto');
+
             select.appendTo($(column.footer()).empty())
                 .on('change', function () {
                     var val = $.fn.dataTable.util.escapeRegex(
@@ -43,21 +92,33 @@ window.table = $('#weaponsStats').dataTable({
             column.data().unique().sort(collator.compare).each(function (d, j) {
                 select.append('<option value="' + d + '">' + d + '</option>')
             });
-        });    
+        });
+        createColSelector();
 
         $("#contentBody").show();
- 		  $("#progress").hide();
+ 		$("#progress").hide();
     }
 });
 
 $('#weaponsStats').on( 'draw.dt', function () {
-        $('#weaponsStats tbody tr td:nth-child(15)').addClass('border1px'); //HightLight Time To Kill
+        let index = getHeadersIndex();
+        $('#weaponsStats tbody tr td:nth-child('+(index.indexOf("Sample TimeToKill")+1)+')').addClass('border1px'); //HightLight Time To Kill
         $('#weaponsStats tbody tr td').addClass('column');
 } );
 
+/*
+function decimalDatatable() {
+    //reduce decimals
+    $('#weaponsStats tbody tr td:nth-child(13)').each(function () {
+        let val = $(this).text().split('.');
+        $(this).html(val[0]+'<span class="smallDemicals">.'+val[1]+"</span>");
+    });
+}
+*/
+
 $('#ajaxForm').submit(function(e) {
-	 $('#form_save').addClass('disabled');
-	 $('#form_save').removeClass('btn-secondary');
+	$('#form_save').addClass('disabled');
+	$('#form_save').removeClass('btn-secondary');
     $('#form_save').addClass('btn-outline-secondary');
     e.preventDefault();
     var formSerialize = $(this).serialize();
