@@ -17,9 +17,8 @@ require('animate');
 
 require('../css/select2.css');
 
-window.headersIndex = [];
-window.hiddenCols = [];
 window.weaponStats = $('#weaponsStats');
+window.headersIndex = [];
 
 $('#weaponsStats thead tr th').each(function (indexCol, val) {
     window.headersIndex[indexCol] = val.textContent;
@@ -66,7 +65,6 @@ window.table = window.weaponStats.dataTable({
         this.api().columns([0, 1]).every(function (indexCol) {
             let collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
             let column = this;
-            let classToAdd = '';
 
             let select = $('<select multiple class="form-control selectpicker customWidth"><option value="">Select Weapon</option></select>')
             window.weaponStats.css('width', 'auto');
@@ -98,22 +96,21 @@ window.table = window.weaponStats.dataTable({
 });
 
 window.weaponStats.on('draw.dt', function () {
-    $('#weaponsStats tbody tr td:nth-child(' + (window.headersIndex.indexOf("Sample TimeToKill") + 1) + ')').addClass('border1px'); //HightLight Time To Kill
+    $('#weaponsStats tbody tr td:nth-child(' + (window.headersIndex.indexOf("Sample TimeToKill")) + ')').addClass('border1px'); //HightLight Time To Kill
     $('#weaponsStats tbody tr td').addClass('column');
 });
 
 $('#colSelector').change(function() {
     let selected = $(this).val();
     $.each(window.headersIndex, function (a, val) {
-        if(!selected.includes(val) && window.hiddenCols.includes(val)) {
-            window.table.fnSetColumnVis(a, (true));
-            window.hiddenCols.splice(a, 1);
-        }
-        if(selected.includes(val) && !window.hiddenCols.includes(val)) {
-            window.table.fnSetColumnVis(a, (false));
-            window.hiddenCols[a] = val;
+        let visible = window.table.fnSettings().aoColumns[a].bVisible;
+        if(!selected.includes(val) && !visible) {
+                window.table.fnSetColumnVis(a, true);
+        } else if(selected.includes(val) && visible) {
+            window.table.fnSetColumnVis(a, false);
         }
     });
+
     $('#weaponsStats').css('width', 'auto');
 });
 
@@ -134,7 +131,6 @@ $('#ajaxForm').submit(function (e) {
             window.table.fnAddData(values, false);
         });
         window.table.fnDraw();
-
         $('#message').text(response.message);
         $('#form_save').removeClass('btn-outline-secondary');
         $('#form_save').addClass('btn-secondary');
