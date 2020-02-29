@@ -66,7 +66,7 @@ window.table = window.weaponStats.dataTable({
             let collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
             let column = this;
 
-            let select = $('<select multiple class="form-control selectpicker customWidth"><option value="">Select Weapon</option></select>')
+            let select = $('<select multiple class="form-control selectpicker customWidth"></select>')
             window.weaponStats.css('width', 'auto');
 
             select.appendTo($(column.footer()).empty())
@@ -96,8 +96,10 @@ window.table = window.weaponStats.dataTable({
 });
 
 window.weaponStats.on('draw.dt', function () {
-    $('#weaponsStats tbody tr td:nth-child(' + (window.headersIndex.indexOf("Sample TimeToKill")) + ')').addClass('border1px'); //HightLight Time To Kill
-    $('#weaponsStats tbody tr td').addClass('column');
+    //HightLight Time To Kill by selector .border1px
+    $('#weaponsStats tbody tr td:nth-child('+($("#weaponsStats thead tr th.border1px").index()+1)+')')
+        .addClass('border1px');
+    $('#weaponsStats tbody tr').addClass('column');
 });
 
 $('#colSelector').change(function() {
@@ -110,8 +112,7 @@ $('#colSelector').change(function() {
             window.table.fnSetColumnVis(a, false);
         }
     });
-
-    $('#weaponsStats').css('width', 'auto');
+    window.weaponStats.css('width', 'auto');
 });
 
 $('#ajaxForm').submit(function (e) {
