@@ -10,7 +10,8 @@ window.$.DataTable = datatablesbs4;
 require('bootstrap/dist/css/bootstrap.min.css');
 require('@popperjs/core');
 require('select2');
-require('bootstrap-select');
+require('bootstrap-select/js/bootstrap-select');
+require('bootstrap-select/dist/css/bootstrap-select.css');
 require('@fortawesome/fontawesome-free');
 require('animate');
 
