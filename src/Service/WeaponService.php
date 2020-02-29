@@ -227,7 +227,7 @@ class WeaponService
     {
         switch ($type) {
             case 'wpn_aslt':
-                if(stripos($name, 'mp7') !== false) {
+                if(stripos($name, 'mp7') !== false || stripos($name, 'ppsh')) {
                     $displayType = 'SMG';
                     break;
                 }

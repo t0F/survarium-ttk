@@ -25,7 +25,6 @@ $('#weaponsStats thead tr th').each(function (indexCol, val) {
 });
 
 
-
 function createColSelector() {
     let appendTo = $('.dataTables_length').parent();
     appendTo.removeClass(['col-sm-12', 'col-md-6']).addClass(['col']);
@@ -62,7 +61,7 @@ window.table = window.weaponStats.dataTable({
     initComplete: function () {
         $('.select2JS').select2();
 
-        this.api().columns([0, 1]).every(function (indexCol) {
+        this.api().columns([0, 1]).every(function () {
             let collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
             let column = this;
 
@@ -74,13 +73,11 @@ window.table = window.weaponStats.dataTable({
                     let val = '';
                     let first = true;
                     $.each($(this).val(), function (i, d) {
-                        val = val +((first === true) ? '': '|') + $.fn.dataTable.util.escapeRegex( d );
+                        val = val + ((first === true) ? '' : '|') + $.fn.dataTable.util.escapeRegex(d);
                         first = false;
                     });
 
-                    column
-                        .search(val ? '^' + val + '$' : '', true, false)
-                        .draw();
+                    column.search(val ? '^' + val + '$' : '', true, false).draw();
                 });
 
             column.data().unique().sort(collator.compare).each(function (d, j) {
@@ -91,24 +88,23 @@ window.table = window.weaponStats.dataTable({
 
         $("#contentBody").css('display', 'table');
         $("#progress").hide();
-       // $('.btselect').selectpicker();
     }
 });
 
 window.weaponStats.on('draw.dt', function () {
     //HightLight Time To Kill by selector .border1px
-    $('#weaponsStats tbody tr td:nth-child('+($("#weaponsStats thead tr th.border1px").index()+1)+')')
+    $('#weaponsStats tbody tr td:nth-child(' + ($("#weaponsStats thead tr th.border1px").index() + 1) + ')')
         .addClass('border1px');
     $('#weaponsStats tbody tr').addClass('column');
 });
 
-$('#colSelector').change(function() {
+$('#colSelector').change(function () {
     let selected = $(this).val();
     $.each(window.headersIndex, function (a, val) {
         let visible = window.table.fnSettings().aoColumns[a].bVisible;
-        if(!selected.includes(val) && !visible) {
-                window.table.fnSetColumnVis(a, true);
-        } else if(selected.includes(val) && visible) {
+        if (!selected.includes(val) && !visible) {
+            window.table.fnSetColumnVis(a, true);
+        } else if (selected.includes(val) && visible) {
             window.table.fnSetColumnVis(a, false);
         }
     });
