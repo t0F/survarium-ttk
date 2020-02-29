@@ -267,3 +267,19 @@ th, td {
 .paddingBot0 {
     padding-bottom: 0;
 }
+
+.displayBlock {
+    display: block !important;
+}
+
+.cell100 {
+    white-space: nowrap;
+}
+
+.textRight {
+    text-align: right;
+}
+
+.textCenter {
+    text-align: center;
+}

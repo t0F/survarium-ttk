@@ -28,7 +28,7 @@
 <body style="background-color: #CCC;">
 <div id='progress' class='container-fluid' style="background: url({{ asset('assets/img/loader.gif') }}) 50% 50% no-repeat;">
 </div>
-<div id= 'contentBody' class='container-fluid' style='display:none;'>
+<div id= 'contentBody' class='container' style='display:none;'>
     {% block body %}{% endblock %}
     {% block javascripts %}
         {{ encore_entry_script_tags('app') }}
