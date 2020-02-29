@@ -54,10 +54,11 @@ class WeaponService
         //"Sample is base on ZUBR VEST (100% damage), with +5 armor, no onyx, no skills armor bonus, point blank.";
         return "Sample is base on "
             . $this->sampleEquipment->getDisplayName() . " ("
-            . $ratioWeapon * 100 . '% damage), '
-            . $this->sampleEquipment->getArmor() * 100 . " + " . $this->sampleBonusArmor . " armor, "
-            . (($this->sampleOnyx == 0) ? 'no' : $this->sampleOnyx . '%') . ' onyx, no skills armor bonus, '
-            . $this->sampleRange . 'm range.';
+            . $ratioWeapon * 100 . '% Damage), '
+            .'+'.$this->sampleBonusROF . '% Rate of Fire, '
+            . $this->sampleEquipment->getArmor() * 100 . " + " . $this->sampleBonusArmor . " Armor, "
+            . (($this->sampleOnyx == 0) ? 'no' : $this->sampleOnyx . '%') . ' Onyx, no skills Armor bonus, '
+            . $this->sampleRange . 'm Range.';
     }
 
 
