@@ -36,21 +36,11 @@ function createColSelector() {
     });
     select = select + '</select>';
 
-    let newHtml = '<div class="col textCenter" style="margin-top: -5px; padding: 0;">' +
+    let colSelector = '<div class="col textCenter" style="margin-top: -5px; padding: 0;">' +
         '<div class="dataTables_length" id="weaponsStats_selector">' +
-        '<label>Select to hide column(s) (use ctrl):' + select + '</label>' +
-        '</div>' +
-        '</div>';
-    $(newHtml).insertAfter(appendTo);
+        '<label>Select to hide column(s):' + select + '</label></div></div>';
+    $(colSelector).insertAfter(appendTo);
 
-    /*$('#colSelector').change(function (e) {
-        let selected = $(e.target).val();
-
-        $.each(window.headersIndex, function (a, val) {
-            window.table.fnSetColumnVis(a, (!selected.includes(val)));
-        });
-        $('#weaponsStats').css('width', 'auto');
-    });*/
     window.weaponStats.css('min-width', '780px;');
     window.weaponStats.css('width', 'auto');
 }
@@ -64,10 +54,9 @@ window.table = window.weaponStats.dataTable({
         this.api().columns([0, 1]).every(function () {
             let collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
             let column = this;
-
             let select = $('<select multiple class="form-control selectpicker customWidth"></select>')
             window.weaponStats.css('width', 'auto');
-
+            //Footer (multi)select
             select.appendTo($(column.footer()).empty())
                 .on('change', function () {
                     let val = '';
@@ -86,18 +75,21 @@ window.table = window.weaponStats.dataTable({
         });
         createColSelector();
 
+        //ready to show
         $("#contentBody").css('display', 'table');
         $("#progress").hide();
     }
 });
 
+//RESET PARTICULAR CSS ON REDRAW
 window.weaponStats.on('draw.dt', function () {
     //HightLight Time To Kill by selector .border1px
     $('#weaponsStats tbody tr td:nth-child(' + ($("#weaponsStats thead tr th.border1px").index() + 1) + ')')
         .addClass('border1px');
-    $('#weaponsStats tbody tr').addClass('column');
+    $('#weaponsStats tbody tr').addClass(['column', 'cell100']);
 });
 
+// SHOW / HIDE COLUMNS
 $('#colSelector').change(function () {
     let selected = $(this).val();
     $.each(window.headersIndex, function (a, val) {
@@ -111,6 +103,7 @@ $('#colSelector').change(function () {
     window.weaponStats.css('width', 'auto');
 });
 
+// AJAX CALL
 $('#ajaxForm').submit(function (e) {
     $('#form_save').addClass('disabled');
     $('#form_save').removeClass('btn-secondary');

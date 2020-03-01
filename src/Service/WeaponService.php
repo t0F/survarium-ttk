@@ -126,6 +126,7 @@ class WeaponService
             $weaponArray['Damage'] = round(100 * $weapon->getBulletDamage());
             $weaponArray['Armor Penetration'] = round(100 * $weapon->getPlayerPierce());
             $weaponArray['Rate of Fire'] = round($this->getROFWithBonus($weapon));
+            $weaponArray['DPS'] = round($this->getDPS($weapon));
             $weaponArray['Effective Range'] = $weapon->getEffectiveDistance();
             $weaponArray['Magazine Size'] = $weapon->getMagazineCapacity();
             $weaponArray['Bleed Chance'] = round(100 * $weapon->getBleedingChance());
@@ -170,18 +171,6 @@ class WeaponService
         //armor ratio : armor + armor modifier - armor penetration
         $armor = 1 - (($this->sampleBonusArmor / 100) + $equipment->getArmor() - $weapon->getPlayerPierce());
 
-        /*
-                if($weapon->getFormattedName() == "A545 NEWYEAR2018") {
-                    dump($weapon->getName());
-                    dump($armor);
-                    dump($onyx);
-                    dump($range);
-                    dump($ratioWeapon);
-                    dump($weapon->getBulletDamage() * 100);
-                    dump($armor * $onyx * $range * $ratioWeapon * ($weapon->getBulletDamage() * 100));
-                 }
-        */
-
         return $armor * $ratioWeapon * $range * $onyx * $weapon->getBulletDamage() * 100;
     }
 
@@ -194,6 +183,11 @@ class WeaponService
     {
         $bonus = 1 + ($this->sampleBonusROF / 100);
         return $bonus * $weapon->getRoundsPerMinute();
+    }
+
+    public function getDPS(Weapon $weapon)
+    {
+        return ($this->getROFWithBonus($weapon) * ($weapon->getBulletDamage() * 100)) / 60;
     }
 
 

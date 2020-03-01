@@ -37,7 +37,7 @@ class defaultController extends AbstractController
     }
 
     /**
-     * @Route("/stats", name="stats")
+     * @Route("/survarium", name="stats")
      */
     public function stats(Request $request, WeaponService $weaponService)
     {
