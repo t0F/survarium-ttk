@@ -5,7 +5,6 @@
     <h1>Survarium Stats</h1>
     <h3>Time To Kill Comparator</h3>
     <div style="background-color: #CCC;">
-    <div>
         <table id='weaponsStats'>
             <thead style="font-weight: bold;">
             <tr class="row100 head">
@@ -21,8 +20,7 @@
                 <tr class="row100 body">
                     {% for stat, value in weapon|cast_to_array %}
                         {% if stat != 'id' %}
-                            <td class="cell100 column  {% if stat == 'Sample TimeToKill' %}border1px{% endif %}"
-                                id="col">{{ value }}</td>
+                            <td class="cell100 column  {% if stat == 'Sample TimeToKill' %}border1px{% endif %}">{{ value }}</td>
                         {% endif %}
                     {% endfor %}
                 </tr>

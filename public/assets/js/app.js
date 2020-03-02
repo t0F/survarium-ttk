@@ -14,16 +14,37 @@ require('bootstrap-select/js/bootstrap-select');
 require('bootstrap-select/dist/css/bootstrap-select.css');
 require('@fortawesome/fontawesome-free');
 require('animate');
+require('number-polyfill');
 
 require('../css/select2.css');
 
+window.addEventListener('resize', function(){
+    changeZoom();
+});
+
+window.firstZoom = true;
 window.weaponStats = $('#weaponsStats');
 window.headersIndex = [];
+
+function changeZoom() {
+    let ww = $(window).width();
+    let mw = $('#weaponsStats').parent().outerWidth(true);
+
+    if(window.firstZoom === true) {
+        window.firstZoom = false;
+        mw = mw + 32;
+    }
+
+    let ratio =  ww / mw; //calculate ratio
+    if( ww < mw){ $('#weaponsStats').css('zoom', ratio); }
+    else { $('#weaponsStats').css('zoom', 1); }
+}
+
+
 
 $('#weaponsStats thead tr th').each(function (indexCol, val) {
     window.headersIndex[indexCol] = val.textContent;
 });
-
 
 function createColSelector() {
     let appendTo = $('.dataTables_length').parent();
@@ -78,6 +99,9 @@ window.table = window.weaponStats.dataTable({
         //ready to show
         $("#contentBody").css('display', 'table');
         $("#progress").hide();
+
+        //on resize
+        changeZoom();
     }
 });
 
@@ -87,6 +111,8 @@ window.weaponStats.on('draw.dt', function () {
     $('#weaponsStats tbody tr td:nth-child(' + ($("#weaponsStats thead tr th.border1px").index() + 1) + ')')
         .addClass('border1px');
     $('#weaponsStats tbody tr').addClass(['column', 'cell100']);
+
+    changeZoom();
 });
 
 // SHOW / HIDE COLUMNS
