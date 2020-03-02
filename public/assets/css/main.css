@@ -313,3 +313,8 @@ body {
     height: 100%;
     overflow: auto;
 }
+
+.minWith60 {
+    width: auto !important;
+    min-width: 60px !important;;
+}

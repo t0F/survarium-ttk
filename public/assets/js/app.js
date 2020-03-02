@@ -14,18 +14,18 @@ require('bootstrap-select/js/bootstrap-select');
 require('bootstrap-select/dist/css/bootstrap-select.css');
 require('@fortawesome/fontawesome-free');
 require('animate');
-require('number-polyfill');
 
 require('../css/select2.css');
 
+
+
+window.weaponStats = $('#weaponsStats');
+window.headersIndex = [];
+/*
+window.firstZoom = true;
 window.addEventListener('resize', function(){
     changeZoom();
 });
-
-window.firstZoom = true;
-window.weaponStats = $('#weaponsStats');
-window.headersIndex = [];
-
 function changeZoom() {
     let ww = $(window).width();
     let mw = $('#weaponsStats').parent().outerWidth(true);
@@ -39,8 +39,7 @@ function changeZoom() {
     if( ww < mw){ $('#weaponsStats').css('zoom', ratio); }
     else { $('#weaponsStats').css('zoom', 1); }
 }
-
-
+*/
 
 $('#weaponsStats thead tr th').each(function (indexCol, val) {
     window.headersIndex[indexCol] = val.textContent;
@@ -48,6 +47,8 @@ $('#weaponsStats thead tr th').each(function (indexCol, val) {
 
 function createColSelector() {
     let appendTo = $('.dataTables_length').parent();
+    let selectNbRow = $('.dataTables_length select');
+    selectNbRow.removeClass(['custom-select','custom-select-sm','form-control','form-control-sm']).addClass(['displayBlock','selectpicker','btselect', 'minWith60']);
     appendTo.removeClass(['col-sm-12', 'col-md-6']).addClass(['col']);
     $('#weaponsStats_filter').parent().removeClass(['col-sm-12', 'col-md-6']).addClass(['col', 'textRight'])
 
@@ -101,7 +102,7 @@ window.table = window.weaponStats.dataTable({
         $("#progress").hide();
 
         //on resize
-        changeZoom();
+        //changeZoom();
     }
 });
 
@@ -112,7 +113,7 @@ window.weaponStats.on('draw.dt', function () {
         .addClass('border1px');
     $('#weaponsStats tbody tr').addClass(['column', 'cell100']);
 
-    changeZoom();
+    //changeZoom();
 });
 
 // SHOW / HIDE COLUMNS
