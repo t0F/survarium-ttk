@@ -72,11 +72,11 @@ $( "#form_save" ).click(function() {
 //CREATE DATATABLE
 window.table = window.weaponStats.dataTable({
     select: true,
-    responsive: true,
+    /*responsive: true,
     columnDefs: [
         { responsivePriority: 1, targets: 0 },
         { responsivePriority: 2, targets: -1 }
-    ],
+    ],*/
     initComplete: function () {
         $('.select2JS').select2();
 
@@ -84,6 +84,7 @@ window.table = window.weaponStats.dataTable({
             let collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
             let column = this;
             let select = $('<select multiple class="form-control selectpicker customWidth"></select>')
+
             window.weaponStats.css('width', 'auto');
             //Footer (multi)select
             select.appendTo($(column.footer()).empty())
