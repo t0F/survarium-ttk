@@ -19,23 +19,32 @@ class GearSetService
     }
 
 
-    public function makeNewGearSet(array $gearsetArray, GameVersion $version)
+    public function makeNewGearSet(array $gearsetArray, GameVersion $version, array $allLocales)
     {
         $equipmentRepository = $this->em->getRepository('App:Equipment');
-        foreach ($gearsetArray as $name => $stats) {
+        foreach ($gearsetArray as $name => $fullStats) {
             $gearset = new gearSet();
-            $gearset->setName($name);
+            $gearset->setName($this->getLocaleName($allLocales, 'st_'.$name.'_name'));
             $gearset->setGameVersion($version);
-            foreach ($stats['items'] as $idEquipment) {
+            foreach ($fullStats['items'] as $idEquipment) {
                 $equipmentToAdd = $equipmentRepository->findOneByDictId($idEquipment);
                 $gearset->addGear($equipmentToAdd);
             }
             //save it for use it later to upload display name
             $this->gearSetCreated[] = $gearset;
+
             $this->em->persist($gearset);
         }
         $this->em->flush();
         return true;
+    }
+
+    public function getLocaleName(array $allLocales, string $stringToFind) {
+        if(array_key_exists ($stringToFind, $allLocales['ba'])) {
+            return $allLocales['ba'][$stringToFind];
+        } else {
+            return $stringToFind;
+        }
     }
 
     //call this after creating gearsets and equipments
@@ -76,9 +85,7 @@ class GearSetService
                         break;
                 }
 
-                $displayName = $gearSet->getFormattedName() . ' ' . $displayType;
                 $equipment->setDisplayType($displayType);
-                $equipment->setDisplayName($displayName);
                 $this->em->persist($equipment);
             }
         }

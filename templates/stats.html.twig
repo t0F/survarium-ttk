@@ -4,13 +4,13 @@
 {% block body %}
     <h1>Survarium Stats</h1>
     <h3>Time To Kill Comparator</h3>
-    <div style="background-color: #CCC;">
-        <table id='weaponsStats'>
+    <div id="weaponStatsDiv" style="background-color: #CCC;">
+        <table class="responsive dt-responsive" id='weaponsStats'>
             <thead style="font-weight: bold;">
             <tr class="row100 head">
                 {% for key, value in weapons[0]|cast_to_array %}
                     {% if key != 'id' %}
-                        <th class="cell100 columnHeader {% if key == 'Sample TimeToKill' %}border1px{% endif %} ">{{ key }}</th>
+                        <th class="cell100 columnHeader {% if key == 'Sample TimeToKill' %}never border1px{% endif %} ">{{ key }}</th>
                     {% endif %}
                 {% endfor %}
             </tr>

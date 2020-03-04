@@ -45,7 +45,7 @@ class defaultController extends AbstractController
         $sampleVersion = $sampleRepo->findOneBy([], ['date' => 'DESC']);
         $equipmentRepo = $this->em->getRepository('App:Equipment');
         $sampleEquipment = $equipmentRepo->findOneBy(array(
-            'name' => 'renesanse_torso_10',
+            'name' => '"Zubr UM-4" bulletproof vest',
             'gameVersion' => $sampleVersion));
         $sampleRange = "40";
         $sampleBonusArmor = "5";
@@ -60,53 +60,7 @@ class defaultController extends AbstractController
             'onyx' => $sampleOnyx
         );
 
-
-        $form = $this->createFormBuilder($defaultData)
-            ->add('version', EntityType::class, [
-                'label' => 'Version ',
-                'class' => GameVersion::class,
-                'choice_label' => 'name'])
-            ->add('equipment', EntityType::class, [
-                'label' => 'Armor ',
-                'class' => Equipment::class,
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('u')
-                        ->orWhere('u.displayName IS NOT NULL')
-                        ->orderBy('u.gearSet', 'ASC');
-                },
-                'choice_label' => function (Equipment $equipment) {
-                    return $equipment->getDisplayName();
-                }])
-            ->add('bonusROF', NumberType::class, [
-                'label' => '+RoF %',
-                'empty_data' => 5,
-                'scale' => 1,
-                'attr' => ['step' => 0.1, 'min' => 0, 'max' => 5],
-                'html5' => true,
-                'required' => false,])
-            ->add('onyx', NumberType::class, [
-                'label' => 'Onix %',
-                'empty_data' => 0,
-                'scale' => 1,
-                'attr' => ['step' => 0.1, 'min' => 0, 'max' => 99],
-                'html5' => true,
-                'required' => false,])
-            ->add('range', NumberType::class, [
-                'label' => 'Range',
-                'scale' => 1,
-                'attr' => ['step' => 1, 'min' => 1, 'max' => 500],
-                'html5' => true,
-                'required' => false,])
-            ->add('bonusArmor', NumberType::class, [
-                'label' => '+Armor',
-                'empty_data' => 5,
-                'scale' => 1,
-                'attr' => ['step' => 1, 'min' => 0, 'max' => 5],
-                'html5' => true,
-                'required' => false,])
-            ->add('save', SubmitType::class, ['label' => 'UPDATE'])
-            ->getForm();
-
+        $form = $this->getTTKForm($defaultData);
         $form->handleRequest($request);
 
         if ($request->isMethod('POST') && $form->isSubmitted() && $form->isValid()) {
@@ -149,7 +103,23 @@ class defaultController extends AbstractController
         );
 
 
-        $form = $this->createFormBuilder($defaultData)
+        $form = $this->getTTKForm($defaultData);
+        $form->handleRequest($request);
+
+        if ($request->isMethod('POST') && $form->isSubmitted() && $form->isValid()) {
+            $this->weaponService->setSample($form->getData());
+        } else {
+            $this->weaponService->setSample($defaultData);
+        }
+
+        $message = $this->weaponService->getSampleMessage();
+        $weaponsArr = $this->weaponService->getWeaponsStats();
+        $jsonReturn = ['message' => $message, 'data' => $weaponsArr];
+        return new JsonResponse($jsonReturn);
+    }
+
+    public function getTTKForm($defaultData) {
+        return $this->createFormBuilder($defaultData)
             ->add('version', EntityType::class, [
                 'label' => 'Version ',
                 'class' => GameVersion::class,
@@ -159,11 +129,10 @@ class defaultController extends AbstractController
                 'class' => Equipment::class,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('u')
-                        ->orWhere('u.displayName IS NOT NULL')
                         ->orderBy('u.gearSet', 'ASC');
                 },
                 'choice_label' => function (Equipment $equipment) {
-                    return $equipment->getDisplayName();
+                    return $equipment->getName();
                 }])
             ->add('bonusROF', NumberType::class, [
                 'label' => '+RoF %',
@@ -194,19 +163,6 @@ class defaultController extends AbstractController
                 'required' => false,])
             ->add('save', SubmitType::class, ['label' => 'UPDATE'])
             ->getForm();
-
-        $form->handleRequest($request);
-
-        if ($request->isMethod('POST') && $form->isSubmitted() && $form->isValid()) {
-            $this->weaponService->setSample($form->getData());
-        } else {
-            $this->weaponService->setSample($defaultData);
-        }
-
-        $message = $this->weaponService->getSampleMessage();
-        $weaponsArr = $this->weaponService->getWeaponsStats();
-        $jsonReturn = ['message' => $message, 'data' => $weaponsArr];
-        return new JsonResponse($jsonReturn);
     }
 
     /**
