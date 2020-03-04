@@ -1,7 +1,6 @@
-require('../css/app.scss');
 require('../css/main.css');
 require('../css/util.css');
-
+require('../css/app.scss');
 
 window.$ = require('jquery');
 require('bootstrap')
@@ -12,34 +11,13 @@ require('@popperjs/core');
 require('select2');
 require('bootstrap-select/js/bootstrap-select');
 require('bootstrap-select/dist/css/bootstrap-select.css');
+require('datatables.net-responsive-bs4');
 require('@fortawesome/fontawesome-free');
 require('animate');
-
 require('../css/select2.css');
-
-
 
 window.weaponStats = $('#weaponsStats');
 window.headersIndex = [];
-/*
-window.firstZoom = true;
-window.addEventListener('resize', function(){
-    changeZoom();
-});
-function changeZoom() {
-    let ww = $(window).width();
-    let mw = $('#weaponsStats').parent().outerWidth(true);
-
-    if(window.firstZoom === true) {
-        window.firstZoom = false;
-        mw = mw + 32;
-    }
-
-    let ratio =  ww / mw; //calculate ratio
-    if( ww < mw){ $('#weaponsStats').css('zoom', ratio); }
-    else { $('#weaponsStats').css('zoom', 1); }
-}
-*/
 
 $('#weaponsStats thead tr th').each(function (indexCol, val) {
     window.headersIndex[indexCol] = val.textContent;
@@ -67,9 +45,38 @@ function createColSelector() {
     window.weaponStats.css('width', 'auto');
 }
 
+/*
+window.contentBody = $('#contentBody');
+window.weaponStatsDiv = $('#weaponStatsDiv');
+window.responsive = true;
+function responsiveCol(){
+    //contentBody // display: float;(padding: 0 50);max-width: none; // display: table;
+    //weaponStatsDiv //margin: auto; // margin: 0px;
+    if(window.responsive === true) {
+        window.contentBody.addClass('responsiveFrame');
+        window.weaponStatsDiv.addClass('responsiveFrame');
+        $('#weaponsStats_wrapper').addClass('responsiveFrame');
+        $('#weaponsStats').addClass('tableWidth100');
+    } else {
+        window.contentBody.removeClass('responsiveFrame');
+        window.weaponStatsDiv.removeClass('responsiveFrame');
+        $('#weaponsStats_wrapper').removeClass('responsiveFrame');
+        $('#weaponsStats').removeClass('tableWidth100');
+    }
+}
+$( "#form_save" ).click(function() {
+    responsiveCol();
+});
+*/
+
 //CREATE DATATABLE
 window.table = window.weaponStats.dataTable({
     select: true,
+    responsive: true,
+    columnDefs: [
+        { responsivePriority: 1, targets: 0 },
+        { responsivePriority: 2, targets: -1 }
+    ],
     initComplete: function () {
         $('.select2JS').select2();
 
@@ -100,9 +107,6 @@ window.table = window.weaponStats.dataTable({
         //ready to show
         $("#contentBody").css('display', 'table');
         $("#progress").hide();
-
-        //on resize
-        //changeZoom();
     }
 });
 
@@ -112,8 +116,6 @@ window.weaponStats.on('draw.dt', function () {
     $('#weaponsStats tbody tr td:nth-child(' + ($("#weaponsStats thead tr th.border1px").index() + 1) + ')')
         .addClass('border1px');
     $('#weaponsStats tbody tr').addClass(['column', 'cell100']);
-
-    //changeZoom();
 });
 
 // SHOW / HIDE COLUMNS
@@ -132,9 +134,9 @@ $('#colSelector').change(function () {
 
 // AJAX CALL
 $('#ajaxForm').submit(function (e) {
-    $('#form_save').addClass('disabled');
-    $('#form_save').removeClass('btn-secondary');
-    $('#form_save').addClass('btn-outline-secondary');
+    let formSave = $('#form_save');
+    formSave.addClass(['disabled', 'btn-outline-secondary']);
+    formSave.removeClass('btn-secondary');
     e.preventDefault();
     let formSerialize = $(this).serialize();
     //ajaxStatsUrl defined in twig template
@@ -149,8 +151,7 @@ $('#ajaxForm').submit(function (e) {
         });
         window.table.fnDraw();
         $('#message').text(response.message);
-        $('#form_save').removeClass('btn-outline-secondary');
-        $('#form_save').addClass('btn-secondary');
-        $('#form_save').removeClass('disabled');
+        formSave.removeClass(['btn-outline-secondary','disabled']);
+        formSave.addClass('btn-secondary');
     }, 'JSON');
 });

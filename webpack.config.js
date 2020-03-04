@@ -6,7 +6,7 @@ const env = dotenv.config();
 if (env.parsed.ENVIRONMENT == 'prod') {
     publicPath = "/build";
 } else {
-    publicPath = "/build/";
+    publicPath = "/sovapp/public/build/";
 }
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.

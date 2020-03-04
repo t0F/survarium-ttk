@@ -53,7 +53,7 @@ class WeaponService
 
         //"Sample is base on ZUBR VEST (100% damage), with +5 armor, no onyx, no skills armor bonus, point blank.";
         return "Sample is base on "
-            . $this->sampleEquipment->getDisplayName() . " ("
+            . $this->sampleEquipment->getName() . " ("
             . $ratioWeapon * 100 . '% Damage), '
             .'+'.$this->sampleBonusROF . '% Rate of Fire, '
             . $this->sampleEquipment->getArmor() * 100 . " + " . $this->sampleBonusArmor . " Armor, "
@@ -62,9 +62,10 @@ class WeaponService
     }
 
 
-    public function makeNewWeapons(array $weaponsArray, GameVersion $version)
+    public function makeNewWeapons(array $weaponsArray, GameVersion $version, array $allLocales)
     {
-        foreach ($weaponsArray as $name => $stats) {
+        foreach ($weaponsArray as $name => $fullStats) {
+            $stats = $fullStats['parameters'];
             $weapon = new weapon();
             $weapon->setName($name);
             $weapon->setMagazineCapacity($stats['magazine_capacity']);
@@ -100,10 +101,42 @@ class WeaponService
             $weapon->setGameVersion($version);
             $weapon->setDisplayType($this->displayType($stats['type'], $stats['magazine_capacity'], $name));
 
+
+            $this->translateWeaponName($weapon, $allLocales, $fullStats['ui_desc']['text_descriptions']['name']);
+
             $this->em->persist($weapon);
+            $weapon->mergeNewTranslations();
         }
         $this->em->flush();
         return true;
+    }
+
+    public function translateWeaponName(Weapon &$weapon, array $allLocales, string $stringToFind) {
+        foreach ($allLocales as $localeName => $locales) {
+            if(array_key_exists ($stringToFind, $locales)) {
+                $weapon->translate($localeName)->setLocalizedName($locales[$stringToFind]);
+            }
+        }
+
+        if(array_key_exists ($stringToFind, $allLocales['ba'])) {
+            $weapon->setName($allLocales['ba'][$stringToFind]);
+        }
+    }
+
+    public function getLocaleWeaponName(Weapon $weapon) {
+        if(null !== $weapon->translate('en')->getLocalizedName()) {
+            return $weapon->translate('en')->getLocalizedName();
+        }
+        if(null !== $weapon->translate('or')->getLocalizedName()) {
+            return $weapon->translate('or')->getLocalizedName();
+        }
+        if(null !== $weapon->translate('sp')->getLocalizedName()) {
+            return $weapon->translate('sp')->getLocalizedName();
+        }
+        if(null !== $weapon->translate('sp')->getLocalizedName()) {
+            return $weapon->translate('sp')->getLocalizedName();
+        }
+        else return $weapon->getFormattedName();
     }
 
     public function getWeaponsStats()
@@ -121,7 +154,9 @@ class WeaponService
         /** @var Weapon $weapon */
         foreach ($weapons as $weapon) {
             $weaponArray = [];
-            $weaponArray['Name'] = $weapon->getFormattedName();
+            //$weaponArray['Name'] = $weapon->getFormattedName();
+            $weaponArray['Name'] = $weapon->getName();
+
             $weaponArray['Type'] = $weapon->getDisplayType();
             $weaponArray['Damage'] = round(100 * $weapon->getBulletDamage());
             $weaponArray['Armor Penetration'] = round(100 * $weapon->getPlayerPierce());
@@ -147,7 +182,7 @@ class WeaponService
     public function getArmorDamage(Weapon $weapon, Equipment $equipment)
     {
         $ratioWeapon = 1;        // body part ratio
-        if ($equipment->getFormattedType() == 'HLMT' || $equipment->getFormattedType() == 'MASK')
+        if ($equipment->getType() == 'HLMT' || $equipment->getFormattedType() == 'MASK')
             $ratioWeapon = 3;
         elseif ($equipment->getFormattedType() == 'BOOT')
             $ratioWeapon = 0.8;
