@@ -46,49 +46,4 @@ class GearSetService
             return $stringToFind;
         }
     }
-
-    //call this after creating gearsets and equipments
-    public function updateEquipmentsDisplay()
-    {
-        /** @var GearSet $gearSet */
-        foreach ($this->gearSetCreated as $gearSet) {
-
-            /** @var Equipment $gear */
-            foreach ($gearSet->getGears() as $equipment) {
-                switch ($equipment->getType()) {
-                    case 'arm_tors':
-                        $displayType = 'VEST';
-                        break;
-                    case 'arm_boot':
-                        $displayType = 'BOOTS';
-                        break;
-                    case 'arm_hlmt':
-                        $displayType = 'HELMET';
-                        break;
-                    case 'arm_hand':
-                        $displayType = 'GLOVES';
-                        break;
-                    case 'arm_legs':
-                        $displayType = 'PANTS';
-                        break;
-                    case 'arm_mask':
-                        $displayType = 'MASK';
-                        break;
-                    case 'arm_back':
-                        $displayType = 'BACK';
-                        break;
-                    case 'arm_oxy':
-                        $displayType = 'OXY';
-                        break;
-                    default:
-                        $displayType = 'TYPE UNKNOWN';
-                        break;
-                }
-
-                $equipment->setDisplayType($displayType);
-                $this->em->persist($equipment);
-            }
-        }
-        $this->em->flush();
-    }
 }

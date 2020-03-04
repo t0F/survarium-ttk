@@ -94,10 +94,6 @@ class ImportOptionsCommand extends Command
         $this->equipmentService->makeNewEquipement($equipments, $version, $allLocales);
         $this->gearSetService->makeNewGearSet($gearsets, $version, $allLocales);
 
-        // now that we have created gear set, we can update display Name on equipments
-        $this->gearSetService->updateEquipmentsDisplay();
-
-
         //########## GET ALL DONE, OUTPUT ##########
         $output->writeln('');
         $output->writeln('=======================================================');
