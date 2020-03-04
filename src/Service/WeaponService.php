@@ -120,6 +120,8 @@ class WeaponService
 
         if(array_key_exists ($stringToFind, $allLocales['ba'])) {
             $weapon->setName($allLocales['ba'][$stringToFind]);
+        } elseif(array_key_exists ($stringToFind, $allLocales['en'])) {
+            $weapon->setName($allLocales['en'][$stringToFind]);
         }
     }
 
