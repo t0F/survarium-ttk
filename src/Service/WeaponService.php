@@ -125,22 +125,6 @@ class WeaponService
         }
     }
 
-    public function getLocaleWeaponName(Weapon $weapon) {
-        if(null !== $weapon->translate('en')->getLocalizedName()) {
-            return $weapon->translate('en')->getLocalizedName();
-        }
-        if(null !== $weapon->translate('or')->getLocalizedName()) {
-            return $weapon->translate('or')->getLocalizedName();
-        }
-        if(null !== $weapon->translate('sp')->getLocalizedName()) {
-            return $weapon->translate('sp')->getLocalizedName();
-        }
-        if(null !== $weapon->translate('sp')->getLocalizedName()) {
-            return $weapon->translate('sp')->getLocalizedName();
-        }
-        else return $weapon->getFormattedName();
-    }
-
     public function getWeaponsStats()
     {
         $versionRepo = $this->em->getRepository('App:GameVersion');
@@ -157,7 +141,8 @@ class WeaponService
         foreach ($weapons as $weapon) {
             $weaponArray = [];
             //$weaponArray['Name'] = $weapon->getFormattedName();
-            $weaponArray['Name'] = $weapon->getName();
+            $name = str_replace("'", "",str_replace('"', "",  $weapon->getName()));
+            $weaponArray['Name'] = $name;
 
             $weaponArray['Type'] = $weapon->getDisplayType();
             $weaponArray['Damage'] = round(100 * $weapon->getBulletDamage());
@@ -234,25 +219,6 @@ class WeaponService
             * 1 / ( $this->getROFWithBonus($weapon) / 60), 3);
     }
 
-    public function weaponTTKToArray(Weapon $weapon)
-    {
-        $gearSetRepo = $this->em->getRepository('App:GearSet');
-        $gearSets = $gearSetRepo->getGearSets();
-
-        $formatGearSet = array();
-        foreach ($gearSets as $gearSet) {
-            $formatGearSet[$gearSet->getFormattedName()] = array();
-            $formattedEquipment = array();
-            foreach ($gearSet->getGears() as $equipment) {/*tors,boot,hlmt,hand,legs,mask,*/
-                $formattedEquipment[$equipment->getFormattedType()] = array();
-                $formattedEquipment[$equipment->getFormattedType()]['Bulllets To Kill'] = $this->getArmorBTK($weapon, $equipment);
-                $formattedEquipment[$equipment->getFormattedType()]['Time To Kill'] = $this->getArmorTimeToKill($weapon, $equipment);
-            }
-            $formatGearSet[$gearSet->getFormattedName()] = $formattedEquipment;
-        }
-
-        return $formatGearSet;
-    }
 
     public function displayType($type, $magazine, $name)
     {
