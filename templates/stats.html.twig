@@ -5,8 +5,7 @@
     <h1>Survarium Stats</h1>
     <h3>Time To Kill Comparator</h3>
     <div id="weaponStatsDiv" style="background-color: #CCC;">
-{#         <table class="/* responsive dt-responsive */" id='weaponsStats'>#}
-        <table id='weaponsStats'>
+        <table id='weaponsStats'{% if responsive == true %}class="responsive dt-responsive"{% endif %}>
             <thead style="font-weight: bold;">
             <tr class="row100 head">
                 {% for key, value in weapons[0]|cast_to_array %}
@@ -81,4 +80,5 @@
             {{ form_end(form) }}
         </div>
     </div>
+    <script> window.responsive = {% if responsive == true %}1{% else %}0{% endif %};</script>
 {% endblock %}

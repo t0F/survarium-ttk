@@ -18,13 +18,49 @@
 
 .noResponsiveFrame {
   &#weaponStatsDiv {
-     margin: 0;
-   }
+    margin: 0;
+  }
   &#contentBody {
-     display: table;
-   }
+    display: table;
+  }
 
   &#weaponsStats_wrapper {
     margin: 0 !important;
   }
 }
+
+
+html.noFilter {
+  -webkit-filter: none;
+  filter: none;
+}
+
+
+html.noBackground {
+  background-color: transparent;
+  body, #weaponStatsDiv, .row100 {
+    background-color: transparent !important;
+  }
+
+  .border1px, .formContainer {
+    background-color: #aaaaaa50;
+  }
+}
+
+@font-face {
+  font-family: 'Play', sans-serif;
+  src: url('../fonts/Play/Play-Bold.ttf');
+}
+
+html.survariumProFonts {
+  font-family: 'Play', sans-serif !important;
+  color: rgba(245,245,245,0.65)  !important;;
+  -webkit-font-smoothing: antialiased;
+  body {
+    font-family: 'Play', sans-serif !important;
+    color: rgba(245,245,245,0.65)  !important;;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+// noFilter noBackground survariumProFonts
