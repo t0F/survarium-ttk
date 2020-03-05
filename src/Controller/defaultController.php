@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class defaultController extends AbstractController
@@ -37,9 +38,13 @@ class defaultController extends AbstractController
     }
 
     /**
-     * @Route("/survarium", name="stats")
+     * @Route("/survarium/{responsive}", name="stats", defaults={"responsive": false})
+     * @param bool $responsive
+     * @param Request $request
+     * @param WeaponService $weaponService
+     * @return Response
      */
-    public function stats(Request $request, WeaponService $weaponService)
+    public function stats(bool $responsive, Request $request, WeaponService $weaponService)
     {
         $sampleRepo = $this->em->getRepository('App:GameVersion');
         $sampleVersion = $sampleRepo->findOneBy([], ['date' => 'DESC']);
@@ -74,7 +79,8 @@ class defaultController extends AbstractController
         return $this->render('stats.html.twig', [
             'weapons' => $weaponsArr,
             'message' => $message,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'responsive' => $responsive
         ]);
     }
 
