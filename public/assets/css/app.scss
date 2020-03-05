@@ -43,8 +43,19 @@ html.noBackground {
   }
 
   .border1px, .formContainer {
-    background-color: #aaaaaa50;
+    background-color: #aaaaaa15;
   }
+
+  .formContainer .col {
+    max-width: 210px;
+  }
+
+  h3 {
+    font-weight: 700;
+  }
+ /* h1 {
+    display: none;
+  }*/
 }
 
 @font-face {
@@ -60,6 +71,9 @@ html.survariumProFonts {
     font-family: 'Play', sans-serif !important;
     color: rgba(245,245,245,0.65)  !important;;
     -webkit-font-smoothing: antialiased;
+  }
+  .select2-container {
+    color: black;
   }
 }
 

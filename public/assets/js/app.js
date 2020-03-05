@@ -77,11 +77,13 @@ if (window.responsive === 1) {
     responsiveCol();
     window.columnsDefs = [
         { responsivePriority: 1, targets: 0 },
-        { responsivePriority: 2, targets: -1 }
+        { responsivePriority: 1, targets: 1 }
     ];
+    window.dtSelect = [1, 4];
 } else {
     window.bResponsive = false;
     window.columnsDefs = [];
+    window.dtSelect = [0, 1];
 }
 
 //CREATE DATATABLE
@@ -92,7 +94,7 @@ window.table = window.weaponStats.dataTable({
     initComplete: function () {
         $('.select2JS').select2();
 
-        this.api().columns([0, 1]).every(function () {
+        this.api().columns(dtSelect).every(function () {
             let collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
             let column = this;
             let select = $('<select multiple class="form-control selectpicker customWidth"></select>')
