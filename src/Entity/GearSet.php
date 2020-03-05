@@ -28,7 +28,7 @@ class GearSet
     private $gears;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\GameVersion", inversedBy="gearSets")
+     * @ORM\ManyToOne(targetEntity="App\Entity\GameVersion", inversedBy="GearSets")
      * @ORM\JoinColumn(nullable=false)
      */
     private $gameVersion;
