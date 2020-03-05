@@ -1,5 +1,5 @@
 require('../css/main.css');
-require('../css/util.css');
+//require('../css/util.css');
 require('../css/app.scss');
 
 window.$ = require('jquery');
@@ -116,7 +116,7 @@ window.weaponStats.on('draw.dt', function () {
     //HightLight Time To Kill by selector .border1px
     $('#weaponsStats tbody tr td:nth-child(' + ($("#weaponsStats thead tr th.border1px").index() + 1) + ')')
         .addClass('border1px');
-    $('#weaponsStats tbody tr').addClass(['column', 'cell100']);
+    $('#weaponsStats tbody tr').addClass(['cell100']);
 });
 
 // SHOW / HIDE COLUMNS

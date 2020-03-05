@@ -155,4 +155,8 @@ class Equipment implements TranslatableInterface
 
         return $this;
     }
+
+    public function getGearSetName() {
+        return $this->gearSet ? $this->gearSet->getName() : 'No set';
+    }
 }
