@@ -45,14 +45,12 @@ function createColSelector() {
     window.weaponStats.css('width', 'auto');
 }
 
-/*
-window.contentBody = $('#contentBody');
-window.weaponStatsDiv = $('#weaponStatsDiv');
-window.responsive = true;
+
+
 function responsiveCol(){
     //contentBody // display: float;(padding: 0 50);max-width: none; // display: table;
     //weaponStatsDiv //margin: auto; // margin: 0px;
-    if(window.responsive === true) {
+    if(window.bResponsive === true) {
         window.contentBody.addClass('responsiveFrame');
         window.weaponStatsDiv.addClass('responsiveFrame');
         $('#weaponsStats_wrapper').addClass('responsiveFrame');
@@ -64,23 +62,39 @@ function responsiveCol(){
         $('#weaponsStats').removeClass('tableWidth100');
     }
 }
+
+/*
+// use for tests
 $( "#form_save" ).click(function() {
     responsiveCol();
 });
 */
 
+if (window.responsive === 1) {
+    window.contentBody = $('#contentBody');
+    window.weaponStatsDiv = $('#weaponStatsDiv');
+    window.bResponsive = true;
+    responsiveCol();
+    window.columnsDefs = [
+        { responsivePriority: 1, targets: 0 },
+        { responsivePriority: 1, targets: 1 }
+    ];
+    window.dtSelect = [1, 4];
+} else {
+    window.bResponsive = false;
+    window.columnsDefs = [];
+    window.dtSelect = [0, 1];
+}
+
 //CREATE DATATABLE
 window.table = window.weaponStats.dataTable({
     select: true,
-    /*responsive: true,
-    columnDefs: [
-        { responsivePriority: 1, targets: 0 },
-        { responsivePriority: 2, targets: -1 }
-    ],*/
+    responsive: window.bResponsive,
+    columnDefs: window.columnsDefs,
     initComplete: function () {
         $('.select2JS').select2();
 
-        this.api().columns([0, 1]).every(function () {
+        this.api().columns(dtSelect).every(function () {
             let collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
             let column = this;
             let select = $('<select multiple class="form-control selectpicker customWidth"></select>')

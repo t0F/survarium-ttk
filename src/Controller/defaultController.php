@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class defaultController extends AbstractController
@@ -37,9 +38,14 @@ class defaultController extends AbstractController
     }
 
     /**
-     * @Route("/survarium", name="stats")
+     * @Route("/survarium/{responsive}/{survariumPro}", name="stats", defaults={"responsive": false, "survariumPro": false})
+     * @param bool $responsive
+     * @param bool $survariumPro
+     * @param Request $request
+     * @param WeaponService $weaponService
+     * @return Response
      */
-    public function stats(Request $request, WeaponService $weaponService)
+    public function stats(Request $request, WeaponService $weaponService, bool $responsive, bool $survariumPro)
     {
         $sampleRepo = $this->em->getRepository('App:GameVersion');
         $sampleVersion = $sampleRepo->findOneBy([], ['date' => 'DESC']);
@@ -70,18 +76,20 @@ class defaultController extends AbstractController
         }
 
         $message = $this->weaponService->getSampleMessage();
-        $weaponsArr = $this->weaponService->getWeaponsStats();
+        $weaponsArr = $this->weaponService->getWeaponsStats($survariumPro);
         return $this->render('stats.html.twig', [
             'weapons' => $weaponsArr,
             'message' => $message,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'responsive' => $responsive,
+            'survariumPro' => $survariumPro
         ]);
     }
 
     /**
-     * @Route("/ajaxstats", name="ajaxstats")
+     * @Route("/ajaxstats/{responsive}/{survariumPro}", name="ajaxstats", defaults={"responsive": false, "survariumPro": false})
      */
-    public function ajaxstats(Request $request, WeaponService $weaponService)
+    public function ajaxstats(Request $request, WeaponService $weaponService, bool $survariumPro)
     {
         $sampleRepo = $this->em->getRepository('App:GameVersion');
         $sampleVersion = $sampleRepo->findOneBy([], ['date' => 'DESC']);
@@ -113,7 +121,7 @@ class defaultController extends AbstractController
         }
 
         $message = $this->weaponService->getSampleMessage();
-        $weaponsArr = $this->weaponService->getWeaponsStats();
+        $weaponsArr = $this->weaponService->getWeaponsStats($survariumPro);
         $jsonReturn = ['message' => $message, 'data' => $weaponsArr];
         $encodings = $request->getEncodings();
 
@@ -132,7 +140,8 @@ class defaultController extends AbstractController
         return $response;
     }
 
-    public function getTTKForm($defaultData) {
+    public function getTTKForm($defaultData)
+    {
         return $this->createFormBuilder($defaultData)
             ->add('version', EntityType::class, [
                 'label' => 'Version ',
