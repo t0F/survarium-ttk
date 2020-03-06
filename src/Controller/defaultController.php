@@ -115,7 +115,21 @@ class defaultController extends AbstractController
         $message = $this->weaponService->getSampleMessage();
         $weaponsArr = $this->weaponService->getWeaponsStats();
         $jsonReturn = ['message' => $message, 'data' => $weaponsArr];
-        return new JsonResponse($jsonReturn);
+        $encodings = $request->getEncodings();
+
+        // optimize json transfer :
+        // With content encoding, less data over network (about /10 for ajaxstats), probably more cpu usage
+        $response = new JsonResponse($jsonReturn);
+        if (in_array('gzip', $encodings) && function_exists('gzencode')) {
+            $content = gzencode($response->getContent());
+            $response->setContent($content);
+            $response->headers->set('Content-encoding', 'gzip');
+        } elseif (in_array('deflate', $encodings) && function_exists('gzdeflate')) {
+            $content = gzdeflate($response->getContent());
+            $response->setContent($content);
+            $response->headers->set('Content-encoding', 'deflate');
+        }
+        return $response;
     }
 
     public function getTTKForm($defaultData) {
@@ -129,11 +143,15 @@ class defaultController extends AbstractController
                 'class' => Equipment::class,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('u')
+                        ->select('u', 'gs')
+                        ->leftJoin('u.gearSet', 'gs')
                         ->orderBy('u.gearSet', 'ASC');
                 },
                 'choice_label' => function (Equipment $equipment) {
                     return $equipment->getName();
-                }])
+                },
+                'group_by' => 'gearSetName'
+            ])
             ->add('bonusROF', NumberType::class, [
                 'label' => '+RoF %',
                 'empty_data' => 5,
