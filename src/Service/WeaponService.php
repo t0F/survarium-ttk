@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 class WeaponService
 {
     private $em;
+    /** @var Equipment $sampleEquipment */
     private $sampleEquipment;
     private $sampleBonusArmor;
     private $sampleOnyx;
@@ -33,6 +34,7 @@ class WeaponService
     public function setSample($sample)
     {
         if ($sample !== null) {
+            /** @var Equipment sampleEquipment */
             $this->sampleEquipment = $sample['equipment'];
             $this->sampleVersion = $sample['version'];
             $this->sampleRange = $sample['range'];
@@ -142,7 +144,8 @@ class WeaponService
             /** @var Weapon $weapon */
             foreach ($weapons as $weapon) {
                 $weaponArray = [];
-                //$weaponArray['Name'] = $weapon->getFormattedName();
+                $name = str_replace("'", "",str_replace('"', "",  $weapon->getName()));
+                $weaponArray['Name'] = $name;
                 $name = str_replace("'", "",str_replace('"', "",  $weapon->getName()));
                 $weaponArray['Sample TimeToKill'] = round($this->getArmorTimeToKill($weapon, $this->sampleEquipment),2);
                 $weaponArray['Name'] = $name;
