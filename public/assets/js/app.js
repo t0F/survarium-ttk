@@ -155,7 +155,9 @@ $('#ajaxForm').submit(function (e) {
     e.preventDefault();
     let formSerialize = $(this).serialize();
     //ajaxStatsUrl defined in twig template
-    $.post(ajaxStatsUrl, formSerialize, function (response) {
+
+
+    $.ajax({type: "POST", url: ajaxStatsUrl, data: formSerialize, success: function (response) {
         window.table.fnClearTable();
         let weapons = response.data;
         $.each(weapons, function () {
@@ -168,5 +170,5 @@ $('#ajaxForm').submit(function (e) {
         $('#message').text(response.message);
         formSave.removeClass(['btn-outline-secondary','disabled']);
         formSave.addClass('btn-secondary');
-    }, 'JSON');
+    }});
 });

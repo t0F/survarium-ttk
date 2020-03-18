@@ -38,15 +38,24 @@ class defaultController extends AbstractController
     }
 
     /**
-     * @Route("/survarium/{responsive}/{survariumPro}", name="stats", defaults={"responsive": false, "survariumPro": false})
-     * @param bool $responsive
-     * @param bool $survariumPro
+     * @Route("/survarium/{param1}/{param2}", name="stats", defaults={"utm_source": false, "utm_lang": false, "param1": false, "param2": false})
      * @param Request $request
      * @param WeaponService $weaponService
      * @return Response
      */
-    public function stats(Request $request, WeaponService $weaponService, bool $responsive, bool $survariumPro)
+    public function stats(Request $request, WeaponService $weaponService)
     {
+        $source = $request->query->get('utm_source');
+        $survariumPro = false;
+        $responsive = false;
+
+        if($source === 'svpro') {
+            $survariumPro = true;
+            $responsive = true;
+        }
+
+        $locale = $request->query->get('utm_lang');
+
         $sampleRepo = $this->em->getRepository('App:GameVersion');
         $sampleVersion = $sampleRepo->findOneBy([], ['date' => 'DESC']);
         $equipmentRepo = $this->em->getRepository('App:Equipment');
@@ -81,16 +90,26 @@ class defaultController extends AbstractController
             'weapons' => $weaponsArr,
             'message' => $message,
             'form' => $form->createView(),
+            'utm_source' => $source,
+            'utm_lang' => $locale,
             'responsive' => $responsive,
             'survariumPro' => $survariumPro
         ]);
     }
 
     /**
-     * @Route("/ajaxstats/{responsive}/{survariumPro}", name="ajaxstats", defaults={"responsive": false, "survariumPro": false})
+     * @Route("/ajaxstats", name="ajaxstats", defaults={"utm_source": false, "utm_lang": false})
      */
-    public function ajaxstats(Request $request, WeaponService $weaponService, bool $survariumPro)
+    public function ajaxstats(Request $request, WeaponService $weaponService)
     {
+        $source = $request->query->get('utm_source');
+        $survariumPro = false;
+        if($source === 'svpro') {
+            $survariumPro = true;
+        }
+
+        //$locale = $request->query->get('utm_lang');
+
         $sampleRepo = $this->em->getRepository('App:GameVersion');
         $sampleVersion = $sampleRepo->findOneBy([], ['date' => 'DESC']);
         $equipmentRepo = $this->em->getRepository('App:Equipment');
@@ -142,7 +161,7 @@ class defaultController extends AbstractController
 
     public function getTTKForm($defaultData)
     {
-        return $this->createFormBuilder($defaultData)
+        return $this->createFormBuilder($defaultData, array('csrf_protection' => false))
             ->add('version', EntityType::class, [
                 'label' => 'Version ',
                 'class' => GameVersion::class,
