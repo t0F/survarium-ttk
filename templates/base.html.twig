@@ -17,8 +17,6 @@
         <link rel="icon" type="image/png" sizes="32x32" href="{{ asset ('assets/favico/favicon-32x32.png') }}">
         <link rel="icon" type="image/png" sizes="96x96" href="{{ asset ('assets/favico/favicon-16x16.png') }}">
         <link rel="icon" type="image/png" sizes="16x16" href="{{ asset ('assets/favico/favicon-96x96.png') }}">
-
-        //
         <link href="https://fonts.googleapis.com/css?family=Play&display=swap" rel="stylesheet">
 
         <link rel="manifest" href="{{ asset ('assets/favico/manifest.json') }}">
@@ -34,7 +32,7 @@
             {% block body %}{% endblock %}
             {% block javascripts %}
                 {{ encore_entry_script_tags('app') }}
-                <script> const ajaxStatsUrl = "{{ path('ajaxstats') }}/{{ responsive }}/{{ survariumPro }}"; </script>
+                <script> const ajaxStatsUrl = "{{ path('ajaxstats', {utm_source: utm_source, utm_lang: utm_lang }) }}"; </script>
             {% endblock %}
         </div>
     </body>

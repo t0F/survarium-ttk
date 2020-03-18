@@ -48,8 +48,6 @@ function createColSelector() {
 
 
 function responsiveCol(){
-    //contentBody // display: float;(padding: 0 50);max-width: none; // display: table;
-    //weaponStatsDiv //margin: auto; // margin: 0px;
     if(window.bResponsive === true) {
         window.contentBody.addClass('responsiveFrame');
         window.weaponStatsDiv.addClass('responsiveFrame');
@@ -79,7 +77,7 @@ if (window.responsive === 1) {
         { responsivePriority: 1, targets: 0 },
         { responsivePriority: 1, targets: 1 }
     ];
-    window.dtSelect = [1, 4];
+    window.dtSelect = [0, 4];
 } else {
     window.bResponsive = false;
     window.columnsDefs = [];
@@ -94,7 +92,7 @@ window.table = window.weaponStats.dataTable({
     initComplete: function () {
         $('.select2JS').select2();
 
-        this.api().columns(dtSelect).every(function () {
+        this.api().columns(window.dtSelect).every(function () {
             let collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
             let column = this;
             let select = $('<select multiple class="form-control selectpicker customWidth"></select>')
@@ -155,7 +153,9 @@ $('#ajaxForm').submit(function (e) {
     e.preventDefault();
     let formSerialize = $(this).serialize();
     //ajaxStatsUrl defined in twig template
-    $.post(ajaxStatsUrl, formSerialize, function (response) {
+
+
+    $.ajax({type: "POST", url: ajaxStatsUrl, data: formSerialize, success: function (response) {
         window.table.fnClearTable();
         let weapons = response.data;
         $.each(weapons, function () {
@@ -168,5 +168,5 @@ $('#ajaxForm').submit(function (e) {
         $('#message').text(response.message);
         formSave.removeClass(['btn-outline-secondary','disabled']);
         formSave.addClass('btn-secondary');
-    }, 'JSON');
+    }});
 });
