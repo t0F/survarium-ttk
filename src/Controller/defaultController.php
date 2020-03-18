@@ -32,7 +32,7 @@ class defaultController extends AbstractController
     /**
      * @Route("/", name="index")
      */
-    public function index(WeaponService $weaponService)
+    public function index()
     {
         return $this->redirectToRoute('stats');
     }
@@ -43,7 +43,7 @@ class defaultController extends AbstractController
      * @param WeaponService $weaponService
      * @return Response
      */
-    public function stats(Request $request, WeaponService $weaponService)
+    public function stats(Request $request)
     {
         $source = $request->query->get('utm_source');
         $survariumPro = false;
@@ -100,7 +100,7 @@ class defaultController extends AbstractController
     /**
      * @Route("/ajaxstats", name="ajaxstats", defaults={"utm_source": false, "utm_lang": false})
      */
-    public function ajaxstats(Request $request, WeaponService $weaponService)
+    public function ajaxstats(Request $request)
     {
         $source = $request->query->get('utm_source');
         $survariumPro = false;
