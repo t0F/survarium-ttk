@@ -22,6 +22,7 @@ class defaultController extends AbstractController
 
     private $em;
     private $weaponService;
+    private $locale;
 
     public function __construct(EntityManagerInterface $em, WeaponService $weaponService)
     {
@@ -40,11 +41,11 @@ class defaultController extends AbstractController
     /**
      * @Route("/survarium/{param1}/{param2}", name="stats", defaults={"utm_source": false, "utm_lang": false, "param1": false, "param2": false})
      * @param Request $request
-     * @param WeaponService $weaponService
      * @return Response
      */
     public function stats(Request $request)
     {
+
         $source = $request->query->get('utm_source');
         $survariumPro = false;
         $responsive = false;
@@ -55,6 +56,11 @@ class defaultController extends AbstractController
         }
 
         $locale = $request->query->get('utm_lang');
+        if($locale === null)  $locale = 'en';
+
+        $this->locale = $locale;
+        $osLang = $this->getHtmlLang($this->locale);
+        $this->weaponService->setLocale($this->locale);
 
         $sampleRepo = $this->em->getRepository('App:GameVersion');
         $sampleVersion = $sampleRepo->findOneBy([], ['date' => 'DESC']);
@@ -91,8 +97,9 @@ class defaultController extends AbstractController
             'message' => $message,
             'form' => $form->createView(),
             'utm_source' => $source,
-            'utm_lang' => $locale,
+            'utm_lang' => $this->locale,
             'responsive' => $responsive,
+            'osLang' => $osLang,
             'survariumPro' => $survariumPro
         ]);
     }
@@ -104,11 +111,18 @@ class defaultController extends AbstractController
     {
         $source = $request->query->get('utm_source');
         $survariumPro = false;
+
         if($source === 'svpro') {
             $survariumPro = true;
         }
 
-        //$locale = $request->query->get('utm_lang');
+        $locale = $request->query->get('utm_lang');
+        if($locale === null) {
+            $locale = 'en';
+        }
+
+        $this->locale = $locale;
+        $this->weaponService->setLocale($locale);
 
         $sampleRepo = $this->em->getRepository('App:GameVersion');
         $sampleVersion = $sampleRepo->findOneBy([], ['date' => 'DESC']);
@@ -176,7 +190,7 @@ class defaultController extends AbstractController
                         ->orderBy('u.gearSet', 'ASC');
                 },
                 'choice_label' => function (Equipment $equipment) {
-                    return $equipment->getName();
+                    return $equipment->translate($this->locale)->getLocalizedName();
                 },
                 'group_by' => 'gearSetName'
             ])
@@ -209,6 +223,27 @@ class defaultController extends AbstractController
                 'required' => false,])
             ->add('save', SubmitType::class, ['label' => 'UPDATE'])
             ->getForm();
+    }
+
+    public function getHtmlLang($locale) {
+        if($locale === 'ru') {
+            return 'ru-RU';
+        }
+
+        if($locale === 'es') {
+            return 'es-ES';
+        }
+
+        if($locale === 'ua') {
+            return 'es-ES';
+        }
+
+        if($locale === 'pl') {
+            return 'pl-PL';
+        }
+
+        //Default english
+        return 'en-US';
     }
 
     /**
