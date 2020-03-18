@@ -1,6 +1,5 @@
 @import "~select2-bootstrap4-theme/dist/select2-bootstrap4.min.css";
 
-
 .responsiveFrame {
   &#weaponStatsDiv {
     margin: auto;
@@ -26,5 +25,50 @@
 
   &#weaponsStats_wrapper {
     margin: 0 !important;
+  }
+}
+
+
+html.noFilter {
+  -webkit-filter: none;
+  filter: none;
+}
+
+
+html.noBackground {
+  background-color: transparent;
+  body, #weaponStatsDiv, .row100 {
+    background-color: transparent !important;
+  }
+
+  .border1px, .formContainer {
+    background-color: #aaaaaa15;
+  }
+
+  .formContainer .col {
+    max-width: 210px;
+  }
+
+  h3 {
+    font-weight: 700;
+  }
+}
+
+@font-face {
+  font-family: 'Play', sans-serif;
+  src: url('../fonts/Play/Play-Bold.ttf');
+}
+
+html.survariumProFonts {
+  font-family: 'Play', sans-serif !important;
+  color: rgba(245,245,245,0.65)  !important;;
+  -webkit-font-smoothing: antialiased;
+  body {
+    font-family: 'Play', sans-serif !important;
+    color: rgba(245,245,245,0.65)  !important;;
+    -webkit-font-smoothing: antialiased;
+  }
+  .select2-container {
+    color: black;
   }
 }
