@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 class WeaponService
 {
     private $em;
+    /** @var Equipment $sampleEquipment */
     private $sampleEquipment;
     private $sampleBonusArmor;
     private $sampleOnyx;
@@ -33,6 +34,7 @@ class WeaponService
     public function setSample($sample)
     {
         if ($sample !== null) {
+            /** @var Equipment sampleEquipment */
             $this->sampleEquipment = $sample['equipment'];
             $this->sampleVersion = $sample['version'];
             $this->sampleRange = $sample['range'];
@@ -125,43 +127,75 @@ class WeaponService
         }
     }
 
-    public function getWeaponsStats()
+    public function getWeaponsStats($survariumPro = false)
     {
         $versionRepo = $this->em->getRepository('App:GameVersion');
         $version = $versionRepo->findOneBy(array(), array('id' => 'DESC'));
         $weaponRepo = $this->em->getRepository('App:Weapon');
         $weaponsEnt = $weaponRepo->findByGameVersion($version);
-        return $this->weaponsToArray($weaponsEnt);
+        return $this->weaponsToArray($weaponsEnt, $survariumPro);
     }
 
-    public function weaponsToArray($weapons)
+    public function weaponsToArray($weapons, $survariumPro = false)
     {
         $weaponsArray = [];
-        /** @var Weapon $weapon */
-        foreach ($weapons as $weapon) {
-            $weaponArray = [];
-            //$weaponArray['Name'] = $weapon->getFormattedName();
-            $name = str_replace("'", "",str_replace('"', "",  $weapon->getName()));
-            $weaponArray['Name'] = $name;
 
-            $weaponArray['Type'] = $weapon->getDisplayType();
-            $weaponArray['Damage'] = round(100 * $weapon->getBulletDamage());
-            $weaponArray['Armor Penetration'] = round(100 * $weapon->getPlayerPierce());
-            $weaponArray['Rate of Fire'] = round($this->getROFWithBonus($weapon));
-            $weaponArray['DPS'] = round($this->getDPS($weapon));
-            $weaponArray['Effective Range'] = $weapon->getEffectiveDistance();
-            $weaponArray['Magazine Size'] = $weapon->getMagazineCapacity();
-            $weaponArray['Bleed Chance'] = round(100 * $weapon->getBleedingChance());
-            $weaponArray['Material Penetration'] = $weapon->getMaterialPierce();
-            $weaponArray['Weight'] = $weapon->getWeight();
-            $weaponArray['Reload Time'] = $weapon->getReloadTime();
-            $weaponArray['Muzzle Velocity'] = $weapon->getBulletSpeed();
-            $weaponArray['Sample Damage'] = round($this->getArmorDamage($weapon, $this->sampleEquipment),2);
-            $weaponArray['Sample Bullets To Kill'] = $this->getArmorBTK($weapon, $this->sampleEquipment);
-            $weaponArray['Sample TimeToKill'] = round($this->getArmorTimeToKill($weapon, $this->sampleEquipment),2);
-            $weaponArray['id'] = $weapon->getId();
-            $weaponsArray[] = $weaponArray;
+        if($survariumPro === true) {
+            /** @var Weapon $weapon */
+            foreach ($weapons as $weapon) {
+                $weaponArray = [];
+                $name = str_replace("'", "",str_replace('"', "",  $weapon->getName()));
+                $weaponArray['Name'] = $name;
+                $name = str_replace("'", "",str_replace('"', "",  $weapon->getName()));
+                $weaponArray['Sample TimeToKill'] = round($this->getArmorTimeToKill($weapon, $this->sampleEquipment),2);
+                $weaponArray['Name'] = $name;
+                $weaponArray['Sample Bullets To Kill'] = $this->getArmorBTK($weapon, $this->sampleEquipment);
+                $weaponArray['Sample Damage'] = round($this->getArmorDamage($weapon, $this->sampleEquipment),2);
+                $weaponArray['Type'] = $weapon->getDisplayType();
+                $weaponArray['Damage'] = round(100 * $weapon->getBulletDamage());
+                $weaponArray['Armor Penetration'] = round(100 * $weapon->getPlayerPierce());
+                $weaponArray['Rate of Fire'] = round($this->getROFWithBonus($weapon));
+                $weaponArray['DPS'] = round($this->getDPS($weapon));
+                $weaponArray['Effective Range'] = $weapon->getEffectiveDistance();
+                $weaponArray['Magazine Size'] = $weapon->getMagazineCapacity();
+                $weaponArray['Bleed Chance'] = round(100 * $weapon->getBleedingChance());
+                $weaponArray['Material Penetration'] = $weapon->getMaterialPierce();
+                $weaponArray['Weight'] = $weapon->getWeight();
+                $weaponArray['Reload Time'] = $weapon->getReloadTime();
+                $weaponArray['Muzzle Velocity'] = $weapon->getBulletSpeed();
+
+                $weaponArray['id'] = $weapon->getId();
+                $weaponsArray[] = $weaponArray;
+            }
+        } else {
+            /** @var Weapon $weapon */
+            foreach ($weapons as $weapon) {
+                $weaponArray = [];
+                //$weaponArray['Name'] = $weapon->getFormattedName();
+                $name = str_replace("'", "",str_replace('"', "",  $weapon->getName()));
+                $weaponArray['Name'] = $name;
+
+                $weaponArray['Type'] = $weapon->getDisplayType();
+                $weaponArray['Damage'] = round(100 * $weapon->getBulletDamage());
+                $weaponArray['Armor Penetration'] = round(100 * $weapon->getPlayerPierce());
+                $weaponArray['Rate of Fire'] = round($this->getROFWithBonus($weapon));
+                $weaponArray['DPS'] = round($this->getDPS($weapon));
+                $weaponArray['Effective Range'] = $weapon->getEffectiveDistance();
+                $weaponArray['Magazine Size'] = $weapon->getMagazineCapacity();
+                $weaponArray['Bleed Chance'] = round(100 * $weapon->getBleedingChance());
+                $weaponArray['Material Penetration'] = $weapon->getMaterialPierce();
+                $weaponArray['Weight'] = $weapon->getWeight();
+                $weaponArray['Reload Time'] = $weapon->getReloadTime();
+                $weaponArray['Muzzle Velocity'] = $weapon->getBulletSpeed();
+                $weaponArray['Sample Damage'] = round($this->getArmorDamage($weapon, $this->sampleEquipment),2);
+                $weaponArray['Sample Bullets To Kill'] = $this->getArmorBTK($weapon, $this->sampleEquipment);
+                $weaponArray['Sample TimeToKill'] = round($this->getArmorTimeToKill($weapon, $this->sampleEquipment),2);
+                $weaponArray['id'] = $weapon->getId();
+                $weaponsArray[] = $weaponArray;
+            }
         }
+
+
 
         return $weaponsArray;
     }
