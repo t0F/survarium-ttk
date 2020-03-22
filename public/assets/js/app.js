@@ -45,8 +45,6 @@ function createColSelector() {
     window.weaponStats.css('width', 'auto');
 }
 
-
-
 function responsiveCol(){
     if(window.bResponsive === true) {
         window.contentBody.addClass('responsiveFrame');
