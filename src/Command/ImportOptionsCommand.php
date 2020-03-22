@@ -46,9 +46,9 @@ class ImportOptionsCommand extends Command
             'pl' => 'polish',
             'pg' => 'portuguese',
             'ru' => 'russian',
-            'sp' => 'spanish',
+            'es' => 'spanish',
             'tu' => 'turkish',
-            'uk' => 'ukrainian',
+            'ua' => 'ukrainian',
         );
         $allLocales = array();
         $filePath = 'inputFiles/localization.json';
@@ -86,11 +86,18 @@ class ImportOptionsCommand extends Command
         //$weapon_modules = $gameArray[0]['value']['weapon_modules']; // not used yet
         $gearsets = $gameArray['gear_sets'];
         $equipments = $gameArray['equipment'];
+
+        $modifications = $gameArray['modifications'];
+        $formattedModifications = [];
+        foreach ($modifications as $modification) {
+            $formattedModifications[$modification['group'].'_'.$modification['grade']] = $modification;
+        }
+
         $gameArray = null;
 
         //now save data for that game version in DB
         $version = $this->gameVersionService->makeNewVersion();
-        $this->weaponService->makeNewWeapons($weapons, $version, $allLocales);
+        $this->weaponService->makeNewWeapons($weapons, $version, $allLocales, $formattedModifications);
         $this->equipmentService->makeNewEquipement($equipments, $version, $allLocales);
         $this->gearSetService->makeNewGearSet($gearsets, $version, $allLocales);
 
