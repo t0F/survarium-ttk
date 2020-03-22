@@ -17,6 +17,7 @@ class WeaponService
     private $sampleOnyx;
     private $sampleRange;
     private $sampleVersion;
+    private $locale;
 
     public function __construct(EntityManagerInterface $em)
     {
@@ -43,6 +44,12 @@ class WeaponService
             $this->sampleOnyx = $sample['onyx'];
         }
     }
+
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+    }
+
 
     public function getSampleMessage()
     {
@@ -144,9 +151,9 @@ class WeaponService
             /** @var Weapon $weapon */
             foreach ($weapons as $weapon) {
                 $weaponArray = [];
-                $name = str_replace("'", "",str_replace('"', "",  $weapon->getName()));
+                $name = str_replace("'", "",str_replace('"', "",  $weapon->translate($this->locale)->getLocalizedName()));
                 $weaponArray['Name'] = $name;
-                $name = str_replace("'", "",str_replace('"', "",  $weapon->getName()));
+                $name = str_replace("'", "",str_replace('"', "",  $weapon->translate($this->locale)->getLocalizedName()));
                 $weaponArray['Sample TimeToKill'] = round($this->getArmorTimeToKill($weapon, $this->sampleEquipment),2);
                 $weaponArray['Name'] = $name;
                 $weaponArray['Sample Bullets To Kill'] = $this->getArmorBTK($weapon, $this->sampleEquipment);
@@ -172,7 +179,8 @@ class WeaponService
             foreach ($weapons as $weapon) {
                 $weaponArray = [];
                 //$weaponArray['Name'] = $weapon->getFormattedName();
-                $name = str_replace("'", "",str_replace('"', "",  $weapon->getName()));
+                //$name = str_replace("'", "",str_replace('"', "",  $weapon->getName()));
+                $name = str_replace("'", "",str_replace('"', "", $weapon->translate($this->locale)->getLocalizedName()));
                 $weaponArray['Name'] = $name;
 
                 $weaponArray['Type'] = $weapon->getDisplayType();
@@ -258,10 +266,18 @@ class WeaponService
     {
         switch ($type) {
             case 'wpn_aslt':
-                if(stripos($name, 'mp7') !== false || stripos($name, 'ppsh') !== false ) {
+                if(stripos($name, 'mp7') !== false
+                    || stripos($name, 'ppsh') !== false
+                    || stripos($name, 'mp5') !== false ) {
                     $displayType = 'SMG';
                     break;
                 }
+
+                if(stripos($name, 'icicle') !== false) {
+                    $displayType = 'SPECIAL';
+                    break;
+                }
+
                 if ($magazine > 40) {
                     $displayType = 'MACHINE GUNS';
                     break;
@@ -286,10 +302,14 @@ class WeaponService
             case 'wpn_dbrl':
             case 'wpn_stgn':
             case 'wpn_asgn':
+                if(stripos($name, 'snowball') !== false) {
+                    $displayType = 'SPECIAL';
+                    break;
+                }
                 $displayType = 'SHOTGUN';
                 break;
             case 'wpn_bstgn':
-                $displayType = 'OXY';
+                $displayType = 'SLUG';
                 break;
             default:
                 $displayType = 'TYPE UNKNOWN';
