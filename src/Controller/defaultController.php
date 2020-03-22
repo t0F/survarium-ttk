@@ -235,7 +235,7 @@ class defaultController extends AbstractController
         }
 
         if($locale === 'ua') {
-            return 'es-ES';
+            return 'uk_UA';
         }
 
         if($locale === 'pl') {
