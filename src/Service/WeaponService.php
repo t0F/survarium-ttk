@@ -119,6 +119,10 @@ class WeaponService
                             if($modifier['path'][1] == 'bullet_damage') {
                                 $weapon->setBulletDamage($weapon->getBulletDamage() + ($weapon->getBulletDamage() * $modifier['value']));
                             }
+                            if($modifier['path'][1] == 'magazine_capacity') {
+                                dump($modifier);
+                                $weapon->setMagazineCapacity($modifier['value']);
+                            }
                         }
                     }
                 }
@@ -313,7 +317,7 @@ class WeaponService
             case 'wpn_apst':
             case 'wpn_rvlr':
             case 'wpn_pstl':
-                $displayType = 'GUNS';
+                $displayType = 'PISTOLS';
                 break;
             case 'wpn_dbrl':
             case 'wpn_stgn':
