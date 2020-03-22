@@ -71,7 +71,7 @@ class WeaponService
     }
 
 
-    public function makeNewWeapons(array $weaponsArray, GameVersion $version, array $allLocales)
+    public function makeNewWeapons(array $weaponsArray, GameVersion $version, array $allLocales, $modifications)
     {
         foreach ($weaponsArray as $name => $fullStats) {
             $stats = $fullStats['parameters'];
@@ -110,6 +110,19 @@ class WeaponService
             $weapon->setGameVersion($version);
             $weapon->setDisplayType($this->displayType($stats['type'], $stats['magazine_capacity'], $name));
 
+            if(isset($stats['default_modifications']) && $stats['default_modifications'] != null) {
+
+                foreach ($stats['default_modifications'] as $weaponModification ) {
+                    if(isset($modifications[$weaponModification[0].'_'.$weaponModification[1]])) {
+                        $modification = $modifications[$weaponModification[0].'_'.$weaponModification[1]];
+                        foreach ($modification['modifiers'] as $modifier ) {
+                            if($modifier['path'][1] == 'bullet_damage') {
+                                $weapon->setBulletDamage($weapon->getBulletDamage() + ($weapon->getBulletDamage() * $modifier['value']));
+                            }
+                        }
+                    }
+                }
+            }
 
             $this->translateWeaponName($weapon, $allLocales, $fullStats['ui_desc']['text_descriptions']['name']);
 
@@ -151,15 +164,17 @@ class WeaponService
             /** @var Weapon $weapon */
             foreach ($weapons as $weapon) {
                 $weaponArray = [];
-                $name = str_replace("'", "",str_replace('"', "",  $weapon->translate($this->locale)->getLocalizedName()));
-                $weaponArray['Name'] = $name;
-                $name = str_replace("'", "",str_replace('"', "",  $weapon->translate($this->locale)->getLocalizedName()));
+                $name = str_replace("'", "",str_replace('"', "",
+                    ($weapon->translate($this->locale)->getLocalizedName() !== null) ?
+                        $weapon->translate($this->locale)->getLocalizedName()
+                        : strtoupper(str_replace('_', ' ', $weapon->getName()))
+                ));
                 $weaponArray['Sample TimeToKill'] = round($this->getArmorTimeToKill($weapon, $this->sampleEquipment),2);
                 $weaponArray['Name'] = $name;
                 $weaponArray['Sample Bullets To Kill'] = $this->getArmorBTK($weapon, $this->sampleEquipment);
                 $weaponArray['Sample Damage'] = round($this->getArmorDamage($weapon, $this->sampleEquipment),2);
                 $weaponArray['Type'] = $weapon->getDisplayType();
-                $weaponArray['Damage'] = round(100 * $weapon->getBulletDamage());
+                $weaponArray['Damage'] = 100 * $weapon->getBulletDamage();
                 $weaponArray['Armor Penetration'] = round(100 * $weapon->getPlayerPierce());
                 $weaponArray['Rate of Fire'] = round($this->getROFWithBonus($weapon));
                 $weaponArray['DPS'] = round($this->getDPS($weapon));
@@ -178,13 +193,14 @@ class WeaponService
             /** @var Weapon $weapon */
             foreach ($weapons as $weapon) {
                 $weaponArray = [];
-                //$weaponArray['Name'] = $weapon->getFormattedName();
-                //$name = str_replace("'", "",str_replace('"', "",  $weapon->getName()));
-                $name = str_replace("'", "",str_replace('"', "", $weapon->translate($this->locale)->getLocalizedName()));
+                $name = str_replace("'", "",str_replace('"', "",
+                    ($weapon->translate($this->locale)->getLocalizedName() !== null) ?
+                        $weapon->translate($this->locale)->getLocalizedName()
+                        : strtoupper(str_replace('_', ' ', $weapon->getName()))
+                ));
                 $weaponArray['Name'] = $name;
-
                 $weaponArray['Type'] = $weapon->getDisplayType();
-                $weaponArray['Damage'] = round(100 * $weapon->getBulletDamage());
+                $weaponArray['Damage'] = 100 * $weapon->getBulletDamage();
                 $weaponArray['Armor Penetration'] = round(100 * $weapon->getPlayerPierce());
                 $weaponArray['Rate of Fire'] = round($this->getROFWithBonus($weapon));
                 $weaponArray['DPS'] = round($this->getDPS($weapon));
