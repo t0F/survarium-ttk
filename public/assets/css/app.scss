@@ -33,6 +33,10 @@
 html.noFilter {
   -webkit-filter: none;
   filter: none;
+
+  input, .select2-container, .paginate_button, .dropdown-menu, .inner, .dropdown-toggle, .select2-search--dropdown {
+    filter: invert(100%);
+  }
 }
 
 
@@ -77,5 +81,3 @@ html.survariumProFonts {
     color: black;
   }
 }
-
-// noFilter noBackground survariumProFonts
