@@ -178,22 +178,22 @@ class WeaponService
                         $weapon->translate($this->locale)->getLocalizedName()
                         : strtoupper(str_replace('_', ' ', $weapon->getName()))
                 ));
-                $weaponArray['Sample TimeToKill'] = round($this->getArmorTimeToKill($weapon, $this->sampleEquipment),2);
-                $weaponArray['Name'] = $name;
-                $weaponArray['Sample Bullets To Kill'] = $this->getArmorBTK($weapon, $this->sampleEquipment);
-                $weaponArray['Sample Damage'] = round($this->getArmorDamage($weapon, $this->sampleEquipment),2);
-                $weaponArray['Type'] = $weapon->getDisplayType();
-                $weaponArray['Damage'] = 100 * $weapon->getBulletDamage();
-                $weaponArray['Armor Penetration'] = round(100 * $weapon->getPlayerPierce());
-                $weaponArray['Rate of Fire'] = round($this->getROFWithBonus($weapon));
-                $weaponArray['DPS'] = round($this->getDPS($weapon));
-                $weaponArray['Effective Range'] = $weapon->getEffectiveDistance();
-                $weaponArray['Magazine Size'] = $weapon->getMagazineCapacity();
-                $weaponArray['Bleed Chance'] = round(100 * $weapon->getBleedingChance());
-                $weaponArray['Material Penetration'] = $weapon->getMaterialPierce();
-                $weaponArray['Weight'] = $weapon->getWeight();
-                $weaponArray['Reload Time'] = $weapon->getReloadTime();
-                $weaponArray['Muzzle Velocity'] = $weapon->getBulletSpeed();
+                $weaponArray[$this->translator->trans('sample timetokill')] = round($this->getArmorTimeToKill($weapon, $this->sampleEquipment),2);
+                $weaponArray[$this->translator->trans('name')] = $name;
+                $weaponArray[$this->translator->trans('sample bullets to kill')] = $this->getArmorBTK($weapon, $this->sampleEquipment);
+                $weaponArray[$this->translator->trans('sample damage')] = round($this->getArmorDamage($weapon, $this->sampleEquipment),2);
+                $weaponArray[$this->translator->trans('type')] = $weapon->getDisplayType();
+                $weaponArray[$this->translator->trans('damage')] = 100 * $weapon->getBulletDamage();
+                $weaponArray[$this->translator->trans('armor penetration')] = round(100 * $weapon->getPlayerPierce());
+                $weaponArray[$this->translator->trans('rate of fire')] = round($this->getROFWithBonus($weapon));
+                $weaponArray[$this->translator->trans('dps')] = round($this->getDPS($weapon));
+                $weaponArray[$this->translator->trans('effective range')] = $weapon->getEffectiveDistance();
+                $weaponArray[$this->translator->trans('magazine size')] = $weapon->getMagazineCapacity();
+                $weaponArray[$this->translator->trans('bleed chance')] = round(100 * $weapon->getBleedingChance());
+                $weaponArray[$this->translator->trans('material penetration')] = $weapon->getMaterialPierce();
+                $weaponArray[$this->translator->trans('weight')] = $weapon->getWeight();
+                $weaponArray[$this->translator->trans('reload time')] = $weapon->getReloadTime();
+                $weaponArray[$this->translator->trans('muzzle velocity')] = $weapon->getBulletSpeed();
 
                 $weaponArray['id'] = $weapon->getId();
                 $weaponsArray[] = $weaponArray;
