@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class defaultController extends AbstractController
 {
@@ -41,9 +42,10 @@ class defaultController extends AbstractController
     /**
      * @Route("/survarium/{param1}/{param2}", name="stats", defaults={"utm_source": false, "utm_lang": false, "param1": false, "param2": false})
      * @param Request $request
+     * @param TranslatorInterface $translator
      * @return Response
      */
-    public function stats(Request $request)
+    public function stats(Request $request, TranslatorInterface $translator)
     {
 
         $source = $request->query->get('utm_source');
@@ -57,7 +59,6 @@ class defaultController extends AbstractController
 
         $locale = $request->query->get('utm_lang');
         if($locale === null)  $locale = 'en';
-
         $this->locale = $locale;
         $osLang = $this->getHtmlLang($this->locale);
         $this->weaponService->setLocale($this->locale);
@@ -92,9 +93,11 @@ class defaultController extends AbstractController
 
         $message = $this->weaponService->getSampleMessage();
         $weaponsArr = $this->weaponService->getWeaponsStats($survariumPro);
+        $sampleTTKIndex = $translator->trans('sample timetokill');
         return $this->render('stats.html.twig', [
             'weapons' => $weaponsArr,
             'message' => $message,
+            'sampleTTKIndex' => $sampleTTKIndex,
             'form' => $form->createView(),
             'utm_source' => $source,
             'utm_lang' => $this->locale,
@@ -122,6 +125,7 @@ class defaultController extends AbstractController
         }
 
         $this->locale = $locale;
+        $request->setLocale($locale);
         $this->weaponService->setLocale($locale);
 
         $sampleRepo = $this->em->getRepository('App:GameVersion');
@@ -177,11 +181,11 @@ class defaultController extends AbstractController
     {
         return $this->createFormBuilder($defaultData, array('csrf_protection' => false))
             ->add('version', EntityType::class, [
-                'label' => 'Version ',
+                'label' => 'Version',
                 'class' => GameVersion::class,
                 'choice_label' => 'name'])
             ->add('equipment', EntityType::class, [
-                'label' => 'Armor ',
+                'label' => 'Armor',
                 'class' => Equipment::class,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('u')

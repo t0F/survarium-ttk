@@ -9,8 +9,30 @@ window.$.DataTable = datatablesbs4;
 require('bootstrap/dist/css/bootstrap.min.css');
 require('@popperjs/core');
 require('select2');
+
 require('bootstrap-select/js/bootstrap-select');
 require('bootstrap-select/dist/css/bootstrap-select.css');
+
+if(lang === 'ru') {
+    require('bootstrap-select/dist/js/i18n/defaults-ru_RU.js');
+    require('select2/dist/js/i18n/ru.js');
+} else if(lang === 'es') {
+    require('bootstrap-select/dist/js/i18n/defaults-es_ES.js');
+    require('select2/dist/js/i18n/es.js');
+} else if(lang === 'ua') {
+    require('bootstrap-select/dist/js/i18n/defaults-ua_UA.js');
+    require('select2/dist/js/i18n/uk.js');
+} else if(lang === 'pl') {
+    require('bootstrap-select/dist/js/i18n/defaults-pl_PL.js');
+    require('select2/dist/js/i18n/pl.js');
+} else if(lang === 'fr') {
+    require('bootstrap-select/dist/js/i18n/defaults-fr_FR.js');
+    require('select2/dist/js/i18n/fr.js');
+} else {
+    require('bootstrap-select/dist/js/i18n/defaults-en_US.js');
+    require('select2/dist/js/i18n/en.js');
+}
+
 require('datatables.net-responsive-bs4');
 require('@fortawesome/fontawesome-free');
 require('animate');
@@ -38,7 +60,7 @@ function createColSelector() {
 
     let colSelector = '<div class="col textCenter" style="margin-top: -5px; padding: 0;">' +
         '<div class="dataTables_length" id="weaponsStats_selector">' +
-        '<label>Select to hide column(s):' + select + '</label></div></div>';
+        '<label>'+ window.translations.selectToHide + select + '</label></div></div>';
     $(colSelector).insertAfter(appendTo);
 
     window.weaponStats.css('min-width', '780px;');
@@ -204,7 +226,6 @@ if(lang === 'ru') {
 } else {
     window.locales = {}; // default english
 }
-console.log(window.dtLocalesUrl);
 
 if (window.responsive === 1) {
     window.contentBody = $('#contentBody');
@@ -222,6 +243,8 @@ if (window.responsive === 1) {
     window.dtSelect = [0, 1];
 }
 
+
+window.lang = lang;
 //CREATE DATATABLE
 window.table = window.weaponStats.dataTable({
     select: true,
@@ -229,9 +252,8 @@ window.table = window.weaponStats.dataTable({
     columnDefs: window.columnsDefs,
     language: window.locales,
     initComplete: function () {
-        $('.select2JS').select2();
-
-        this.api().columns(window.dtSelect).every(function () {
+        $('.select2JS').select2({language: window.lang});
+            this.api().columns(window.dtSelect).every(function () {
             let collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
             let column = this;
             let select = $('<select multiple class="form-control selectpicker customWidth"></select>')

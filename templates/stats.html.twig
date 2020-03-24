@@ -11,7 +11,7 @@
             <tr class="row100 head">
                 {% for key, value in weapons[0]|cast_to_array %}
                     {% if key != 'id' %}
-                        <th class="cell100 columnHeader {% if key == 'Sample TimeToKill' and responsive == false %}never border1px{% endif %} ">{{ key }}</th>
+                        <th class="cell100 columnHeader {% if key == sampleTTKIndex and responsive == false %}never border1px{% endif %} ">{{ key }}</th>
                     {% endif %}
                 {% endfor %}
             </tr>
@@ -21,7 +21,7 @@
                 <tr class="row100 body">
                     {% for stat, value in weapon|cast_to_array %}
                         {% if stat != 'id' %}
-                            <td class="cell100 {% if stat == 'Sample TimeToKill' and responsive == false %}border1px{% endif %}">{{ value }}</td>
+                            <td class="cell100 {% if stat == sampleTTKIndex and responsive == false %}border1px{% endif %}">{{ value }}</td>
                         {% endif %}
                     {% endfor %}
                 </tr>
@@ -31,7 +31,7 @@
             <tr class="row100 head">
                 {% for key, value in weapons[0]|cast_to_array %}
                     {% if key != 'id' %}
-                        <td class="cell100 columnHeader {% if key == 'Sample TimeToKill' and responsive == false %}border1px{% endif %}">{{ key }}</td>
+                        <td class="cell100 columnHeader {% if key == sampleTTKIndex and responsive == false %}border1px{% endif %}">{{ key }}</td>
                     {% endif %}
                 {% endfor %}
             </tr>
@@ -82,4 +82,7 @@
         </div>
     </div>
     <script> window.responsive = {% if responsive == true %}1{% else %}0{% endif %};</script>
+    <script>window.translations = {
+            'selectToHide' : "{{ 'select to hide' | trans }}", }
+    </script>
 {% endblock %}

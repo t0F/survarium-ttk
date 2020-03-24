@@ -1,0 +1,43 @@
+# table header
+name: Nom
+type: Type
+damage: Dégats
+armor penetration: Péné. Armure
+rate of fire: Cadence
+dps: DPS
+effective range: Distance Effective
+magazine size: Chargeur
+bleed chance: Chance de Saignement
+material penetration: Péné. Matériaux
+weight: Poids
+reload time: Rechargement
+muzzle velocity: Sortie de canon
+sample damage: Dommages sur Cible
+sample bullets to kill: Nb de Balles pour Tuer
+sample timetokill: Temps pour Tuer
+
+# weapons categories
+ASSAULT RIFLE: Fusil d'assaut
+CARBINE: Carabine
+MACHINE GUNS: Mitrailleuse
+PISTOLS: Pistolet
+SHOTGUN: Fusil à pompe
+SMG: Mitraillette
+SNIPER RIFLE: Fusil sniper
+SPECIAL: Spéciale
+
+# form
+Sample is base on: "Le Temps our tuer est basé sur :"
+Rate of Fire: Cadence de tir
+Onyx: Onyx
+no skills Armor bonus: pas de bonus d'armure par les compétence
+Version: Version
+Armor: Armure
+Onix %: Onix %
++RoF %: +Cadence %
++Armor: +Armure
+Range: Distance
+UPDATE: MODIFIER
+
+# js
+select to hide: "Cacher des colonnes :"

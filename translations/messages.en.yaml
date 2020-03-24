@@ -1,0 +1,43 @@
+# table header (and sample message)
+name: Name
+type: Type
+damage: Damages
+armor penetration: Armor Penetration
+rate of fire: Rate of Fire
+dps: DPS
+effective range: Effective Range
+magazine size: Magazine Size
+bleed chance: Bleed Chance
+material penetration: Material Penetration
+weight: Weight
+reload time: Reload Time
+muzzle velocity: Muzzle Velocity
+sample damage: Sample Damage
+sample bullets to kill: Sample Bullets To Kill
+sample timetokill: Sample TimeToKill
+
+# weapons categories
+ASSAULT RIFLE: Assault Rifle
+CARBINE: Carbine
+MACHINE GUNS: Machine Guns
+PISTOLS: Pistols
+SHOTGUN: Shotgun
+SMG: SMG
+SNIPER RIFLE: Sniper Rifle
+SPECIAL: Special
+
+# sample + form
+Sample is base on: Sample is base on
+Rate of Fire: Rate of Fire
+Onyx: Onyx
+no skills Armor bonus: no skills Armor bonus
+Version: Version
+Armor: Armor
+Onix %: Onix %
++RoF %: +RoF %
++Armor: +Armor
+Range: Range
+UPDATE: UPDATE
+
+# js
+select to hide: Select to hide column(s):
