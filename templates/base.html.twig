@@ -29,10 +29,11 @@
     <body>
         <div id='progress' class='container-fluid'></div>
         <div id= 'contentBody' class='container' style='display:none;'>
+            <script> const lang = "{{ utm_lang }}"; </script>
+            <script> const ajaxStatsUrl = "{{ path('ajaxstats', {utm_source: utm_source, utm_lang: utm_lang }) }}"; </script>
             {% block body %}{% endblock %}
             {% block javascripts %}
                 {{ encore_entry_script_tags('app') }}
-                <script> const ajaxStatsUrl = "{{ path('ajaxstats', {utm_source: utm_source, utm_lang: utm_lang }) }}"; </script>
             {% endblock %}
         </div>
     </body>
