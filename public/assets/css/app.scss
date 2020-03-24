@@ -37,16 +37,8 @@ html.noFilter {
   input, .select2-container, .paginate_button, .dropdown-menu, .inner, .dropdown-toggle, .select2-search--dropdown {
     filter: invert(100%);
   }
-
-  .discordLogo {
-    filter: invert(0);
-  }
 }
 
-.discordLogo {
-  filter: invert(1);
-  width: 40px;
-}
 
 html.noBackground {
   background-color: transparent;
