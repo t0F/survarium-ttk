@@ -28,10 +28,6 @@ class WeaponService
         $this->sampleOnyx = 0;
         $this->sampleBonusArmor = 5;
         $this->sampleBonusROF = 5;
-        $sampleRepo = $this->em->getRepository('App:GameVersion');
-        $this->sampleVersion = $sampleRepo->findOneBy([], ['date' => 'DESC']);
-        $equipmentRepo = $this->em->getRepository('App:Equipment');
-        $this->sampleEquipment = $equipmentRepo->findOneBy(['name' => 'renesanse_torso_10', 'gameVersion' => $this->sampleVersion]);
     }
 
     public function setSample($sample)
@@ -176,8 +172,9 @@ class WeaponService
                         $weapon->translate($this->locale)->getLocalizedName()
                         : strtoupper(str_replace('_', ' ', $weapon->getName()))
                 ));
-                $weaponArray[$this->translator->trans('sample timetokill')] = round($this->getArmorTimeToKill($weapon, $this->sampleEquipment),2);
+
                 $weaponArray[$this->translator->trans('name')] = $name;
+                $weaponArray[$this->translator->trans('sample timetokill')] = round($this->getArmorTimeToKill($weapon, $this->sampleEquipment),2);
                 $weaponArray[$this->translator->trans('sample bullets to kill')] = $this->getArmorBTK($weapon, $this->sampleEquipment);
                 $weaponArray[$this->translator->trans('sample damage')] = round($this->getArmorDamage($weapon, $this->sampleEquipment),2);
                 $weaponArray[$this->translator->trans('type')] = $weapon->getDisplayType();
