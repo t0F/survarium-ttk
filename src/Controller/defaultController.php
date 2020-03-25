@@ -189,10 +189,12 @@ class defaultController extends AbstractController
                 'class' => Equipment::class,
                 'query_builder' => function (EntityRepository $er) use ( $defaultData ) {
                     return $er->createQueryBuilder('u')
-                        ->select('u', 'gs')
+                        ->select('u', 'gs', 't')
                         ->leftJoin('u.gearSet', 'gs')
+                        ->leftJoin('u.translations', 't', 'WITH', 't.locale = :locale')
                         ->andWhere('gs.gameVersion = :lastVersion')
                         ->setParameter('lastVersion', $defaultData['version'])
+                        ->setParameter('locale', $this->locale)
                         ->orderBy('u.gearSet', 'ASC');
                 },
                 'choice_label' => function (Equipment $equipment) {
