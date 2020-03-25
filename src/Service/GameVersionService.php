@@ -19,7 +19,7 @@ class GameVersionService
     public function makeNewVersion()
     {
         $version = new GameVersion();
-        $version->setName('CURRENT');
+        $version->setName($this->getLastVersion());
         $version->setIsActive(true);
         $version->setDate(new \DateTime());
 
