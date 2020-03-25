@@ -158,10 +158,8 @@ class WeaponService
 
     public function getWeaponsStats($survariumPro = false)
     {
-        $versionRepo = $this->em->getRepository('App:GameVersion');
-        $version = $versionRepo->findOneBy(array(), array('id' => 'DESC'));
         $weaponRepo = $this->em->getRepository('App:Weapon');
-        $weaponsEnt = $weaponRepo->findByGameVersion($version);
+        $weaponsEnt = $weaponRepo->findByGameVersionAndLocale($this->sampleVersion, $this->locale);
         return $this->weaponsToArray($weaponsEnt, $survariumPro);
     }
 
