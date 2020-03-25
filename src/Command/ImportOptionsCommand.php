@@ -16,6 +16,9 @@ class ImportOptionsCommand extends Command
     protected static $defaultName = 'app:import';
 
     private $weaponService;
+    private $equipmentService;
+    private $gearSetService;
+    private $gameVersionService;
 
     protected function configure()
     {
