@@ -28,7 +28,7 @@ class GetVersionCommand extends Command
     {
         $lastVersion = $this->gameVersionService->getLastVersion();
         //$output->writeln($lastVersion); // uncomment only for dev
-        $output->writeln($this->gameVersionService->checkIfNewVersion($lastVersion));
+        $output->write($this->gameVersionService->checkIfNewVersion($lastVersion));
         return 0;
     }
 }
