@@ -94,7 +94,7 @@ class defaultController extends AbstractController
         $message = $this->weaponService->getSampleMessage();
         $weaponsArr = $this->weaponService->getWeaponsStats($survariumPro);
         $sampleTTKIndex = $translator->trans('sample timetokill');
-        return $this->render('stats.html.twig', [
+        return $this->minifiedRender('stats.html.twig', [
             'weapons' => $weaponsArr,
             'message' => $message,
             'sampleTTKIndex' => $sampleTTKIndex,
@@ -107,7 +107,7 @@ class defaultController extends AbstractController
         ]);
     }
 
-    protected function render(string $view, array $parameters = [], Response $response = null): Response
+    protected function minifiedRender(string $view, array $parameters = [], Response $response = null): Response
     {
         if ($this->container->has('templating')) {
             $content = $this->container->get('templating')->render($view, $parameters);
@@ -125,6 +125,7 @@ class defaultController extends AbstractController
 
         return $response;
     }
+
     /**
      * @Route("/ajaxstats", name="ajaxstats", defaults={"utm_source": false, "utm_lang": false})
      */
