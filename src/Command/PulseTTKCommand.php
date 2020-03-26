@@ -18,9 +18,8 @@ class PulseTTKCommand extends Command
             ->setHelp('no option');
     }
 
-    public function __construct(GameVersionService $gameVersionService)
+    public function __construct()
     {
-        $this->gameVersionService = $gameVersionService;
         parent::__construct();
     }
     protected function execute(InputInterface $input, OutputInterface $output)
