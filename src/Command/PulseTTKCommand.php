@@ -9,7 +9,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 class PulseTTKCommand extends Command
 {
     protected static $defaultName = 'app:pulseTTK';
-    private $gameVersionService;
 
     protected function configure()
     {
