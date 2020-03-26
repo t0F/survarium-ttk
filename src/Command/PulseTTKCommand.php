@@ -29,8 +29,8 @@ class PulseTTKCommand extends Command
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
         $curl_output = curl_exec($curl);
         curl_close($curl);
-        $date = \DateTime::ATOM;
-        $output->writeln("Warming ".$url." cache ( ".$date." ).");
+        $date = new \DateTime();
+        $output->writeln("Warming ".$url." cache ( ".$date->format(DATE_ATOM)." ).");
         return 0;
     }
 }
