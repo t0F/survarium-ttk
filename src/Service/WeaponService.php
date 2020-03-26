@@ -176,7 +176,7 @@ class WeaponService
                 $weaponArray[$this->translator->trans('name')] = $name;
                 $weaponArray[$this->translator->trans('sample timetokill')] = round($this->getArmorTimeToKill($weapon, $this->sampleEquipment),2);
                 $weaponArray[$this->translator->trans('sample bullets to kill')] = $this->getArmorBTK($weapon, $this->sampleEquipment);
-                $weaponArray[$this->translator->trans('sample damage')] = $this->getArmorDamage($weapon, $this->sampleEquipment);
+                $weaponArray[$this->translator->trans('sample damage')] = round($this->getArmorDamage($weapon, $this->sampleEquipment),2);
                 $weaponArray[$this->translator->trans('type')] = $weapon->getDisplayType();
                 $weaponArray[$this->translator->trans('damage')] = 100 * $weapon->getBulletDamage();
                 $weaponArray[$this->translator->trans('armor penetration')] = round(100 * $weapon->getPlayerPierce());
