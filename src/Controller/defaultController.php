@@ -109,13 +109,7 @@ class defaultController extends AbstractController
 
     protected function minifiedRender(string $view, array $parameters = [], Response $response = null): Response
     {
-        if ($this->container->has('templating')) {
-            $content = $this->container->get('templating')->render($view, $parameters);
-        } elseif ($this->container->has('twig')) {
-            $content = $this->container->get('twig')->render($view, $parameters);
-        } else {
-            throw new \LogicException('You can not use the "render" method if the Templating Component or the Twig Bundle are not available. Try running "composer require symfony/twig-bundle".');
-        }
+        $content = $this->container->get('twig')->render($view, $parameters);
 
         if (null === $response) {
             $response = new Response();
