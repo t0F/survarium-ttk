@@ -30,7 +30,7 @@ class PulseTTKCommand extends Command
         $curl_output = curl_exec($curl);
         curl_close($curl);
         $date = new \DateTime();
-        $output->writeln("Warming ".$url." cache ( ".$date->format(DATE_ATOM)." ).");
+        $output->writeln("Warming ".$url." cache ( ".$date->format('d-m-Y H:i:s')." ).");
         return 0;
     }
 }
