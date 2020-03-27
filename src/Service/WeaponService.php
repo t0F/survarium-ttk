@@ -134,15 +134,18 @@ class WeaponService
                 }
             }
 
+            $this->translateWeaponName($weapon, $allLocales, $fullStats['ui_desc']['text_descriptions']['name']);
+
+            $this->makeWeaponConfiguration($weapon);
+
             //Check if need to flag as special weapon (events, premium, etc)
-            $weaponConf = $weaponConfRepo->findOneByName($name);
+            $weaponConf = $weaponConfRepo->findOneByName($weapon->getName());
             if($weaponConf !== null) {
                 /** @var WeaponConfiguration $weaponConf */
                 $weapon->setIsSpecial($weaponConf->getIsSpecial());
             }
 
-            $this->translateWeaponName($weapon, $allLocales, $fullStats['ui_desc']['text_descriptions']['name']);
-            $this->makeWeaponConfiguration($weapon);
+
             $this->em->persist($weapon);
             $weapon->mergeNewTranslations();
         }
