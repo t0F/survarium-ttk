@@ -247,7 +247,7 @@ class defaultController extends AbstractController
                 'html5' => true,
                 'required' => false,])
             ->add('showSpecial', CheckboxType::class, [
-                'label' => 'Show premium / event weapons',
+                'label' => 'Show special weapons',
                 'empty_data' => false,
                 'required' => false,])
             ->add('save', SubmitType::class, ['label' => 'UPDATE'])

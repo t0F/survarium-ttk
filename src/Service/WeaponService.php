@@ -147,7 +147,7 @@ class WeaponService
                 $this->em->persist($weapon);
                 $this->em->flush();
             }
-            
+
             $weapon->mergeNewTranslations();
         }
 
