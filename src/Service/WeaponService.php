@@ -78,7 +78,7 @@ class WeaponService
     public function makeNewWeapons(array $weaponsArray, GameVersion $version, array $allLocales, $modifications)
     {
         $weaponConfRepo = $this->em->getRepository('App:WeaponConfiguration');
-
+        $weaponRepo = $this->em->getRepository('App:Weapon');
         foreach ($weaponsArray as $name => $fullStats) {
             $stats = $fullStats['parameters'];
             $weapon = new weapon();
@@ -117,7 +117,6 @@ class WeaponService
             $weapon->setDisplayType($this->displayType($stats['type'], $stats['magazine_capacity'], $name));
 
             if(isset($stats['default_modifications']) && $stats['default_modifications'] != null) {
-
                 foreach ($stats['default_modifications'] as $weaponModification ) {
                     if(isset($modifications[$weaponModification[0].'_'.$weaponModification[1]])) {
                         $modification = $modifications[$weaponModification[0].'_'.$weaponModification[1]];
@@ -135,18 +134,20 @@ class WeaponService
             }
 
             $this->translateWeaponName($weapon, $allLocales, $fullStats['ui_desc']['text_descriptions']['name']);
+            $alreadyExist = $weaponRepo->findOneBy(['name' => $weapon->getName(), 'gameVersion' => $weapon->getGameVersion()]);
+            if($alreadyExist === null) {
+                $this->makeWeaponConfiguration($weapon);
 
-            $this->makeWeaponConfiguration($weapon);
-
-            //Check if need to flag as special weapon (events, premium, etc)
-            $weaponConf = $weaponConfRepo->findOneByName($weapon->getName());
-            if($weaponConf !== null) {
-                /** @var WeaponConfiguration $weaponConf */
-                $weapon->setIsSpecial($weaponConf->getIsSpecial());
+                //Check if need to flag as special weapon (events, premium, etc)
+                $weaponConf = $weaponConfRepo->findOneByName($weapon->getName());
+                if($weaponConf !== null) {
+                    /** @var WeaponConfiguration $weaponConf */
+                    $weapon->setIsSpecial($weaponConf->getIsSpecial());
+                }
+                $this->em->persist($weapon);
+                $this->em->flush();
             }
-
-
-            $this->em->persist($weapon);
+            
             $weapon->mergeNewTranslations();
         }
 
