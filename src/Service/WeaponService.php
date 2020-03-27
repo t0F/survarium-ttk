@@ -125,7 +125,6 @@ class WeaponService
                                 $weapon->setBulletDamage($weapon->getBulletDamage() + ($weapon->getBulletDamage() * $modifier['value']));
                             }
                             if($modifier['path'][1] == 'magazine_capacity') {
-                                dump($modifier);
                                 $weapon->setMagazineCapacity($modifier['value']);
                             }
                         }

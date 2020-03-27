@@ -26,7 +26,7 @@ class WeaponRepository extends ServiceEntityRepository
             ->andWhere('w.gameVersion = :lastVersion')
             ->setParameter('lastVersion', $version)
             ->setParameter('locale', $locale);
-        if($showSpecial !== true) {
+        if($showSpecial === false || $showSpecial === 'false') {
             $form->andWhere('w.isSpecial = false');
         }
 

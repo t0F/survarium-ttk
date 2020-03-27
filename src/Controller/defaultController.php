@@ -248,7 +248,6 @@ class defaultController extends AbstractController
                 'required' => false,])
             ->add('showSpecial', CheckboxType::class, [
                 'label' => 'Show special weapons',
-                'empty_data' => false,
                 'required' => false,])
             ->add('save', SubmitType::class, ['label' => 'UPDATE'])
             ->getForm();
