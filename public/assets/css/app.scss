@@ -123,11 +123,11 @@ html.survariumProFonts {
 }
 
 input:checked + .slider {
-  background-color: #707b84;
+  background-color: #707070;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #707b84;
+  box-shadow: 0 0 1px #707070;
 }
 
 input:checked + .slider:before {
