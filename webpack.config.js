@@ -2,13 +2,14 @@ let Encore = require('@symfony/webpack-encore');
 let $ = require("jquery");
 let dotenv = require("dotenv");
 const env = dotenv.config();
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-if (env.parsed.ENVIRONMENT == 'prod') {
+if (env.parsed.ENVIRONMENT === 'prod') {
     publicPath = "/build";
 } else {
     publicPath = "/sovapp/public/build/";
 }
-publicPath = "/build";
+//publicPath = "/sovapp/public/build";
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -18,11 +19,11 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 
 Encore
     // directory where compiled assets will be stored
-    .setOutputPath('public/build/')
+    .setOutputPath('public/build')
     // public path used by the web server to access the output path
-    .setPublicPath(publicPath)
+    .setPublicPath('/sovapp/public/build/')
     // only needed for CDN's or sub-directory deploy
-    //.setManifestKeyPrefix('/sovapp/public/build/')
+    .setManifestKeyPrefix('build')
 
     /*
      * ENTRY CONFIG
@@ -34,6 +35,7 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './public/assets/js/app.js')
+    .addEntry('admin', './public/assets/js/admin.js')
 
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
@@ -92,7 +94,7 @@ module.exports = {
         rules: [
             {
                 test: /\.css$/i,
-                use: ['style-loader', 'css-loader'],
+                use: [MiniCssExtractPlugin.loader, 'style-loader', 'css-loader'],
             },
         ],
     },

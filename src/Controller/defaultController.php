@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -47,7 +48,6 @@ class defaultController extends AbstractController
      */
     public function stats(Request $request, TranslatorInterface $translator)
     {
-
         $source = $request->query->get('utm_source');
         $survariumPro = false;
         $responsive = false;
@@ -73,13 +73,15 @@ class defaultController extends AbstractController
         $sampleBonusArmor = "5";
         $sampleBonusROF = "5";
         $sampleOnyx = "4";
+        $showSpecial = false;
         $defaultData = array(
             'version' => $sampleVersion,
             'bonusArmor' => $sampleBonusArmor,
             'bonusROF' => $sampleBonusROF,
             'range' => $sampleRange,
             'equipment' => $sampleEquipment,
-            'onyx' => $sampleOnyx
+            'onyx' => $sampleOnyx,
+            'showSpecial' => $showSpecial
         );
 
         $form = $this->getTTKForm($defaultData);
@@ -94,6 +96,7 @@ class defaultController extends AbstractController
         $message = $this->weaponService->getSampleMessage();
         $weaponsArr = $this->weaponService->getWeaponsStats($survariumPro);
         $sampleTTKIndex = $translator->trans('sample timetokill');
+
         return $this->minifiedRender('stats.html.twig', [
             'weapons' => $weaponsArr,
             'message' => $message,
@@ -103,7 +106,7 @@ class defaultController extends AbstractController
             'utm_lang' => $this->locale,
             'responsive' => $responsive,
             'osLang' => $osLang,
-            'survariumPro' => $survariumPro
+            'survariumPro' => $survariumPro,
         ]);
     }
 
@@ -145,21 +148,22 @@ class defaultController extends AbstractController
         $sampleVersion = $sampleRepo->findOneBy([], ['date' => 'DESC']);
         $equipmentRepo = $this->em->getRepository('App:Equipment');
         $sampleEquipment = $equipmentRepo->findOneBy(array(
-            'name' => 'renesanse_torso_10',
+            'name' => '"Zubr UM-4" bulletproof vest',
             'gameVersion' => $sampleVersion));
         $sampleRange = "40";
         $sampleBonusArmor = "5";
         $sampleBonusROF = "5";
         $sampleOnyx = "4";
+        $showSpecial = false;
         $defaultData = array(
             'version' => $sampleVersion,
             'bonusArmor' => $sampleBonusArmor,
             'bonusROF' => $sampleBonusROF,
             'range' => $sampleRange,
             'equipment' => $sampleEquipment,
-            'onyx' => $sampleOnyx
+            'onyx' => $sampleOnyx,
+            'showSpecial' => $showSpecial
         );
-
 
         $form = $this->getTTKForm($defaultData);
         $form->handleRequest($request);
@@ -241,6 +245,10 @@ class defaultController extends AbstractController
                 'scale' => 1,
                 'attr' => ['step' => 1, 'min' => 0, 'max' => 5],
                 'html5' => true,
+                'required' => false,])
+            ->add('showSpecial', CheckboxType::class, [
+                'label' => 'Show premium / event weapons',
+                'empty_data' => false,
                 'required' => false,])
             ->add('save', SubmitType::class, ['label' => 'UPDATE'])
             ->getForm();

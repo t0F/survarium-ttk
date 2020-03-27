@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\Equipment;
 use App\Entity\GameVersion;
 use App\Entity\Weapon;
+use App\Entity\WeaponConfiguration;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -28,6 +29,7 @@ class WeaponService
         $this->sampleOnyx = 0;
         $this->sampleBonusArmor = 5;
         $this->sampleBonusROF = 5;
+        $this->showSpecial = false;
     }
 
     public function setSample($sample)
@@ -40,6 +42,7 @@ class WeaponService
             $this->sampleBonusROF = $sample['bonusROF'];
             $this->sampleBonusArmor = $sample['bonusArmor'];
             $this->sampleOnyx = $sample['onyx'];
+            $this->showSpecial = $sample['showSpecial'];
         }
     }
 
@@ -74,6 +77,10 @@ class WeaponService
 
     public function makeNewWeapons(array $weaponsArray, GameVersion $version, array $allLocales, $modifications)
     {
+        $this->makeWeaponConfigurations($weaponsArray); //create new weaponConfiguration if new weapon in game
+
+        $weaponConfRepo = $this->em->getRepository('App:WeaponConfiguration');
+
         foreach ($weaponsArray as $name => $fullStats) {
             $stats = $fullStats['parameters'];
             $weapon = new weapon();
@@ -129,13 +136,43 @@ class WeaponService
                 }
             }
 
+            //Check if need to flag as special weapon (events, premium, etc)
+            $weaponConf = $weaponConfRepo->findOneByName($name);
+            if($weaponConf !== null) {
+                /** @var WeaponConfiguration $weaponConf */
+                $weapon->setIsSpecial($weaponConf->getIsSpecial());
+            }
+
             $this->translateWeaponName($weapon, $allLocales, $fullStats['ui_desc']['text_descriptions']['name']);
 
             $this->em->persist($weapon);
             $weapon->mergeNewTranslations();
         }
         $this->em->flush();
+
+        $this->makeWeaponConfigurations($weaponsArray);
+
         return true;
+    }
+
+    public function makeWeaponConfigurations(array $weaponsArray) {
+        $weaponConfRepo = $this->em->getRepository('App:WeaponConfiguration');
+        foreach ($weaponsArray as $name => $fullStats) {
+            $weaponConf = $weaponConfRepo->findOneByName($name);
+
+            if($weaponConf === null) {
+                $weaponConf = new WeaponConfiguration();
+                $weaponConf->setName($name);
+
+                if(preg_match('(premium|2015|2016|2017|2018|2019|2020|2021|2022|Snowball|summer|legend)', $name) === 1) {
+                    $weaponConf->setIsSpecial(true);
+                } else {
+                    $weaponConf->setIsSpecial(false);
+                }
+                $this->em->persist($weaponConf);
+            }
+        }
+        $this->em->flush();
     }
 
     public function translateWeaponName(Weapon &$weapon, array $allLocales, string $stringToFind) {
@@ -155,7 +192,7 @@ class WeaponService
     public function getWeaponsStats($survariumPro = false)
     {
         $weaponRepo = $this->em->getRepository('App:Weapon');
-        $weaponsEnt = $weaponRepo->findByGameVersionAndLocale($this->sampleVersion, $this->locale);
+        $weaponsEnt = $weaponRepo->findByGameVersionAndLocale($this->sampleVersion, $this->locale, $this->showSpecial);
         return $this->weaponsToArray($weaponsEnt, $survariumPro);
     }
 
@@ -222,8 +259,6 @@ class WeaponService
                 $weaponsArray[] = $weaponArray;
             }
         }
-
-
 
         return $weaponsArray;
     }

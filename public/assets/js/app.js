@@ -11,7 +11,7 @@ require('bootstrap-select/js/bootstrap-select');
 require('bootstrap-select/dist/css/bootstrap-select.css');
 require('datatables.net-responsive-bs4');
 require('@fortawesome/fontawesome-free');
-require('animate');
+//require('animate');
 require('../css/select2.css');
 require('./dtLocales.js');
 
