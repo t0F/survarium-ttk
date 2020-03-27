@@ -213,7 +213,7 @@ class WeaponService
                 $weaponArray[$this->translator->trans('sample bullets to kill')] = $this->getArmorBTK($weapon, $this->sampleEquipment);
                 $weaponArray[$this->translator->trans('sample damage')] = round($this->getArmorDamage($weapon, $this->sampleEquipment),2);
                 $weaponArray[$this->translator->trans('type')] = $weapon->getDisplayType();
-                $weaponArray[$this->translator->trans('damage')] = 100 * $weapon->getBulletDamage();
+                $weaponArray[$this->translator->trans('damage')] = round(100 * $weapon->getBulletDamage(),2);
                 $weaponArray[$this->translator->trans('armor penetration')] = round(100 * $weapon->getPlayerPierce());
                 $weaponArray[$this->translator->trans('rate of fire')] = round($this->getROFWithBonus($weapon));
                 $weaponArray[$this->translator->trans('dps')] = round($this->getDPS($weapon));
@@ -239,7 +239,7 @@ class WeaponService
                 ));
                 $weaponArray[$this->translator->trans('name')] = $name;
                 $weaponArray[$this->translator->trans('type')] = $this->translator->trans($weapon->getDisplayType());
-                $weaponArray[$this->translator->trans('damage')] = 100 * $weapon->getBulletDamage();
+                $weaponArray[$this->translator->trans('damage')] = round(100 * $weapon->getBulletDamage(), 2);
                 $weaponArray[$this->translator->trans('armor penetration')] = round(100 * $weapon->getPlayerPierce());
                 $weaponArray[$this->translator->trans('rate of fire')] = round($this->getROFWithBonus($weapon));
                 $weaponArray[$this->translator->trans('dps')] = round($this->getDPS($weapon));
