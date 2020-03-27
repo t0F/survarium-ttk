@@ -77,8 +77,6 @@ class WeaponService
 
     public function makeNewWeapons(array $weaponsArray, GameVersion $version, array $allLocales, $modifications)
     {
-        $this->makeWeaponConfigurations($weaponsArray); //create new weaponConfiguration if new weapon in game
-
         $weaponConfRepo = $this->em->getRepository('App:WeaponConfiguration');
 
         foreach ($weaponsArray as $name => $fullStats) {
@@ -144,33 +142,29 @@ class WeaponService
             }
 
             $this->translateWeaponName($weapon, $allLocales, $fullStats['ui_desc']['text_descriptions']['name']);
-
+            $this->makeWeaponConfiguration($weapon);
             $this->em->persist($weapon);
             $weapon->mergeNewTranslations();
         }
+
         $this->em->flush();
-
-        $this->makeWeaponConfigurations($weaponsArray);
-
         return true;
     }
 
-    public function makeWeaponConfigurations(array $weaponsArray) {
+    public function makeWeaponConfiguration(Weapon $weapon) {
         $weaponConfRepo = $this->em->getRepository('App:WeaponConfiguration');
-        foreach ($weaponsArray as $name => $fullStats) {
-            $weaponConf = $weaponConfRepo->findOneByName($name);
+        $weaponConf = $weaponConfRepo->findOneByName($weapon->getName());
 
-            if($weaponConf === null) {
-                $weaponConf = new WeaponConfiguration();
-                $weaponConf->setName($name);
+        if($weaponConf === null) {
+            $weaponConf = new WeaponConfiguration();
+            $weaponConf->setName($weapon->getName());
 
-                if(preg_match('(premium|2015|2016|2017|2018|2019|2020|2021|2022|Snowball|summer|legend)', $name) === 1) {
-                    $weaponConf->setIsSpecial(true);
-                } else {
-                    $weaponConf->setIsSpecial(false);
-                }
-                $this->em->persist($weaponConf);
+            if(preg_match('(premium|2015|2016|2017|2018|2019|2020|2021|2022|Snowball|summer|legend)', $weapon->getName()) === 1) {
+                $weaponConf->setIsSpecial(true);
+            } else {
+                $weaponConf->setIsSpecial(false);
             }
+            $this->em->persist($weaponConf);
         }
         $this->em->flush();
     }
