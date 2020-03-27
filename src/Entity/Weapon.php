@@ -187,6 +187,11 @@ class Weapon implements TranslatableInterface
      */
     private $displayType;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isSpecial;
+
     public function __construct()
     {
         $this->gearSets = new ArrayCollection();
@@ -595,6 +600,18 @@ class Weapon implements TranslatableInterface
     public function setDisplayType(?string $displayType): self
     {
         $this->displayType = $displayType;
+
+        return $this;
+    }
+
+    public function getIsSpecial(): ?bool
+    {
+        return $this->isSpecial;
+    }
+
+    public function setIsSpecial(?bool $isSpecial): self
+    {
+        $this->isSpecial = $isSpecial;
 
         return $this;
     }

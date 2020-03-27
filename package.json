@@ -3,6 +3,8 @@
         "@symfony/webpack-encore": "^0.28.3",
         "core-js": "^3.0.0",
         "node-sass": "^4.13.1",
+        "purgecss": "^2.1.0",
+        "purgecss-webpack-plugin": "^2.1.0",
         "regenerator-runtime": "^0.13.2",
         "sass-loader": "^7.0.1",
         "webpack-notifier": "^1.6.0"

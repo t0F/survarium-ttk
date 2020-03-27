@@ -19,14 +19,18 @@ class WeaponRepository extends ServiceEntityRepository
         parent::__construct($registry, Weapon::class);
     }
 
-    public function findByGameVersionAndLocale($version, $locale) {
-        return $this->createQueryBuilder('w')
+    public function findByGameVersionAndLocale($version, $locale, $showSpecial) {
+        $form = $this->createQueryBuilder('w')
             ->select('w', 't')
             ->leftJoin('w.translations', 't', 'WITH', 't.locale = :locale')
             ->andWhere('w.gameVersion = :lastVersion')
             ->setParameter('lastVersion', $version)
-            ->setParameter('locale', $locale)
-            ->orderBy('w.name', 'DESC')
+            ->setParameter('locale', $locale);
+        if($showSpecial !== true) {
+            $form->andWhere('w.isSpecial = false');
+        }
+
+        return $form->orderBy('w.name', 'DESC')
             ->getQuery()
             ->getResult();
     }
