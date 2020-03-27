@@ -45,8 +45,11 @@
                     {{ form_widget(form.version, {'attr': {'class': 'form-control select2JS'}}) }}
                 </div>
                 <div class="col">
-                    {{ form_label(form.equipment, null, {'attr': {'class': 'sr-only min-width-armor'}}) }}
-                    {{ form_widget(form.equipment, {'attr': {'class': 'form-control select2JS'}}) }}
+                    {{ form.showSpecial.vars.label }}
+                    <label class="switch" for="{{ form.showSpecial.vars.id }}">
+                        {{ form_widget(form.showSpecial, {'attr': {'class': 'marginRight form-control'}}) }}
+                        <span class="slider round"></span>
+                    </label>
                 </div>
             </div>
             <div class="form-row customFormRow">
@@ -70,13 +73,10 @@
             </div>
             <div class="form-row customFormRow width100 paddingBot0">
                 <div class="col">
-                        {{ form.showSpecial.vars.label }}
-                        <label class="switch" for="{{ form.showSpecial.vars.id }}">
-                                {{ form_widget(form.showSpecial, {'attr': {'class': 'marginRight form-control'}}) }}
-                            <span class="slider round"></span>
-                        </label>
+                    {{ form_label(form.equipment, null, {'attr': {'class': 'sr-only min-width-armor'}}) }}
+                    {{ form_widget(form.equipment, {'attr': {'class': 'form-control select2JS'}}) }}
                 </div>
-                <div class="col centerCol">
+                <div class="col">
                     {{ form_widget(form.save, { 'label': 'UPDATE', 'attr': {'class': 'btn btn-secondary'}}) }}
                 </div>
             </div>
