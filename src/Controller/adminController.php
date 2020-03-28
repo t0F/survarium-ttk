@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use App\Form\WeaponConfigurationsType;
+use Symfony\Component\Dotenv\Dotenv;
 
 class adminController extends AbstractController
 {
@@ -21,11 +21,16 @@ class adminController extends AbstractController
     private $em;
     private $weaponService;
     private $locale;
+    private $hash;
 
     public function __construct(EntityManagerInterface $em, WeaponService $weaponService)
     {
         $this->em = $em;
         $this->weaponService = $weaponService;
+
+        $dotEnv = new Dotenv();
+        $dotEnv->load(__DIR__.'/../../.env');
+        $this->hash = $_ENV['hash'];
     }
 
     /**
@@ -37,8 +42,7 @@ class adminController extends AbstractController
     public function index(Request $request, TranslatorInterface $translator)
     {
         $hash = $request->query->get('hash');
-        //todo : change hash and put it into .env
-        if($hash === "41ef750168fadb8b748f42f42937b78c") {
+        if($hash === $this->hash) {
             $wcs = $this->em->getRepository('App:WeaponConfiguration')->findAll();
             $updateUrl = $this->generateUrl('updateWC', array('hash' => $hash));
             return $this->render('admin.html.twig', [
@@ -58,8 +62,7 @@ class adminController extends AbstractController
     public function updateWC(Request $request)
     {
         $hash = $request->query->get('hash');
-        //todo : change hash and put it into .env
-        if($hash === "41ef750168fadb8b748f42f42937b78c") {
+        if($hash === $this->hash) {
             $allWc = $this->em->getRepository('App:WeaponConfiguration')->findAll();
             /** @var WeaponConfiguration $currentWc */
             foreach ($allWc as $currentWc) {
@@ -94,7 +97,4 @@ class adminController extends AbstractController
             throw new AccessDeniedException();
         }
     }
-
-
-
 }
