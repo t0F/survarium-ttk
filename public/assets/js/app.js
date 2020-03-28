@@ -1,6 +1,5 @@
 require('../css/main.css');
 require('../css/app.scss');
-
 window.$ = require('jquery');
 require('bootstrap');
 window.$.DataTable = require('datatables.net-bs4');
@@ -11,7 +10,6 @@ require('bootstrap-select/js/bootstrap-select');
 require('bootstrap-select/dist/css/bootstrap-select.css');
 require('datatables.net-responsive-bs4');
 require('@fortawesome/fontawesome-free');
-//require('animate');
 require('../css/select2.css');
 require('./dtLocales.js');
 
@@ -32,10 +30,12 @@ if (window.responsive === 1) {
         {responsivePriority: 1, targets: 1}
     ];
     window.dtSelect = [0, 4];
+    window.dtDefaultSort = [[1, 'asc'], [0, 'asc']];
 } else {
     window.bResponsive = false;
     window.columnsDefs = [];
     window.dtSelect = [0, 1];
+    window.dtDefaultSort = [[15, 'asc'], [0, 'asc']];
 }
 
 window.lang = lang;
@@ -45,6 +45,7 @@ window.table = window.weaponStats.dataTable({
     responsive: window.bResponsive,
     columnDefs: window.columnsDefs,
     language: window.locales,
+    order: window.dtDefaultSort,
     initComplete: function () {
         $('.select2JS').select2({language: window.lang});
         this.api().columns(window.dtSelect).every(function () {
@@ -107,7 +108,8 @@ $('#ajaxForm').submit(function (e) {
     formSave.removeClass('btn-secondary');
     e.preventDefault();
     let formSerialize = $(this).serialize();
-
+    let order = window.table.fnSettings().aaSorting;
+    console.log(order);
     //ajaxStatsUrl defined in twig template
     $.ajax({
         type: "POST", url: ajaxStatsUrl, data: formSerialize, success: function (response) {
@@ -119,6 +121,7 @@ $('#ajaxForm').submit(function (e) {
                 });
                 window.table.fnAddData(values, false);
             });
+            window.table.fnSettings().aaSorting = order;
             window.table.fnDraw();
             $('#message').text(response.message);
             formSave.removeClass(['btn-outline-secondary', 'disabled']);
