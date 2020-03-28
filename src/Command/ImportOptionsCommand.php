@@ -90,17 +90,71 @@ class ImportOptionsCommand extends Command
         $gearsets = $gameArray['gear_sets'];
         $equipments = $gameArray['equipment'];
 
+        $weaponsModulelink = $gameArray['module_to_item_links'];
+
+        $weaponsModules = $gameArray['weapon_modules'];
+        $formattedWeaponsModules = [];
+        foreach ($weaponsModules as $moduleName => $module) {
+            $formattedWeaponsModules[$moduleName] = [
+                'dictId' => $module['parameters']['dict_id'],
+                'category' => $module['parameters']['category_id']
+            ];
+        }
+
         $modifications = $gameArray['modifications'];
         $formattedModifications = [];
         foreach ($modifications as $modification) {
-            $formattedModifications[$modification['group'].'_'.$modification['grade']] = $modification;
+            $formattedModifications[$modification['group']] = $modification;
         }
 
-        $gameArray = null;
+        $modulesInfos = $gameArray['modules_drop_options']['modules_additional_infos'];
+        $modulesAndLink = [];
+        foreach ($modulesInfos as $moduleInfos) {
+            if (isset($moduleInfos['first_drop_modifier']) || isset($moduleInfos['second_drop_modifier'])) {
+                foreach ($formattedModifications as $modification) {
+                    if( $modification['grade'] == 10) {
+                        foreach ($modification['modifiers'] as $modifier) {
+                            if($modifier['path'][1] == 'effective_distance'
+                                || $modifier['path'][1] == 'bullet_damage'
+                                || $modifier['path'][1] == 'rounds_per_minute'
+                                || $modifier['path'][1] == 'magazine_capacity'
+                                || $modifier['path'][1] == 'bullet_damage'
+                            ) {
+                                foreach ($formattedWeaponsModules as $index => $weaponsModule) {
+                                    if((isset($moduleInfos['first_drop_modifier'])
+                                            && $modification['group'] == $moduleInfos['first_drop_modifier'])
+                                        || (isset($moduleInfos['second_drop_modifier'])
+                                            && $modification['group'] == $moduleInfos['second_drop_modifier'])
+                                    )  {
+                                        if ($formattedWeaponsModules[$index]['dictId'] === $moduleInfos['dict_id']){
+                                            foreach ($weaponsModulelink as $link) {
+                                                if( $link['module'] === $index) {
+                                                    if(!isset($modulesAndLink[$link['item']])) {
+                                                        $modulesAndLink[$link['item']] = [];
+                                                    }
 
+                                                    $currentModuleLink = [];
+                                                    $currentModuleLink['moduleName'] = $link['module'];
+                                                    $currentModuleLink['modifier']  = $modifier['path'][1];
+                                                    $currentModuleLink['category']  = $formattedWeaponsModules[$index]['category'];
+
+                                                    $currentModuleLink['modifierValue']  = $modifier['value'];
+                                                    $modulesAndLink[$link['item']][] = $currentModuleLink;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        $gameArray = null;
         //now save data for that game version in DB
         $version = $this->gameVersionService->makeNewVersion();
-        $this->weaponService->makeNewWeapons($weapons, $version, $allLocales, $formattedModifications);
+        $this->weaponService->makeNewWeapons($weapons, $version, $allLocales, $formattedModifications, $modulesAndLink);
         $this->equipmentService->makeNewEquipement($equipments, $version, $allLocales);
         $this->gearSetService->makeNewGearSet($gearsets, $version, $allLocales);
 

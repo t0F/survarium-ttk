@@ -75,7 +75,7 @@ class WeaponService
     }
 
 
-    public function makeNewWeapons(array $weaponsArray, GameVersion $version, array $allLocales, $modifications)
+    public function makeNewWeapons(array $weaponsArray, GameVersion $version, array $allLocales, $modifications, $weaponsModules)
     {
         $weaponConfRepo = $this->em->getRepository('App:WeaponConfiguration');
         $weaponRepo = $this->em->getRepository('App:Weapon');
@@ -116,6 +116,7 @@ class WeaponService
             $weapon->setGameVersion($version);
             $weapon->setDisplayType($this->displayType($stats['type'], $stats['magazine_capacity'], $name));
 
+            //modifications
             if(isset($stats['default_modifications']) && $stats['default_modifications'] != null) {
                 foreach ($stats['default_modifications'] as $weaponModification ) {
                     if(isset($modifications[$weaponModification[0].'_'.$weaponModification[1]])) {
@@ -127,6 +128,25 @@ class WeaponService
                             if($modifier['path'][1] == 'magazine_capacity') {
                                 $weapon->setMagazineCapacity($modifier['value']);
                             }
+                        }
+                    }
+                }
+            }
+            $weapon->setRofModifier(0);
+            $weapon->setSilencerModifier(0);
+
+            //modules
+            if(isset($weaponsModules[$name])) {
+                $weaponCatUse = [];
+                foreach($weaponsModules[$name] as $weaponModule) {
+                    if(!in_array($weaponModule['category'], $weaponCatUse)) {
+                        if($weaponModule['modifier'] == 'effective_distance') {
+                            $weaponCatUse[] = $weaponModule['category'];
+                            $weapon->setSilencerModifier($weaponModule['modifierValue']);
+                        }
+                        if($weaponModule['modifier'] == 'rounds_per_minute') {
+                            $weaponCatUse[] = $weaponModule['category'];
+                            $weapon->setRofModifier( $weapon->getRofModifier() + $weaponModule['modifierValue']);
                         }
                     }
                 }
