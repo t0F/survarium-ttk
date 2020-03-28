@@ -317,8 +317,7 @@ class WeaponService
 
     public function getROFWithBonus(Weapon $weapon)
     {
-        //$bonus = 1 + ($weapon->getRofModifier() + ($this->sampleBonusROF) / 100);
-        $bonus = 1 + ($this->sampleBonusROF / 100);
+        $bonus = 1 + ($weapon->getRofModifier() + ($this->sampleBonusROF) / 100);
         return $bonus * $weapon->getRoundsPerMinute();
     }
 
