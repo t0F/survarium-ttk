@@ -103,8 +103,11 @@ class ImportOptionsCommand extends Command
 
         $modifications = $gameArray['modifications'];
         $formattedModifications = [];
+        $modificationsForWeapons = [];
+
         foreach ($modifications as $modification) {
             $formattedModifications[$modification['group']] = $modification;
+            $modificationsForWeapons[$modification['group'].'_'.$modification['grade']] = $modification;
         }
 
         $modulesInfos = $gameArray['modules_drop_options']['modules_additional_infos'];
@@ -154,7 +157,7 @@ class ImportOptionsCommand extends Command
         $gameArray = null;
         //now save data for that game version in DB
         $version = $this->gameVersionService->makeNewVersion();
-        $this->weaponService->makeNewWeapons($weapons, $version, $allLocales, $formattedModifications, $modulesAndLink);
+        $this->weaponService->makeNewWeapons($weapons, $version, $allLocales, $modificationsForWeapons, $modulesAndLink);
         $this->equipmentService->makeNewEquipement($equipments, $version, $allLocales);
         $this->gearSetService->makeNewGearSet($gearsets, $version, $allLocales);
 
@@ -165,7 +168,7 @@ class ImportOptionsCommand extends Command
         $output->writeln('Nb equipments : ' . count($equipments));
         $output->writeln('Nb gearSet : ' . count($gearsets));
         $output->writeln('New version: : ' . $version->getName());
-        $output->writeln('Date : ' . $version->getDate()->format('dd/mm/yy'));
+        $output->writeln('Date : ' . $version->getDate()->format('d/m/Y'));
         $output->writeln('=======================================================');
         $output->writeln('Done.');
         return 0;
