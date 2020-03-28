@@ -27,7 +27,7 @@ class GearSetService
             $gearset->setName($this->getLocaleName($allLocales, 'st_'.$name.'_name'));
             $gearset->setGameVersion($version);
             foreach ($fullStats['items'] as $idEquipment) {
-                $equipmentToAdd = $equipmentRepository->findOneByDictId($idEquipment);
+                $equipmentToAdd = $equipmentRepository->findOneBy(['dictId' => $idEquipment, 'gameVersion' => $version]);
                 $gearset->addGear($equipmentToAdd);
             }
             //save it for use it later to upload display name

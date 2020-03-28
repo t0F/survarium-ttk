@@ -39,7 +39,7 @@
     <div class="row">
         <div class="formContainer container">
             {{ form_start(form, {'attr': {'id': 'ajaxForm', 'class': 'form-inline'}}) }}
-            <div class="form-row width100 customFormRow">
+            <div class="form-row customFormRow width100">
                 <div class="col">
                     {{ form_label(form.version, null, {'attr': {'class': 'sr-only'}}) }}
                     {{ form_widget(form.version, {'attr': {'class': 'form-control select2JS'}}) }}
@@ -50,32 +50,36 @@
                     </label>
                 </div>
             </div>
-            <div class="form-row width100 customFormRow">
-                <div class="col">
-                    {{ form_label(form.onyx, null, {'attr': {'class': 'sr-only'}}) }}
-                    {{ form_widget(form.onyx, {'attr': {'class': 'form-control form-number'}}) }}
-
-                </div>
-                <div class="col">
-                    {{ form_label(form.bonusROF, null, {'attr': {'class': 'sr-only'}}) }}
-                    {{ form_widget(form.bonusROF, {'attr': {'class': 'marginRight form-control form-number'}}) }}
-                </div>
-                <div class="col">
-                    {{ form_label(form.bonusArmor, null, {'attr': {'class': 'sr-only'}}) }}
-                    {{ form_widget(form.bonusArmor, {'attr': {'class': 'marginRight form-control form-number'}}) }}
-                </div>
-                <div class="col">
-                    {{ form_label(form.range, null, {'attr': {'class': 'sr-only'}}) }}
-                    {{ form_widget(form.range, {'attr': {'class': 'marginRight form-control form-number'}}) }}
-                </div>
-            </div>
-            <div class="form-row customFormRow width100 paddingBot0">
+            <div class="form-row customFormRow width100">
                 <div class="col">
                     {{ form_label(form.equipment, null, {'attr': {'class': 'sr-only min-width-armor'}}) }}
                     {{ form_widget(form.equipment, {'attr': {'class': 'form-control select2JS'}}) }}
                 </div>
+                <div class="col">{% trans %}Use Silencers{% endtrans %}<label class="switch" for="{{ form.useSilencer.vars.id }}">
+                        {{ form_widget(form.useSilencer, {'attr': {'class': 'form-control'}}) }}
+                        <span class="slider round"></span>
+                    </label>
+                </div>
                 <div class="col displayNone">
                     {{ form_widget(form.save, { 'label': 'UPDATE', 'attr': {'class': 'btn btn-secondary'}}) }}
+                </div>
+            </div>
+            <div class="form-row customFormRow width100 paddingBot0">
+                <div class="col">
+                    {{ form_label(form.bonusArmor, null, {'attr': {'class': 'sr-only'}}) }}
+                    {{ form_widget(form.bonusArmor, {'attr': {'class': 'form-control form-number'}}) }}
+                </div>
+                <div class="col">
+                    {{ form_label(form.onyx, null, {'attr': {'class': 'sr-only'}}) }}
+                    {{ form_widget(form.onyx, {'attr': {'class': 'form-control form-number'}}) }}
+                </div>
+                <div class="col">
+                    {{ form_label(form.bonusROF, null, {'attr': {'class': 'sr-only'}}) }}
+                    {{ form_widget(form.bonusROF, {'attr': {'class': 'form-control form-number'}}) }}
+                </div>
+                <div class="col">
+                    {{ form_label(form.range, null, {'attr': {'class': 'sr-only'}}) }}
+                    {{ form_widget(form.range, {'attr': {'class': 'form-control form-number'}}) }}
                 </div>
             </div>
             {{ form_end(form) }}

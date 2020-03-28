@@ -19,6 +19,9 @@ class WeaponService
     private $sampleOnyx;
     private $sampleRange;
     private $sampleVersion;
+    private $showSpecial;
+    private $useSilencer;
+    private $sampleBonusROF;
     private $locale;
 
     public function __construct(EntityManagerInterface $em, TranslatorInterface $translator)
@@ -30,6 +33,7 @@ class WeaponService
         $this->sampleBonusArmor = 5;
         $this->sampleBonusROF = 5;
         $this->showSpecial = false;
+        $this->useSilencer = true;
     }
 
     public function setSample($sample)
@@ -43,6 +47,8 @@ class WeaponService
             $this->sampleBonusArmor = $sample['bonusArmor'];
             $this->sampleOnyx = $sample['onyx'];
             $this->showSpecial = $sample['showSpecial'];
+            $this->useSilencer = $sample['useSilencer'];
+            //dump($this->useSilencer);
         }
     }
 
@@ -236,7 +242,7 @@ class WeaponService
                 $weaponArray[$this->translator->trans('armor penetration')] = round(100 * $weapon->getPlayerPierce());
                 $weaponArray[$this->translator->trans('rate of fire')] = round($this->getROFWithBonus($weapon));
                 $weaponArray[$this->translator->trans('dps')] = round($this->getDPS($weapon));
-                $weaponArray[$this->translator->trans('effective range')] = $weapon->getEffectiveDistance();
+                $weaponArray[$this->translator->trans('effective range')] = $this->getBonusEffectiveRange($weapon);
                 $weaponArray[$this->translator->trans('magazine size')] = $weapon->getMagazineCapacity();
                 $weaponArray[$this->translator->trans('bleed chance')] = round(100 * $weapon->getBleedingChance());
                 $weaponArray[$this->translator->trans('material penetration')] = $weapon->getMaterialPierce();
@@ -262,7 +268,7 @@ class WeaponService
                 $weaponArray[$this->translator->trans('armor penetration')] = round(100 * $weapon->getPlayerPierce());
                 $weaponArray[$this->translator->trans('rate of fire')] = round($this->getROFWithBonus($weapon));
                 $weaponArray[$this->translator->trans('dps')] = round($this->getDPS($weapon));
-                $weaponArray[$this->translator->trans('effective range')] = $weapon->getEffectiveDistance();
+                $weaponArray[$this->translator->trans('effective range')] = $this->getBonusEffectiveRange($weapon);
                 $weaponArray[$this->translator->trans('magazine size')] = $weapon->getMagazineCapacity();
                 $weaponArray[$this->translator->trans('bleed chance')] = round(100 * $weapon->getBleedingChance());
                 $weaponArray[$this->translator->trans('material penetration')] = $weapon->getMaterialPierce();
@@ -280,6 +286,14 @@ class WeaponService
         return $weaponsArray;
     }
 
+    public function getBonusEffectiveRange(Weapon $weapon) {
+        //dump($this->useSilencer);die;
+        if($this->useSilencer === true || $this->useSilencer === 1) {
+            return round($weapon->getEffectiveDistance() * (1 + $weapon->getSilencerModifier()));
+        }
+        return $weapon->getEffectiveDistance();
+    }
+
     public function getArmorDamage(Weapon $weapon, Equipment $equipment)
     {
         $ratioWeapon = 1;        // body part ratio
@@ -289,13 +303,13 @@ class WeaponService
             $ratioWeapon = 0.8;
 
         // range ratio
-        if ($weapon->getEffectiveDistance() >= $this->sampleRange)
+        if ($this->getBonusEffectiveRange($weapon) >= $this->sampleRange)
             $range = 1;
-        elseif ($weapon->getIneffectiveDistance() <= $this->sampleRange) {
+        elseif (($this->getBonusEffectiveRange($weapon) * 2) <= $this->sampleRange) {
             $range = $weapon->getIneffectiveDistanceDamageFactor();
         } else {
-            $damageRange = $this->sampleRange - $weapon->getEffectiveDistance();
-            $rangeReductionRatio = $damageRange / ($weapon->getIneffectiveDistance() - $weapon->getEffectiveDistance());
+            $damageRange = $this->sampleRange - $this->getBonusEffectiveRange($weapon);
+            $rangeReductionRatio = $damageRange / (($this->getBonusEffectiveRange($weapon) * 2) - $this->getBonusEffectiveRange($weapon));
             if ($rangeReductionRatio > 1) $rangeReductionRatio = 1;
 
             $range = 1 - (1 - $weapon->getIneffectiveDistanceDamageFactor()) * $rangeReductionRatio;
@@ -332,7 +346,6 @@ class WeaponService
         return round(($this->getArmorBTK($weapon, $equipment) - 1)
             * 1 / ( $this->getROFWithBonus($weapon) / 60), 3);
     }
-
 
     public function displayType($type, $magazine, $name)
     {
