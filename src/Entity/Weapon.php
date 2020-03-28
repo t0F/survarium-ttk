@@ -192,6 +192,16 @@ class Weapon implements TranslatableInterface
      */
     private $isSpecial;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $silencerModifier;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $rofModifier;
+
     public function __construct()
     {
         $this->gearSets = new ArrayCollection();
@@ -612,6 +622,30 @@ class Weapon implements TranslatableInterface
     public function setIsSpecial(?bool $isSpecial): self
     {
         $this->isSpecial = $isSpecial;
+
+        return $this;
+    }
+
+    public function getSilencerModifier(): ?float
+    {
+        return $this->silencerModifier;
+    }
+
+    public function setSilencerModifier(?float $silencerModifier): self
+    {
+        $this->silencerModifier = $silencerModifier;
+
+        return $this;
+    }
+
+    public function getRofModifier(): ?float
+    {
+        return $this->rofModifier;
+    }
+
+    public function setRofModifier(?float $rofModifier): self
+    {
+        $this->rofModifier = $rofModifier;
 
         return $this;
     }
