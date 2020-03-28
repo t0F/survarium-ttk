@@ -101,41 +101,9 @@ $('#colSelector').change(function () {
     window.weaponStats.css('width', 'auto');
 });
 
-// AJAX CALL
-function submitForm() {
-    let formSave = $('#form_save');
-    formSave.addClass(['disabled', 'btn-outline-secondary']);
-    formSave.removeClass('btn-secondary');
-    let formSerialize = $(this).serialize();
-    let order = window.table.fnSettings().aaSorting;
-    console.log(order);
-    //ajaxStatsUrl defined in twig template
-    $.ajax({
-        type: "POST", url: ajaxStatsUrl, data: formSerialize, success: function (response) {
-            window.table.fnClearTable();
-            let weapons = response.data;
-            $.each(weapons, function () {
-                let values = $.map($.makeArray(this)[0], function (value, key) {
-                    return value;
-                });
-                window.table.fnAddData(values, false);
-            });
-            window.table.fnSettings().aaSorting = order;
-            window.table.fnDraw();
-            $('#message').text(response.message);
-            formSave.removeClass(['btn-outline-secondary', 'disabled']);
-            formSave.addClass('btn-secondary');
-        }
-    });
-}
-
 window.ajaxForm = $('#ajaxForm');
-let inputForm = $('form :input');//.filter(":input")
-console.log(inputForm);
 $('form :input').each(function () {
-    console.log('inputForm');
     $(this).change(function () {
-        console.log('change');
         window.ajaxForm.submit();
     });
 });
@@ -147,7 +115,6 @@ window.ajaxForm.submit(function (e) {
     e.preventDefault();
     let formSerialize = $(this).serialize();
     let order = window.table.fnSettings().aaSorting;
-    console.log(order);
     //ajaxStatsUrl defined in twig template
     $.ajax({
         type: "POST", url: ajaxStatsUrl, data: formSerialize, success: function (response) {
