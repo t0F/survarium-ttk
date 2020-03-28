@@ -74,6 +74,7 @@ class defaultController extends AbstractController
         $sampleBonusROF = "5";
         $sampleOnyx = "4";
         $showSpecial = false;
+        $useSilencer = true;
         $defaultData = array(
             'version' => $sampleVersion,
             'bonusArmor' => $sampleBonusArmor,
@@ -81,7 +82,8 @@ class defaultController extends AbstractController
             'range' => $sampleRange,
             'equipment' => $sampleEquipment,
             'onyx' => $sampleOnyx,
-            'showSpecial' => $showSpecial
+            'showSpecial' => $showSpecial,
+            'useSilencer' => $useSilencer
         );
 
         $form = $this->getTTKForm($defaultData);
@@ -155,6 +157,7 @@ class defaultController extends AbstractController
         $sampleBonusROF = "5";
         $sampleOnyx = "4";
         $showSpecial = false;
+        $useSilencer = true;
         $defaultData = array(
             'version' => $sampleVersion,
             'bonusArmor' => $sampleBonusArmor,
@@ -162,7 +165,8 @@ class defaultController extends AbstractController
             'range' => $sampleRange,
             'equipment' => $sampleEquipment,
             'onyx' => $sampleOnyx,
-            'showSpecial' => $showSpecial
+            'showSpecial' => $showSpecial,
+            'useSilencer' => $useSilencer
         );
 
         $form = $this->getTTKForm($defaultData);
@@ -248,6 +252,10 @@ class defaultController extends AbstractController
                 'required' => false,])
             ->add('showSpecial', CheckboxType::class, [
                 'label' => 'Show special weapons',
+                'required' => false,])
+            ->add('useSilencer', CheckboxType::class, [
+                'label' => 'Use Silencers',
+                'data' => true,
                 'required' => false,])
             ->add('save', SubmitType::class, ['label' => 'UPDATE'])
             ->getForm();
