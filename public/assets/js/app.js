@@ -89,6 +89,8 @@ window.table = window.weaponStats.dataTable({
             spanOnyx.html(valueOnyx.val() + '%');
         });
 
+        $('.select2-container').css('width', 'auto');
+        
         //ready to show
         $("#contentBody").css('display', 'table');
         $("#progress").hide();
