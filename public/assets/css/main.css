@@ -163,7 +163,7 @@ iframe {
     content: "";
     display: block;
     position: absolute;
-    background-color: #cccccc;
+    background-color: #DDD;
     border-radius: 5px;
     width: 100%;
     height: calc(100% - 30px);
@@ -305,7 +305,7 @@ th, td {
 
 
 html {
-    background: #CCC;
+    background: #DDD;
     font-size: 12px;
     overflow: auto;
     height: 100%;
@@ -314,7 +314,7 @@ html {
 }
 
 body {
-    background: #CCC !important;
+    background: #DDD !important;
     height: 100%;
     overflow: auto;
 }
