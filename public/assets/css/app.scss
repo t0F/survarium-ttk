@@ -19,6 +19,12 @@
   overflow-x: hidden;
 }
 
+#message {
+  display: inline-block;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
 .noResponsiveFrame {
   &#weaponStatsDiv {
     margin: 0;
