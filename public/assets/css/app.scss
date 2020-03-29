@@ -41,6 +41,10 @@ html.noFilter {
   .slider, .rangeSlider {
     filter: invert(100%) opacity(0.8);
   }
+  .select2-container--default .select2-selection--single {
+    border: none;
+    filter: opacity(0.8);
+  }
 }
 
 
