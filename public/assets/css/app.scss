@@ -46,10 +46,13 @@
   }
 }
 
-.select2-selection__rendered,  a.page-link, .form-control, .dropdown-toggle, {
+.select2-selection__rendered,  a.page-link, .form-control, .dropdown-toggle {
   height: 24px;
 }
 
+.filter-option-inner-inner, .select2-selection__rendered,  a.page-link {
+  margin-top: -2px !important;
+}
 html.noFilter {
   -webkit-filter: none;
   filter: none;
@@ -79,6 +82,7 @@ html.noFilter {
 
 .displayInlineGrid {
   display: inline-grid;
+  white-space: nowrap;
 }
 
 html.noBackground {
