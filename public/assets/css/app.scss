@@ -62,7 +62,7 @@ li[role=option], .dropdown-menu > li {
 
 .btn-light {
   border: 1px !important;;
-  box-shadow: inset 0 -1px 0 #ddd !important;
+  box-shadow: inset 0 0 0 #ddd !important;
 }
 
 .dropdown-menu > li:hover, .dropdown-item:focus, .dropdown-item:hover,
@@ -292,7 +292,7 @@ input:checked + .slider {
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #BBB !important;
+  box-shadow: 0 0 0 #DDD !important;
 }
 
 input:checked + .slider:before {
