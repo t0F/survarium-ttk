@@ -91,7 +91,7 @@ class WeaponService
 
         $message .= (($this->sampleOnyx == 0) ? 'no ' : $this->sampleOnyx . '% ') .$this->translator->trans('Onyx')
             . ', ' . $this->translator->trans('no skills Armor bonus') . ', '
-            . $this->sampleRange . 'm '. $this->translator->trans('Range');
+            . $this->sampleRange . 'm '. $this->translator->trans('Range.');
 
         return $message;
     }
