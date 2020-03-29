@@ -73,6 +73,22 @@ window.table = window.weaponStats.dataTable({
         });
         createColSelector();
 
+        const spanRange = $('#spanRange');
+        spanRange.prev().append(spanRange).addClass('displayBlock');
+        const valueRange = $('#form_range');
+        spanRange.html(valueRange.val() + 'm');
+        valueRange.on('input change', () => {
+            spanRange.html(valueRange.val() + 'm');
+        });
+
+        const spanOnyx = $('#spanOnyx');
+        spanOnyx.prev().append(spanOnyx).addClass('displayBlock');
+        const valueOnyx = $('#form_onyx');
+        spanOnyx.html(valueOnyx.val() + '%');
+        valueOnyx.on('input change', () => {
+            spanOnyx.html(valueOnyx.val() + '%');
+        });
+
         //ready to show
         $("#contentBody").css('display', 'table');
         $("#progress").hide();

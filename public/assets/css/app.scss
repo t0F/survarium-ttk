@@ -87,7 +87,7 @@ html.survariumProFonts {
   position: relative;
   display: inline-block;
   width: 50px;
-  height: 26px;
+  height: 20px;
 }
 
 /* Hide default HTML checkbox */
@@ -113,7 +113,7 @@ html.survariumProFonts {
 .slider:before {
   position: absolute;
   content: "";
-  height: 20px;
+  height: 14px;
   width: 21px;
   left: 4px;
   bottom: 3px;
@@ -155,4 +155,58 @@ input:checked + .slider:before {
 
 .displayNone {
   display: none;
+}
+
+.displayBlock {
+  display: block !important;
+}
+
+.valueSpan2 {
+  display: inline-block;
+  min-width: 3em;
+  color: #212529 !important;
+  font-weight: unset !important;
+  margin-left: 0 !important;
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+
+/* The rangeSlider itself */
+.rangeSlider {
+  -webkit-appearance: none;  /* Override default CSS styles */
+  appearance: none;
+  width: 100%; /* Full-width */
+  height: 2px; /* Specified height */
+  margin: 5px 0;
+  background: white; /* Grey background */
+  outline: none; /* Remove outline */
+  /* opacity: 0.7; Set transparency (for mouse-over effects on hover) */
+  /*-webkit-transition: .2s; 0.2 seconds transition on hover
+  transition: opacity .2s;*/
+}
+
+/* Mouse-over effects */
+.rangeSlider:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+}
+
+/* The rangeSlider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.rangeSlider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 25px; /* Set a specific rangeSlider handle width */
+  height: 12px; /* rangeSlider handle height */
+  background: #707070; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+  border-radius: 3px;
+}
+
+.rangeSlider::-moz-range-thumb {
+  border-radius: 3px;
+  width: 25px; /* Set a specific rangeSlider handle width */
+  height: 12px; /* rangeSlider handle height */
+  background: #707070; /* Green background */
+  cursor: pointer; /* Cursor on hover */
 }

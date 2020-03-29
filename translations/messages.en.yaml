@@ -35,11 +35,12 @@ Show special weapons: Show special weapons
 Use Silencers: Use Silencers
 Version: Version
 Armor: Armor
-Onix %: Onix %
+Onix %: "Onyx:"
 +RoF %: +RoF %
 +Armor: +Armor
-Range: Range
+Range: "Range."
+Effective Range: Effective Range
 UPDATE: UPDATE
 
 # js
-select to hide: Select to hide column(s):
+select to hide: "Select to hide column(s):"
