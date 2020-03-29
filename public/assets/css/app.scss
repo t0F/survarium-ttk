@@ -1,6 +1,9 @@
 @import "~select2-bootstrap4-theme/dist/select2-bootstrap4.min.css";
 
 .responsiveFrame {
+  &body {
+    overflow-x: hidden;
+  }
   &#weaponStatsDiv {
     margin: auto;
   }
@@ -8,6 +11,7 @@
     display: block !important;
     max-width: none;
     margin: auto;
+
   }
 
   &#weaponsStats_wrapper {
