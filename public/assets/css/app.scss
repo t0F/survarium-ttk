@@ -27,7 +27,7 @@ th {
 
 li[role=option]:hover, li[role=option]:active, .selected .active, .select2-results__option--highlighted {
   cursor: pointer !important;
-  color: #6c757d !important;
+  color: hsla(0,0%,3.9%,1)!important;
   background: #CCC !important;
   //background: #007bff!important;
   text-decoration: none !important;
@@ -43,7 +43,7 @@ li[role=option]:hover, li[role=option]:active, .selected .active, .select2-resul
 }
 
 li[role=option], .dropdown-menu > li {
-  color: #6c757d !important;
+  color: hsla(0,0%,3.9%,1)!important;
 }
 
 .btn, .dropdown-item {
@@ -52,12 +52,12 @@ li[role=option], .dropdown-menu > li {
 
 .btn-light {
   background: white !important;
-  color: #6c757d !important;
+  color: hsla(0,0%,3.9%,1)!important;
 }
 
 .btn-light.hover, .btn-light:hover, .btn-light.active, .btn-light[aria-expanded="true"], .btn-light:active, .btn-light.focus, .btn-light:focus {
   background: white !important;
-  color: #6c757d !important;
+  color: hsla(0,0%,3.9%,1)!important;
 }
 
 .btn-light {
@@ -68,7 +68,7 @@ li[role=option], .dropdown-menu > li {
 .dropdown-menu > li:hover, .dropdown-item:focus, .dropdown-item:hover,
 .dropdown-menu > li:active, .dropdown-item:active, .dropdown-item:active {
   cursor: pointer !important;
-  color: #6c757d !important;
+  color: hsla(0,0%,3.9%,1)!important;
   background: #CCC !important;
   //background: #007bff!important;
   text-decoration: none !important;
@@ -165,7 +165,12 @@ a.page-link, .form-control, .dropdown-toggle {
 .select2-selection, .select2-selection__rendered {
   height: 22px !important;
   border: 0;
-  color: #6c757d !important;
+  color: hsla(0,0%,3.9%,1)!important;
+}
+
+.select2-selection__rendered {
+  display: inline-flex !important;
+  align-items: center !important;;
 }
 
 html.noFilter {
