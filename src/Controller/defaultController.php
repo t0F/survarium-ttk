@@ -222,7 +222,7 @@ class defaultController extends AbstractController
                 'required' => false,])
             ->add('range', RangeType::class, [
                 'label' => 'Range',
-                'attr' => ['step' => 1, 'min' => 1, 'max' => 500],
+                'attr' => ['step' => 5, 'min' => 5, 'max' => 500],
                 'required' => false,])
             ->add('bonusArmor', CheckboxType::class, [
                 'label' => '+Armor',
