@@ -31,13 +31,14 @@ Sample is base on: Time to kill is base on
 Rate of Fire: Rate of Fire
 Onyx: Onyx
 no skills Armor bonus: no skills Armor bonus
-Show special weapons: Show special weapons
+Show Specials: Show Specials
 Use Silencers: Use Silencers
 Version: Version
 Armor: Armor
 Onix %: "Onyx:"
-+RoF %: +RoF %
-+Armor: +Armor
++5% RoF: +5% RoF
++5 Armor: +5 Armor
++15% Range: +15% Range
 Range: "Range."
 Effective Range: Effective Range
 UPDATE: UPDATE

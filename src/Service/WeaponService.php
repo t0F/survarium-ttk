@@ -86,7 +86,7 @@ class WeaponService
         }
 
         if($this->sampleBonusRange === true) {
-            $message .= "+15 ".$this->translator->trans('Effective Range').", ";
+            $message .= "+15% ".$this->translator->trans('Effective Range').", ";
         }
 
         $message .= (($this->sampleOnyx == 0) ? 'no ' : $this->sampleOnyx . '% ') .$this->translator->trans('Onyx')

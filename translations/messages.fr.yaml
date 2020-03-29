@@ -31,15 +31,17 @@ Sample is base on: "Le Temps pour tuer est basé sur :"
 Rate of Fire: Cadence de tir
 Onyx: Onyx
 no skills Armor bonus: pas de bonus d'armure par les compétence
-Show special weapons: Armes spéciales
+Show Specials: Armes spéciales
 Use Silencers: Silencieux
 Version: Version
 Armor: Armure
 Onix %: Onix %
-+RoF %: +Cadence %
-+Armor: +Armure
++5% RoF: +5% RoF
++5 Armor: +5 Armure
++15% Range: +15% Distance
 Range: Distance
 UPDATE: MODIFIER
+Effective Range: Distance effective
 
 # js
 select to hide: "Cacher des colonnes :"
