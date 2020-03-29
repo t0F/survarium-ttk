@@ -86,7 +86,7 @@ html.survariumProFonts {
 .switch {
   position: relative;
   display: inline-block;
-  width: 36px;
+  width: 42px;
   height: 22px;
 }
 
@@ -105,7 +105,7 @@ html.survariumProFonts {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: white;
   -webkit-transition: .4s;
   transition: .4s;
 }
@@ -117,23 +117,23 @@ html.survariumProFonts {
   width: 21px;
   left: 2px;
   bottom: 2px;
-  background: #DDD;
+  background: #808080;
   -webkit-transition: .3s;
   transition: .3s;
 }
 
 input:checked + .slider {
-  background-color: #909090;
+  background-color: #BBB;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #909090;
+  box-shadow: 0 0 1px #BBB;
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(12px);
-  -ms-transform: translateX(12px);
-  transform: translateX(12px);
+  -webkit-transform: translateX(17px);
+  -ms-transform: translateX(17px);
+  transform: translateX(17px);
 }
 
 /* Rounded sliders */
@@ -197,7 +197,7 @@ input:checked + .slider:before {
   appearance: none;
   width: 25px; /* Set a specific rangeSlider handle width */
   height: 12px; /* rangeSlider handle height */
-  background: #707070; /* Green background */
+  background: #808080; /* Green background */
   cursor: pointer; /* Cursor on hover */
   border-radius: 3px;
 }
