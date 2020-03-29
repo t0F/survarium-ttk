@@ -40,17 +40,17 @@
         <div class="formContainer container">
             {{ form_start(form, {'attr': {'id': 'ajaxForm', 'class': 'form-inline'}}) }}
             <div class="form-row customFormRow width100">
-                <div class="col"><span class="no-wrap">{% trans %}Show Specials{% endtrans %}</span><label class="switch" for="{{ form.showSpecial.vars.id }}">
+                <div class="col displayInlineGrid"><span class="no-wrap">{% trans %}Show Specials{% endtrans %}</span><label class="switch" for="{{ form.showSpecial.vars.id }}">
                         {{ form_widget(form.showSpecial, {'attr': {'class': 'form-control'}}) }}
                         <span class="slider round"></span>
                     </label>
                 </div>
-                <div class="col">{% trans %}+5 Armor{% endtrans %}<label class="switch" for="{{ form.bonusArmor.vars.id }}">
+                <div class="col displayInlineGrid">{% trans %}+5 Armor{% endtrans %}<label class="switch" for="{{ form.bonusArmor.vars.id }}">
                         {{ form_widget(form.bonusArmor, {'attr': {'class': 'form-control'}}) }}
                         <span class="slider round"></span>
                     </label>
                 </div>
-                <div class="col">
+                <div class="col displayInlineGrid">
                     {{ form_label(form.equipment, null, {'attr': {'class': 'sr-only min-width-armor'}}) }}
                     {{ form_widget(form.equipment, {'attr': {'class': 'form-control select2JS'}}) }}
                 </div>
@@ -58,33 +58,33 @@
                     {{ form_widget(form.save, { 'label': 'UPDATE', 'attr': {'class': 'btn btn-secondary'}}) }}
                 </div>
             </div>
-            <div class="form-row customFormRow width100">
+            <div class="form-row customFormRow width100 displayInlineGrid">
                 <div class="col"><span class="no-wrap">{% trans %}Use Silencers{% endtrans %}</span><label class="switch" for="{{ form.useSilencer.vars.id }}">
                         {{ form_widget(form.useSilencer, {'attr': {'class': 'form-control'}}) }}
                         <span class="slider round"></span>
                     </label>
                 </div>
-                <div class="col"><span class="no-wrap">{% trans %}+15% Range{% endtrans %}</span><label class="switch" for="{{ form.bonusRange.vars.id }}">
+                <div class="col displayInlineGrid"><span class="no-wrap">{% trans %}+15% Range{% endtrans %}</span><label class="switch" for="{{ form.bonusRange.vars.id }}">
                         {{ form_widget(form.bonusRange, {'attr': {'class': 'form-control'}}) }}
                         <span class="slider round"></span>
                     </label>
                 </div>
-                <div class="col"><span class="no-wrap">{% trans %}+5% RoF{% endtrans %}</span><label class="switch" for="{{ form.bonusROF.vars.id }}">
+                <div class="col displayInlineGrid"><span class="no-wrap">{% trans %}+5% RoF{% endtrans %}</span><label class="switch" for="{{ form.bonusROF.vars.id }}">
                         {{ form_widget(form.bonusROF, {'attr': {'class': 'form-control'}}) }}
                         <span class="slider round"></span>
                     </label>
                 </div>
-                <div class="col">
+                <div class="col displayInlineGrid">
                     {{ form_label(form.onyx, null, {'attr': {'class': 'sr-only'}}) }}<span id="spanOnyx" class="valueSpan2"></span>
                     {{ form_widget(form.onyx, {'attr': {'class': 'form-control rangeSlider'}}) }}
                 </div>
             </div>
             <div class="form-row customFormRow width100 paddingBot0">
-                <div class="col">
+                <div class="col displayInlineGrid">
                     {{ form_label(form.range, null, {'attr': {'class': 'sr-only'}}) }}<span id="spanRange" class="valueSpan2"></span>
                     {{ form_widget(form.range, {'attr': {'class': 'form-control rangeSlider'}}) }}
                 </div>
-                <div class="col">
+                <div class="col displayInlineGrid">
                     {{ form_label(form.version, null, {'attr': {'class': 'sr-only'}}) }}
                     {{ form_widget(form.version, {'attr': {'class': 'form-control select2JS'}}) }}
                 </div>
