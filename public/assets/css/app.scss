@@ -35,7 +35,7 @@ html.noFilter {
   filter: none;
 
   input, .select2-container, .paginate_button, .dropdown-menu, .inner, .dropdown-toggle, .select2-search--dropdown, .slider {
-    filter: invert(100%);
+    filter: invert(100%) opacity(0.8);
   }
 }
 
