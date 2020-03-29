@@ -32,6 +32,9 @@ li[role=option]:hover, li[role=option]:active, .selected .active, .select2-resul
   //background: #007bff!important;
   text-decoration: none !important;
   transition: none;
+  font-family:Play, sans-serif;
+  font-size:12px;
+  font-weight:400;
 }
 
 .dropdown-toggle {
@@ -44,6 +47,9 @@ li[role=option]:hover, li[role=option]:active, .selected .active, .select2-resul
 
 li[role=option], .dropdown-menu > li {
   color: hsla(0,0%,3.9%,1)!important;
+  font-family:Play, sans-serif;
+  font-size:12px;
+  font-weight:400;
 }
 
 .btn, .dropdown-item {
@@ -53,11 +59,17 @@ li[role=option], .dropdown-menu > li {
 .btn-light {
   background: white !important;
   color: hsla(0,0%,3.9%,1)!important;
+  font-family:Play, sans-serif;
+  font-size:12px;
+  font-weight:400;
 }
 
 .btn-light.hover, .btn-light:hover, .btn-light.active, .btn-light[aria-expanded="true"], .btn-light:active, .btn-light.focus, .btn-light:focus {
   background: white !important;
   color: hsla(0,0%,3.9%,1)!important;
+  font-family:Play, sans-serif;
+  font-size:12px;
+  font-weight:400;
 }
 
 .btn-light {
@@ -166,6 +178,9 @@ a.page-link, .form-control, .dropdown-toggle {
   height: 22px !important;
   border: 0;
   color: hsla(0,0%,3.9%,1)!important;
+  font-family:Play, sans-serif;
+  font-size:12px;
+  font-weight:400;
 }
 
 .select2-selection__rendered {
