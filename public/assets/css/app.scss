@@ -86,7 +86,7 @@ html.survariumProFonts {
 .switch {
   position: relative;
   display: inline-block;
-  width: 50px;
+  width: 36px;
   height: 22px;
 }
 
@@ -115,25 +115,25 @@ html.survariumProFonts {
   content: "";
   height: 18px;
   width: 21px;
-  left: 3px;
+  left: 2px;
   bottom: 2px;
   background: #DDD;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: .3s;
+  transition: .3s;
 }
 
 input:checked + .slider {
-  background-color: #707070;
+  background-color: #909090;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #707070;
+  box-shadow: 0 0 1px #909090;
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(24px);
-  -ms-transform: translateX(24px);
-  transform: translateX(24px);
+  -webkit-transform: translateX(12px);
+  -ms-transform: translateX(12px);
+  transform: translateX(12px);
 }
 
 /* Rounded sliders */
