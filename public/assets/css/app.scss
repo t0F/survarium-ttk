@@ -38,8 +38,8 @@ html.noFilter {
     filter: invert(100%)
   }
 
-  .slider {
-    filter: invert(100%) opacity(0.7);
+  .slider, .rangeSlider {
+    filter: invert(100%) opacity(0.8);
   }
 }
 
