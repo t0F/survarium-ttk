@@ -16,6 +16,7 @@ class WeaponService
     /** @var Equipment $sampleEquipment */
     private $sampleEquipment;
     private $sampleBonusArmor;
+    private $sampleBonusRange;
     private $sampleOnyx;
     private $sampleRange;
     private $sampleVersion;
@@ -30,8 +31,9 @@ class WeaponService
         $this->translator = $translator;
         $this->sampleRange = 1;
         $this->sampleOnyx = 0;
-        $this->sampleBonusArmor = 5;
-        $this->sampleBonusROF = 5;
+        $this->sampleBonusArmor = true;
+        $this->sampleBonusRange = true;
+        $this->sampleBonusROF = true;
         $this->showSpecial = false;
         $this->useSilencer = true;
     }
@@ -45,10 +47,10 @@ class WeaponService
             $this->sampleRange = $sample['range'];
             $this->sampleBonusROF = $sample['bonusROF'];
             $this->sampleBonusArmor = $sample['bonusArmor'];
+            $this->sampleBonusRange = $sample['bonusRange'];
             $this->sampleOnyx = $sample['onyx'];
             $this->showSpecial = $sample['showSpecial'];
             $this->useSilencer = $sample['useSilencer'];
-            //dump($this->useSilencer);
         }
     }
 
@@ -69,15 +71,29 @@ class WeaponService
             $ratioWeapon = 0.8;
 
         //Sample is base on "Zubr UM-4" bulletproof vest (100% Damage), +5% Rate of Fire, 71 + 5 Armor, 4% Onyx, no skills Armor bonus, 40m Range.
-        return $this->translator->trans('Sample is base on'). ' '
+        $message = $this->translator->trans('Sample is base on'). ' '
             . $this->sampleEquipment->translate($this->locale)->getLocalizedName() . " ("
-            . $ratioWeapon * 100 . '% ' . $this->translator->trans('damage').'), '
-            .'+'.$this->sampleBonusROF . '% '.$this->translator->trans('Rate of Fire').', '
-            . $this->sampleEquipment->getArmor() * 100 . " + " . $this->sampleBonusArmor
-            . ' ' . $this->translator->trans('Armor'). ", "
-            . (($this->sampleOnyx == 0) ? 'no ' : $this->sampleOnyx . '% ') .$this->translator->trans('Onyx')
+            . $ratioWeapon * 100 . '% ' . $this->translator->trans('damage').'), ';
+
+        if($this->sampleBonusROF === true) {
+            $message .= '+5% '.$this->translator->trans('Rate of Fire').', ';
+        }
+
+        if($this->sampleBonusArmor === true) {
+            $message .= $this->sampleEquipment->getArmor() * 100 . " + 5 ". $this->translator->trans('Armor'). ", ";
+        } else {
+            $message .= $this->sampleEquipment->getArmor() * 100 . " ". $this->translator->trans('Armor'). ", ";
+        }
+
+        if($this->sampleBonusRange === true) {
+            $message .= "+15 ".$this->translator->trans('Effective Range').", ";
+        }
+
+        $message .= (($this->sampleOnyx == 0) ? 'no ' : $this->sampleOnyx . '% ') .$this->translator->trans('Onyx')
             . ', ' . $this->translator->trans('no skills Armor bonus') . ', '
             . $this->sampleRange . 'm '. $this->translator->trans('Range');
+
+        return $message;
     }
 
 
@@ -287,11 +303,17 @@ class WeaponService
     }
 
     public function getBonusEffectiveRange(Weapon $weapon) {
-        //dump($this->useSilencer);die;
-        if($this->useSilencer === true || $this->useSilencer === 1) {
+        if(($this->useSilencer === true || $this->useSilencer === 1)
+            && ($this->sampleBonusRange === true || $this->sampleBonusRange === 1)
+        ) {
+            return round($weapon->getEffectiveDistance() * (1 + $weapon->getSilencerModifier() + 0.15));
+        } elseif($this->useSilencer === true || $this->useSilencer === 1) {
             return round($weapon->getEffectiveDistance() * (1 + $weapon->getSilencerModifier()));
+        } elseif($this->sampleBonusRange === true || $this->sampleBonusRange === 1) {
+            return round($weapon->getEffectiveDistance() * (1 + 0.15));
+        } else {
+            return $weapon->getEffectiveDistance();
         }
-        return $weapon->getEffectiveDistance();
     }
 
     public function getArmorDamage(Weapon $weapon, Equipment $equipment)
@@ -331,7 +353,8 @@ class WeaponService
 
     public function getROFWithBonus(Weapon $weapon)
     {
-        $bonus = 1 + ($weapon->getRofModifier() + ($this->sampleBonusROF) / 100);
+        $bonusRof = ($this->sampleBonusROF === true) ? 0.05 : 0;
+        $bonus = 1 + ($weapon->getRofModifier() + $bonusRof);
         return $bonus * $weapon->getRoundsPerMinute();
     }
 

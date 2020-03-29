@@ -12,6 +12,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\RangeType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -63,29 +64,7 @@ class defaultController extends AbstractController
         $osLang = $this->getHtmlLang($this->locale);
         $this->weaponService->setLocale($this->locale);
 
-        $sampleRepo = $this->em->getRepository('App:GameVersion');
-        $sampleVersion = $sampleRepo->findOneBy([], ['date' => 'DESC']);
-        $equipmentRepo = $this->em->getRepository('App:Equipment');
-        $sampleEquipment = $equipmentRepo->findOneBy(array(
-            'name' => '"Zubr UM-4" bulletproof vest',
-            'gameVersion' => $sampleVersion));
-        $sampleRange = "40";
-        $sampleBonusArmor = "5";
-        $sampleBonusROF = "5";
-        $sampleOnyx = "4";
-        $showSpecial = false;
-        $useSilencer = true;
-        $defaultData = array(
-            'version' => $sampleVersion,
-            'bonusArmor' => $sampleBonusArmor,
-            'bonusROF' => $sampleBonusROF,
-            'range' => $sampleRange,
-            'equipment' => $sampleEquipment,
-            'onyx' => $sampleOnyx,
-            'showSpecial' => $showSpecial,
-            'useSilencer' => $useSilencer
-        );
-
+        $defaultData = $this->getDefaultSample();
         $form = $this->getTTKForm($defaultData);
         $form->handleRequest($request);
 
@@ -125,6 +104,33 @@ class defaultController extends AbstractController
         return $response;
     }
 
+    public function getDefaultSample() {
+        $sampleRepo = $this->em->getRepository('App:GameVersion');
+        $sampleVersion = $sampleRepo->findOneBy([], ['date' => 'DESC']);
+        $equipmentRepo = $this->em->getRepository('App:Equipment');
+        $sampleEquipment = $equipmentRepo->findOneBy(array(
+            'name' => '"Zubr UM-4" bulletproof vest',
+            'gameVersion' => $sampleVersion));
+        $sampleRange = "40";
+        $sampleBonusArmor = true;
+        $sampleBonusROF = true;
+        $sampleBonusRange = true;
+        $sampleOnyx = "4";
+        $showSpecial = false;
+        $useSilencer = true;
+        return array(
+            'version' => $sampleVersion,
+            'bonusArmor' => $sampleBonusArmor,
+            'bonusROF' => $sampleBonusROF,
+            'bonusRange' => $sampleBonusRange,
+            'range' => $sampleRange,
+            'equipment' => $sampleEquipment,
+            'onyx' => $sampleOnyx,
+            'showSpecial' => $showSpecial,
+            'useSilencer' => $useSilencer
+        );
+    }
+
     /**
      * @Route("/ajaxstats", name="ajaxstats", defaults={"utm_source": false, "utm_lang": false})
      */
@@ -146,28 +152,7 @@ class defaultController extends AbstractController
         $request->setLocale($locale);
         $this->weaponService->setLocale($locale);
 
-        $sampleRepo = $this->em->getRepository('App:GameVersion');
-        $sampleVersion = $sampleRepo->findOneBy([], ['date' => 'DESC']);
-        $equipmentRepo = $this->em->getRepository('App:Equipment');
-        $sampleEquipment = $equipmentRepo->findOneBy(array(
-            'name' => '"Zubr UM-4" bulletproof vest',
-            'gameVersion' => $sampleVersion));
-        $sampleRange = "40";
-        $sampleBonusArmor = "5";
-        $sampleBonusROF = "5";
-        $sampleOnyx = "4";
-        $showSpecial = false;
-        $useSilencer = true;
-        $defaultData = array(
-            'version' => $sampleVersion,
-            'bonusArmor' => $sampleBonusArmor,
-            'bonusROF' => $sampleBonusROF,
-            'range' => $sampleRange,
-            'equipment' => $sampleEquipment,
-            'onyx' => $sampleOnyx,
-            'showSpecial' => $showSpecial,
-            'useSilencer' => $useSilencer
-        );
+        $defaultData = $this->getDefaultSample();
 
         $form = $this->getTTKForm($defaultData);
         $form->handleRequest($request);
@@ -223,32 +208,25 @@ class defaultController extends AbstractController
                 },
                 'group_by' => 'gearSetName'
             ])
-            ->add('bonusROF', NumberType::class, [
-                'label' => '+RoF %',
-                'empty_data' => 5,
-                'scale' => 1,
-                'attr' => ['step' => 0.1, 'min' => 0, 'max' => 5],
-                'html5' => true,
+            ->add('bonusROF', CheckboxType::class, [
+                'label' => '+RoF',
+                'data' => true,
                 'required' => false,])
-            ->add('onyx', NumberType::class, [
+            ->add('bonusRange', CheckboxType::class, [
+                'label' => '+15% range',
+                'data' => true,
+                'required' => false,])
+            ->add('onyx', RangeType::class, [
                 'label' => 'Onix %',
-                'empty_data' => 0,
-                'scale' => 1,
-                'attr' => ['step' => 0.1, 'min' => 0, 'max' => 99],
-                'html5' => true,
+                'attr' => ['step' => 1, 'min' => 0, 'max' => 99],
                 'required' => false,])
-            ->add('range', NumberType::class, [
+            ->add('range', RangeType::class, [
                 'label' => 'Range',
-                'scale' => 1,
                 'attr' => ['step' => 1, 'min' => 1, 'max' => 500],
-                'html5' => true,
                 'required' => false,])
-            ->add('bonusArmor', NumberType::class, [
+            ->add('bonusArmor', CheckboxType::class, [
                 'label' => '+Armor',
-                'empty_data' => 5,
-                'scale' => 1,
-                'attr' => ['step' => 1, 'min' => 0, 'max' => 5],
-                'html5' => true,
+                'data' => true,
                 'required' => false,])
             ->add('showSpecial', CheckboxType::class, [
                 'label' => 'Show special weapons',
