@@ -1,7 +1,7 @@
 # table header (and sample message)
 name: Name
 type: Type
-damage: Damages
+damage: Damage
 armor penetration: Armor Penetration
 rate of fire: Rate of Fire
 dps: DPS
@@ -12,7 +12,7 @@ material penetration: Material Penetration
 weight: Weight
 reload time: Reload Time
 muzzle velocity: Muzzle Velocity
-sample damage: True Damages
+sample damage: Real Damage
 sample bullets to kill: Bullets To Kill
 sample timetokill: Time To Kill
 
@@ -27,7 +27,7 @@ SNIPER RIFLE: Sniper Rifle
 SPECIAL: Special
 
 # sample + form
-Sample is base on: Time to kill is base on
+Sample is base on: Time to kill based on
 Rate of Fire: Rate of Fire
 Onyx: Onyx
 no skills Armor bonus: no skills Armor bonus
