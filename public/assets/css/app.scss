@@ -46,6 +46,10 @@
   }
 }
 
+.select2-selection__rendered,  a.page-link, .form-control, .dropdown-toggle, {
+  height: 24px;
+}
+
 html.noFilter {
   -webkit-filter: none;
   filter: none;
@@ -123,7 +127,7 @@ html.survariumProFonts {
 .switch {
   position: relative;
   display: inline-block;
-  width: 42px;
+  width: 36px;
   height: 22px;
 }
 
@@ -168,9 +172,13 @@ input:focus + .slider {
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(17px);
-  -ms-transform: translateX(17px);
-  transform: translateX(17px);
+  -webkit-transform: translateX(11px);
+  -ms-transform: translateX(11px);
+  transform: translateX(11px);
+}
+
+.select2-selection {
+  height: 24px !important;
 }
 
 /* Rounded sliders */
@@ -214,8 +222,7 @@ input:checked + .slider:before {
   -webkit-appearance: none;  /* Override default CSS styles */
   appearance: none;
   width: 100%; /* Full-width */
-  height: 2px; /* Specified height */
-  margin: 5px 0;
+  height: 22px; /* Specified height */
   background: white; /* Grey background */
   outline: none; /* Remove outline */
   /* opacity: 0.7; Set transparency (for mouse-over effects on hover) */
@@ -232,8 +239,8 @@ input:checked + .slider:before {
 .rangeSlider::-webkit-slider-thumb {
   -webkit-appearance: none; /* Override default look */
   appearance: none;
-  width: 25px; /* Set a specific rangeSlider handle width */
-  height: 12px; /* rangeSlider handle height */
+  width: 22px; /* Set a specific rangeSlider handle width */
+  height: 18px; /* rangeSlider handle height */
   background: #808080; /* Green background */
   cursor: pointer; /* Cursor on hover */
   border-radius: 3px;
