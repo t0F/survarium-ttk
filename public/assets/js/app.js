@@ -38,6 +38,12 @@ if (window.responsive === 1) {
     window.dtDefaultSort = [[15, 'asc'], [0, 'asc']];
 }
 
+if ($(window).width() > 400) {
+    window.dtPagination = 'simple_numbers';
+} else {
+    window.dtPagination = 'numbers';
+}
+
 window.lang = lang;
 //CREATE DATATABLE
 window.table = window.weaponStats.dataTable({
@@ -46,6 +52,7 @@ window.table = window.weaponStats.dataTable({
     columnDefs: window.columnsDefs,
     language: window.locales,
     order: window.dtDefaultSort,
+    pagingType: window.dtPagination,
     initComplete: function () {
         $('.select2JS').select2({language: window.lang});
         this.api().columns(window.dtSelect).every(function () {
