@@ -44,6 +44,11 @@ li[role=option], .dropdown-menu>li {
   transition: none !important;
 }
 
+.btn-light {
+  background: white !important;
+  color: black !important;
+}
+
 .btn-light.hover, .btn-light:hover, .btn-light.active, .btn-light[aria-expanded="true"], .btn-light:active, .btn-light.focus, .btn-light:focus {
   background: white !important;
   color: black !important;
@@ -51,7 +56,8 @@ li[role=option], .dropdown-menu>li {
 }
 
 .btn-light {
-  border: 1px;
+  border: 1px !important;;
+  box-shadow: inset 0 -1px 0 #ddd !important;
 }
 
   .dropdown-menu>li:hover, .dropdown-item:focus, .dropdown-item:hover,
@@ -108,6 +114,7 @@ li[role=option], .dropdown-menu>li {
   button:focus, .button:focus, th:focus, td:focus, .form-control:focus, .page-item:focus {
     outline: none !important;
     outline-color: unset;
+    border: 0;
   }
 
   textarea:focus,
