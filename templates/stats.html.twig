@@ -58,8 +58,8 @@
                     {{ form_widget(form.save, { 'label': 'UPDATE', 'attr': {'class': 'btn btn-secondary'}}) }}
                 </div>
             </div>
-            <div class="form-row customFormRow width100 displayInlineGrid">
-                <div class="col"><span class="no-wrap">{% trans %}Use Silencers{% endtrans %}</span><label class="switch" for="{{ form.useSilencer.vars.id }}">
+            <div class="form-row customFormRow width100">
+                <div class="col displayInlineGrid"><span class="no-wrap">{% trans %}Use Silencers{% endtrans %}</span><label class="switch" for="{{ form.useSilencer.vars.id }}">
                         {{ form_widget(form.useSilencer, {'attr': {'class': 'form-control'}}) }}
                         <span class="slider round"></span>
                     </label>
