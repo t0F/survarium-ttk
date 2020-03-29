@@ -19,7 +19,7 @@
   overflow-x: hidden;
 }
 
-li[role=option]:hover, li[role=option]:active, .select2-results__option--highlighted {
+li[role=option]:hover, li[role=option]:active, .selected .active, .select2-results__option--highlighted {
   cursor: pointer !important;
   color: #6c757d !important;
   background: #CCC!important;
@@ -44,302 +44,313 @@ li[role=option], .dropdown-menu>li {
   transition: none !important;
 }
 
-.dropdown-menu>li:hover, .dropdown-item:focus, .dropdown-item:hover,
-.dropdown-menu>li:active, .dropdown-item:active, .dropdown-item:active{
-  cursor: pointer !important;
-  color: #6c757d !important;
-  background: #CCC!important;
-  //background: #007bff!important;
-  text-decoration: none !important;
-  transition: none;
+.btn-light.hover, .btn-light:hover, .btn-light.active, .btn-light[aria-expanded="true"], .btn-light:active, .btn-light.focus, .btn-light:focus {
+  background: white !important;
+  color: black !important;
+  filter: opacity(0.8);
 }
 
-#message {
-  display: inline-block;
-  margin-top: 5px;
-  margin-bottom: 5px;
+.btn-light {
+  border: 1px;
 }
 
-#form_onyx {
-  min-width: 140px;
-}
-
-#form_range {
-  min-width: 140px;
-}
-
-.select2-container--default, .select2-selection--single {
-  border-radius: 3px !important;
-}
-
-.select2-choice:focus, .select2-choice:hover {
-  background: blue !important;
-  color: #000;
-}
-
-.select2-highlighted:focus, .select2-highlighted:hover {
-  background: blue !important;
-  color: #000;
-}
-
-.noResponsiveFrame {
-  &#weaponStatsDiv {
-    margin: 0;
-  }
-  &#contentBody {
-    display: table;
+  .dropdown-menu>li:hover, .dropdown-item:focus, .dropdown-item:hover,
+  .dropdown-menu>li:active, .dropdown-item:active, .dropdown-item:active{
+    cursor: pointer !important;
+    color: #6c757d !important;
+    background: #CCC!important;
+    //background: #007bff!important;
+    text-decoration: none !important;
+    transition: none;
   }
 
-  &#weaponsStats_wrapper {
-    margin: 0 !important;
-  }
-}
-
-button:focus, .button:focus, th:focus, .form-control:focus, .page-item:focus {
-  outline: none !important;
-  outline-color: unset;
-}
-
-textarea:focus,
-textarea.form-control:focus,
-input.form-control:focus,
-input[type=text]:focus,
-input[type=password]:focus,
-input[type=email]:focus,
-input[type=number]:focus,
-.page-link:focus,
-.select2-selection__rendered:focus,
-.select2-selection:focus,
-.select2-container:focus,
-//select2-selection__arrow
-[type=text].form-control:focus,
-[type=password].form-control:focus,
-[type=email].form-control:focus,
-[type=tel].form-control:focus,
-[contenteditable].form-control:focus {
-  outline: none !important;
-  outline-color: unset;
-  box-shadow: inset 0 -1px 0 #ddd;
-}
-
-.bootstrap-select > select.mobile-device:focus + .dropdown-toggle, .bootstrap-select .dropdown-toggle:focus {
-  outline: none !important;
-}
-
-a.page-link, .form-control, .dropdown-toggle {
-  height: 24px;
-}
-
-.filter-option-inner-inner, a.page-link {
-  margin-top: -2px !important;
-}
-
-.select2-container--default, .select2-selection--single {
-  border: 0 !important;
-}
-
-.select2-selection, .select2-selection__rendered {
-  height: 22px !important;
-  border: 0;
-}
-
-html.noFilter {
-  -webkit-filter: none;
-  filter: none;
-
-  input, .select2-container, .paginate_button, .dropdown-menu, .inner, .dropdown-toggle, .select2-search--dropdown, .slider {
-    filter: invert(100%)
+  #message {
+    display: inline-block;
+    margin-top: 5px;
+    margin-bottom: 5px;
   }
 
-  .slider, .rangeSlider {
-    filter: invert(100%) opacity(0.8);
-  }
-  .select2-container--default .select2-selection--single {
-    border: none;
-    filter: opacity(0.8);
-  }
-  scrollbar-width: none; //firefox & firefoxMobile
-
-  ::-webkit-scrollbar { //other browsers
-    width: 0;
-    background: transparent;
+  #form_onyx {
+    min-width: 140px;
   }
 
-  .dropdown {
-    border-radius: 4px;
-  }
-}
-
-.displayInlineGrid {
-  display: inline-grid;
-  white-space: nowrap;
-}
-
-html.noBackground {
-  background-color: transparent;
-  body, #weaponStatsDiv, .row100 {
-    background-color: transparent !important;
+  #form_range {
+    min-width: 140px;
   }
 
-  .border1px, .formContainer {
-    background-color: #aaaaaa15;
+  .select2-container--default, .select2-selection--single {
+    border-radius: 3px !important;
   }
 
-  .formContainer .col {
-    max-width: 210px;
+  .select2-choice:focus, .select2-choice:hover {
+    background: blue !important;
+    color: #000;
   }
 
-  h3 {
-    font-weight: 700;
+  .select2-highlighted:focus, .select2-highlighted:hover {
+    background: blue !important;
+    color: #000;
   }
-  h1 {
-    display: none;
+
+  .noResponsiveFrame {
+    &#weaponStatsDiv {
+      margin: 0;
+    }
+    &#contentBody {
+      display: table;
+    }
+
+    &#weaponsStats_wrapper {
+      margin: 0 !important;
+    }
   }
-}
 
-@font-face {
-  font-family: 'Play', sans-serif;
-  src: url('../fonts/Play/Play-Bold.ttf');
-}
+  button:focus, .button:focus, th:focus, td:focus, .form-control:focus, .page-item:focus {
+    outline: none !important;
+    outline-color: unset;
+  }
 
-html.survariumProFonts {
-  font-family: 'Play', sans-serif !important;
-  color: rgba(245,245,245,0.65)  !important;;
-  -webkit-font-smoothing: antialiased;
-  body {
+  textarea:focus,
+  textarea.form-control:focus,
+  input.form-control:focus,
+  input[type=text]:focus,
+  input[type=password]:focus,
+  input[type=email]:focus,
+  input[type=number]:focus,
+  input[type=button]:focus,
+  .page-link:focus,
+  .select2-selection__rendered:focus,
+  .select2-selection:focus,
+  .select2-container:focus,
+    //select2-selection__arrow
+  [type=text].form-control:focus,
+  [type=password].form-control:focus,
+  [type=email].form-control:focus,
+  [type=tel].form-control:focus,
+  [contenteditable].form-control:focus {
+    outline: none !important;
+    outline-color: unset;
+    box-shadow: inset 0 -1px 0 #ddd;
+  }
+
+  .bootstrap-select > select.mobile-device:focus + .dropdown-toggle, .bootstrap-select .dropdown-toggle:focus {
+    outline: none !important;
+  }
+
+  a.page-link, .form-control, .dropdown-toggle {
+    height: 24px;
+  }
+
+  .filter-option-inner-inner, a.page-link {
+    margin-top: -2px !important;
+  }
+
+  .select2-container--default, .select2-selection--single {
+    border: 0 !important;
+  }
+
+  .select2-selection, .select2-selection__rendered {
+    height: 22px !important;
+    border: 0;
+  }
+
+  html.noFilter {
+    -webkit-filter: none;
+    filter: none;
+
+    input, .select2-container, .paginate_button, .dropdown-menu, .inner, .dropdown-toggle, .select2-search--dropdown, .slider {
+      filter: invert(100%)
+    }
+
+    .slider, .rangeSlider {
+      filter: invert(100%) opacity(0.8);
+    }
+    .select2-container--default .select2-selection--single {
+      border: none;
+      filter: opacity(0.8);
+    }
+    scrollbar-width: none; //firefox & firefoxMobile
+
+    ::-webkit-scrollbar { //other browsers
+      width: 0;
+      background: transparent;
+    }
+
+    .dropdown {
+      border-radius: 4px;
+    }
+  }
+
+  .displayInlineGrid {
+    display: inline-grid;
+    white-space: nowrap;
+  }
+
+  html.noBackground {
+    background-color: transparent;
+    body, #weaponStatsDiv, .row100 {
+      background-color: transparent !important;
+    }
+
+    .border1px, .formContainer {
+      background-color: #aaaaaa15;
+    }
+
+    .formContainer .col {
+      max-width: 210px;
+    }
+
+    h3 {
+      font-weight: 700;
+    }
+    h1 {
+      display: none;
+    }
+  }
+
+  @font-face {
+    font-family: 'Play', sans-serif;
+    src: url('../fonts/Play/Play-Bold.ttf');
+  }
+
+  html.survariumProFonts {
     font-family: 'Play', sans-serif !important;
     color: rgba(245,245,245,0.65)  !important;;
     -webkit-font-smoothing: antialiased;
+    body {
+      font-family: 'Play', sans-serif !important;
+      color: rgba(245,245,245,0.65)  !important;;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .select2-container {
+      color: black;
+    }
   }
 
-  .select2-container {
-    color: black;
+  /* The switch - the box around the slider */
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 36px;
+    height: 22px;
   }
-}
 
-/* The switch - the box around the slider */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 36px;
-  height: 22px;
-}
+  /* Hide default HTML checkbox */
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
 
-/* Hide default HTML checkbox */
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
+  /* The slider */
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
 
-/* The slider */
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 21px;
+    left: 2px;
+    bottom: 2px;
+    background: #808080;
+    -webkit-transition: .3s;
+    transition: .3s;
+  }
 
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 18px;
-  width: 21px;
-  left: 2px;
-  bottom: 2px;
-  background: #808080;
-  -webkit-transition: .3s;
-  transition: .3s;
-}
+  input:checked + .slider {
+    background-color: #BBB;
+  }
 
-input:checked + .slider {
-  background-color: #BBB;
-}
+  input:focus + .slider {
+    box-shadow: 0 0 1px #BBB;
+  }
 
-input:focus + .slider {
-  box-shadow: 0 0 1px #BBB;
-}
+  input:checked + .slider:before {
+    -webkit-transform: translateX(11px);
+    -ms-transform: translateX(11px);
+    transform: translateX(11px);
+  }
 
-input:checked + .slider:before {
-  -webkit-transform: translateX(11px);
-  -ms-transform: translateX(11px);
-  transform: translateX(11px);
-}
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 3px;
+  }
 
-/* Rounded sliders */
-.slider.round {
-  border-radius: 3px;
-}
+  .slider.round:before {
+    border-radius: 3px;
+  }
 
-.slider.round:before {
-  border-radius: 3px;
-}
+  .ms-container {
+    width: auto;
+  }
 
-.ms-container {
-  width: auto;
-}
+  .search-input {
+    font-size: 16px;
+  }
 
-.search-input {
-  font-size: 16px;
-}
+  .displayNone {
+    display: none;
+  }
 
-.displayNone {
-  display: none;
-}
+  .displayBlock {
+    display: block !important;
+  }
 
-.displayBlock {
-  display: block !important;
-}
+  .valueSpan2 {
+    display: inline-block;
+    min-width: 3em;
+    font-weight: unset !important;
+    margin-left: 0 !important;
+  }
 
-.valueSpan2 {
-  display: inline-block;
-  min-width: 3em;
-  font-weight: unset !important;
-  margin-left: 0 !important;
-}
+  .no-wrap {
+    white-space: nowrap;
+  }
 
-.no-wrap {
-  white-space: nowrap;
-}
+  /* The rangeSlider itself */
+  .rangeSlider {
+    -webkit-appearance: none;  /* Override default CSS styles */
+    appearance: none;
+    width: 100%; /* Full-width */
+    height: 22px; /* Specified height */
+    background: white; /* Grey background */
+    outline: none; /* Remove outline */
+    /* opacity: 0.7; Set transparency (for mouse-over effects on hover) */
+    /*-webkit-transition: .2s; 0.2 seconds transition on hover
+    transition: opacity .2s;*/
+  }
 
-/* The rangeSlider itself */
-.rangeSlider {
-  -webkit-appearance: none;  /* Override default CSS styles */
-  appearance: none;
-  width: 100%; /* Full-width */
-  height: 22px; /* Specified height */
-  background: white; /* Grey background */
-  outline: none; /* Remove outline */
-  /* opacity: 0.7; Set transparency (for mouse-over effects on hover) */
-  /*-webkit-transition: .2s; 0.2 seconds transition on hover
-  transition: opacity .2s;*/
-}
+  /* Mouse-over effects */
+  .rangeSlider:hover {
+    opacity: 1; /* Fully shown on mouse-over */
+  }
 
-/* Mouse-over effects */
-.rangeSlider:hover {
-  opacity: 1; /* Fully shown on mouse-over */
-}
+  /* The rangeSlider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+  .rangeSlider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    width: 22px; /* Set a specific rangeSlider handle width */
+    height: 18px; /* rangeSlider handle height */
+    background: #808080; /* Green background */
+    cursor: pointer; /* Cursor on hover */
+    border-radius: 3px;
+  }
 
-/* The rangeSlider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
-.rangeSlider::-webkit-slider-thumb {
-  -webkit-appearance: none; /* Override default look */
-  appearance: none;
-  width: 22px; /* Set a specific rangeSlider handle width */
-  height: 18px; /* rangeSlider handle height */
-  background: #808080; /* Green background */
-  cursor: pointer; /* Cursor on hover */
-  border-radius: 3px;
-}
-
-.rangeSlider::-moz-range-thumb {
-  border-radius: 3px;
-  width: 25px; /* Set a specific rangeSlider handle width */
-  height: 12px; /* rangeSlider handle height */
-  background: #707070; /* Green background */
-  cursor: pointer; /* Cursor on hover */
-}
+  .rangeSlider::-moz-range-thumb {
+    border-radius: 3px;
+    width: 25px; /* Set a specific rangeSlider handle width */
+    height: 12px; /* rangeSlider handle height */
+    background: #707070; /* Green background */
+    cursor: pointer; /* Cursor on hover */
+  }
