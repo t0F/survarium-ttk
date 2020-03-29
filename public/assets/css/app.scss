@@ -87,7 +87,7 @@ html.survariumProFonts {
   position: relative;
   display: inline-block;
   width: 50px;
-  height: 20px;
+  height: 22px;
 }
 
 /* Hide default HTML checkbox */
@@ -113,11 +113,11 @@ html.survariumProFonts {
 .slider:before {
   position: absolute;
   content: "";
-  height: 14px;
+  height: 18px;
   width: 21px;
-  left: 4px;
-  bottom: 3px;
-  background-color: white;
+  left: 3px;
+  bottom: 2px;
+  background: #DDD;
   -webkit-transition: .4s;
   transition: .4s;
 }
@@ -131,9 +131,9 @@ input:focus + .slider {
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(21px);
-  -ms-transform: translateX(21px);
-  transform: translateX(21px);
+  -webkit-transform: translateX(24px);
+  -ms-transform: translateX(24px);
+  transform: translateX(24px);
 }
 
 /* Rounded sliders */
