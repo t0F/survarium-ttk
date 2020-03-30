@@ -273,12 +273,6 @@ th, td {
     display: block !important;
 }
 
-.cell100 {
-    white-space: nowrap;
-    max-width: 230px;
-    border-top: 1px solid #898989;
-}
-
 .columnHeader {
     border-top: none;
 }
