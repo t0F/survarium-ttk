@@ -129,6 +129,10 @@ li[role=option], .dropdown-menu > li {
   }
 }
 
+a.page-link {
+  padding-top: 4px;
+}
+
 button:focus, .button:focus, .form-control:focus, .page-item:focus {
   outline: none !important;
   outline-color: unset;
