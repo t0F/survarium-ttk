@@ -266,6 +266,18 @@ class WeaponService
                 $weaponArray[$this->translator->trans('reload time')] = $weapon->getReloadTime();
                 $weaponArray[$this->translator->trans('muzzle velocity')] = $weapon->getBulletSpeed();
 
+                $weaponArray[$this->translator->trans('unmasking radius')] = $weapon->getUnmaskingRadius();
+                $weaponArray[$this->translator->trans('aimed movement speed factor')] = $weapon->getAimedMovementSpeedFactor();
+                $weaponArray[$this->translator->trans('melee time')] = $weapon->getMeleeTime();
+                $weaponArray[$this->translator->trans('show time')] = $weapon->getShowTime();
+                $weaponArray[$this->translator->trans('aim time')] = $weapon->getAimTime();
+                $weaponArray[$this->translator->trans('hide time')] = $weapon->getHideTime();
+                $weaponArray[$this->translator->trans('stamina damage')] = $weapon->getStaminaDamage();
+                $weaponArray[$this->translator->trans('player pierce')] = $weapon->getPlayerPierce();
+                $weaponArray[$this->translator->trans('player pierced damage factor')] = $weapon->getPlayerPiercedDamageFactor();
+                $weaponArray[$this->translator->trans('chamber a round time')] = $weapon->getChamberARoundTime();
+                $weaponArray[$this->translator->trans('tactical reload time')] = $weapon->getTacticalReloadTime();
+
                 $weaponArray['id'] = $weapon->getId();
                 $weaponsArray[] = $weaponArray;
             }

@@ -96,6 +96,10 @@ window.table = window.weaponStats.dataTable({
             spanOnyx.html(valueOnyx.val() + '%');
         });
 
+        if(window.bResponsive === true) {
+            $('table#weaponsStats > tbody > tr > td:first-child').css('cursor', 'pointer');
+        }
+
         $('.select2-container').css('width', 'auto');
 
         //ready to show
@@ -110,6 +114,7 @@ window.weaponStats.on('draw.dt', function () {
     $('#weaponsStats tbody tr td:nth-child(' + ($("#weaponsStats thead tr th.border1px").index() + 1) + ')')
         .addClass('border1px');
     $('#weaponsStats tbody tr').addClass(['cell100']);
+    $('table#weaponsStats > tbody > tr > td:first-child').css('cursor', 'pointer');
 });
 
 // SHOW / HIDE COLUMNS
