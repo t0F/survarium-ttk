@@ -105,6 +105,14 @@ li[role=option], .dropdown-menu > li {
   transition: none;
 }
 
+
+.cell100 {
+  white-space: nowrap;
+  max-width: 230px;
+  border-top: 1px solid hsla(0,0%,95.4%,0.2);
+}
+
+
 #message {
   display: inline-block;
   margin-top: 5px;
