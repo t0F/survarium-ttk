@@ -150,6 +150,12 @@ class WeaponService
                             if($modifier['path'][1] == 'magazine_capacity') {
                                 $weapon->setMagazineCapacity($modifier['value']);
                             }
+
+                            if($modifier['path'][1] == 'unmasking_radius') {
+                                $radius = $weapon->getUnmaskingRadius();
+                                $radius = $radius * (1 + $modifier['value']);
+                                $weapon->setUnmaskingRadius($radius);
+                            }
                         }
                     }
                 }
