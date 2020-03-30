@@ -307,9 +307,10 @@ html.survariumProFonts {
   width: 21px;
   left: 2px;
   bottom: 2px;
+  color: white;
   background: #808080;
-  -webkit-transition: .3s;
-  transition: .3s;
+  -webkit-transition: .2s;
+  transition: .2s;
 }
 
 input:checked + .slider {
@@ -324,6 +325,7 @@ input:checked + .slider:before {
   -webkit-transform: translateX(11px);
   -ms-transform: translateX(11px);
   transform: translateX(11px);
+  content: '\2713';
 }
 
 /* Rounded sliders */
@@ -333,6 +335,7 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 3px;
+  content: "x";
 }
 
 .ms-container {
@@ -381,7 +384,7 @@ input:checked + .slider:before {
 }
 
 /* The rangeSlider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
-.rangeSlider::-webkit-slider-thumb {
+.rangeSlider::-webkit-slider-thumb, .rangeSlider::-moz-range-thumb {
   -webkit-appearance: none; /* Override default look */
   appearance: none;
   width: 22px; /* Set a specific rangeSlider handle width */
@@ -389,12 +392,4 @@ input:checked + .slider:before {
   background: #808080; /* Green background */
   cursor: pointer; /* Cursor on hover */
   border-radius: 3px;
-}
-
-.rangeSlider::-moz-range-thumb {
-  border-radius: 3px;
-  width: 25px; /* Set a specific rangeSlider handle width */
-  height: 12px; /* rangeSlider handle height */
-  background: #707070; /* Green background */
-  cursor: pointer; /* Cursor on hover */
 }
