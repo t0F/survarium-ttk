@@ -47,7 +47,8 @@ li[role=option]:hover, li[role=option]:active, .selected .active, .select2-resul
 }
 
 .select2-search, .select2-results, .filter-option {
-  opacity: 0.8;
+  opacity: 0.6;
+  font-weight:600;
 }
 
 li[role=option], .dropdown-menu > li {
