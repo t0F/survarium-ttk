@@ -46,6 +46,10 @@ li[role=option]:hover, li[role=option]:active, .selected .active, .select2-resul
   transition: none !important;
 }
 
+.select2-search, .select2-results, .filter-option {
+  opacity: 0.8;
+}
+
 li[role=option], .dropdown-menu > li {
   color: hsla(0,0%,3.9%,1)!important;
   font-family:Play, sans-serif;
@@ -67,7 +71,7 @@ li[role=option], .dropdown-menu > li {
 
 .btn-light.hover, .btn-light:hover, .btn-light.active, .btn-light[aria-expanded="true"], .btn-light:active, .btn-light.focus, .btn-light:focus {
   background: white !important;
-  color: hsla(0,0%,3.9%,1)!important;
+  color: hsla(0,0%, 3.9% ,1)!important;
   font-family:Play, sans-serif;
   font-size:12px;
   font-weight:600;
