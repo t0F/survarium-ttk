@@ -10,11 +10,22 @@ magazine size: Magazine Size
 bleed chance: Bleed Chance
 material penetration: Material Penetration
 weight: Weight
-reload time: Reload Time
+reload time: Reload
 muzzle velocity: Muzzle Velocity
 sample damage: Real Damage
 sample bullets to kill: Bullets To Kill
 sample timetokill: Time To Kill
+unmasking radius: Unmasking Radius
+aimed movement speed factor: Aimed Movement Factor
+melee time: Melee Time
+show time: Show Time
+aim time: AIM TIME
+hide time: Hide Time
+stamina damage: Stamina Damage
+player pierce: Player Pierce
+player pierce damage factor: Player Pierce Damage
+chamber a round time: Chamber a round
+tactical reload time: Tactical Reload
 
 # weapons categories
 ASSAULT RIFLE: Assault Rifle
