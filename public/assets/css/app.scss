@@ -129,10 +129,15 @@ li[role=option], .dropdown-menu > li {
   }
 }
 
-button:focus, .button:focus, th:focus, td:focus, .form-control:focus, .page-item:focus {
+button:focus, .button:focus, .form-control:focus, .page-item:focus {
   outline: none !important;
   outline-color: unset;
   border: 0;
+}
+
+th:focus, td:focus {
+  outline: none !important;
+  outline-color: unset;
 }
 
 textarea:focus,
