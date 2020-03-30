@@ -303,7 +303,10 @@ html.survariumProFonts {
   -webkit-transition: .4s;
   transition: .4s;
 }
-
+.page-item.disabled .page-link {
+  border-color: #ccc;
+  color: #ccc;
+}
 .slider:before {
   position: absolute;
   content: "";
