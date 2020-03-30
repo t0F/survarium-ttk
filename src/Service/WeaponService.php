@@ -265,7 +265,6 @@ class WeaponService
                 $weaponArray[$this->translator->trans('weight')] = $weapon->getWeight();
                 $weaponArray[$this->translator->trans('reload time')] = $weapon->getReloadTime();
                 $weaponArray[$this->translator->trans('muzzle velocity')] = $weapon->getBulletSpeed();
-
                 $weaponArray[$this->translator->trans('unmasking radius')] = $weapon->getUnmaskingRadius();
                 $weaponArray[$this->translator->trans('aimed movement speed factor')] = $weapon->getAimedMovementSpeedFactor();
                 $weaponArray[$this->translator->trans('melee time')] = $weapon->getMeleeTime();
@@ -367,7 +366,15 @@ class WeaponService
     {
         $bonusRof = ($this->sampleBonusROF === true) ? 0.05 : 0;
         $bonus = 1 + ($weapon->getRofModifier() + $bonusRof);
-        return $bonus * $weapon->getRoundsPerMinute();
+        if($weapon->getChamberARoundTime() == 0) {
+            return $bonus * $weapon->getRoundsPerMinute();
+        }
+        $rof = $bonus * $weapon->getRoundsPerMinute();
+        $realRof = 60 / ( (60 / $rof) + $weapon->getChamberARoundTime());
+        if(round($realRof != round($realRof))) {
+            $realRof = floor($realRof);
+        }
+        return $realRof;
     }
 
     public function getDPS(Weapon $weapon)
