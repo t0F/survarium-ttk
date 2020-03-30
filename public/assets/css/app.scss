@@ -342,6 +342,7 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 3px;
+  font-weight: 600;
   content: "x";
 }
 
