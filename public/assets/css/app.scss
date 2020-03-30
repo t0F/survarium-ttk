@@ -51,6 +51,10 @@ li[role=option]:hover, li[role=option]:active, .selected .active, .select2-resul
   font-weight:600;
 }
 
+.check-mark {
+  opacity: 0.8;
+}
+
 li[role=option], .dropdown-menu > li {
   color: hsla(0,0%,3.9%,1)!important;
   font-family:Play, sans-serif;
