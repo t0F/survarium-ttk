@@ -384,7 +384,17 @@ input:checked + .slider:before {
 }
 
 /* The rangeSlider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
-.rangeSlider::-webkit-slider-thumb, .rangeSlider::-moz-range-thumb {
+.rangeSlider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 22px; /* Set a specific rangeSlider handle width */
+  height: 18px; /* rangeSlider handle height */
+  background: #808080; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+  border-radius: 3px;
+}
+
+.rangeSlider::-moz-range-thumb {
   -webkit-appearance: none; /* Override default look */
   appearance: none;
   width: 22px; /* Set a specific rangeSlider handle width */
