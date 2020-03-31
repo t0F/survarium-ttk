@@ -88,8 +88,6 @@ window.table = window.weaponStats.dataTable({
             spanRange.html(valueRange.val() + 'm');
         });
 
-        $('.page-item').css('opacity', '.8'); //didn't work in css, dunno why
-
         const spanOnyx = $('#spanOnyx');
         spanOnyx.prev().append(spanOnyx).addClass('displayBlock');
         const valueOnyx = $('#form_onyx');
@@ -117,6 +115,7 @@ window.weaponStats.on('draw.dt', function () {
         .addClass('border1px');
     $('#weaponsStats tbody tr').addClass(['cell100']);
     $('table#weaponsStats > tbody > tr > td:first-child').css('cursor', 'pointer');
+    $('.page-item').css('opacity', '.8'); //didn't work in css, dunno why
 });
 
 // SHOW / HIDE COLUMNS
