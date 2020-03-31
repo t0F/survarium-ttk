@@ -88,6 +88,8 @@ window.table = window.weaponStats.dataTable({
             spanRange.html(valueRange.val() + 'm');
         });
 
+        $('.page-item').css('opacity', '.8'); //didn't work in css, dunno why
+
         const spanOnyx = $('#spanOnyx');
         spanOnyx.prev().append(spanOnyx).addClass('displayBlock');
         const valueOnyx = $('#form_onyx');
