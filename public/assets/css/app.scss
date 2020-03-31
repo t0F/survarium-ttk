@@ -48,10 +48,12 @@ li[role=option]:hover, li[role=option]:active, .selected .active, .select2-resul
 .dropdown-toggle {
   transition: none !important;
   color: hsla(0,0%,3.9%,1)!important;
+  background-color: #ffffff96 !important;
 }
 
 .bootstrap-select {
   transition: none !important;
+  background: none;
 }
 
 .select2-search, .select2-results, .filter-option {
@@ -61,6 +63,10 @@ li[role=option]:hover, li[role=option]:active, .selected .active, .select2-resul
 
 .bootstrap-select>.dropdown-toggle:after {
   opacity: 0.6;
+}
+
+div.dropdown {
+  border-radius: 23px;
 }
 
 .select2-selection__arrow {
@@ -218,6 +224,7 @@ input[type=button]:focus,
 
 input[type=search] {
   color: #0a0a0a!important;
+  border-radius: 3px;
 }
 
 .bootstrap-select > select.mobile-device:focus + .dropdown-toggle, .bootstrap-select .dropdown-toggle:focus {
