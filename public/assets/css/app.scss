@@ -345,6 +345,11 @@ html.survariumProFonts {
   -webkit-transition: .2s;
   transition: .2s;
 }
+
+.page-item {
+  opacity: .8;
+}
+
 .page-item.disabled .page-link {
   border-color: #ccc;
   color: #ccc;
