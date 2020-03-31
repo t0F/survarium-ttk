@@ -80,6 +80,8 @@ li[role=option], .dropdown-menu > li {
   font-family:Play, sans-serif;
   font-size:12px;
   font-weight:600;
+  border: 1px !important;;
+  box-shadow: inset 0 0 0 #ddd !important;
 }
 
 .btn-light.hover, .btn-light:hover, .btn-light.active, .btn-light[aria-expanded="true"], .btn-light:active, .btn-light.focus, .btn-light:focus {
@@ -94,9 +96,8 @@ li[role=option], .dropdown-menu > li {
   background: white !important;
 }
 
-.btn-light {
-  border: 1px !important;;
-  box-shadow: inset 0 0 0 #ddd !important;
+.dropdown.bootstrap-select.show-tick.form-control.customWidth button {
+  opacity: .98;
 }
 
 .dropdown-menu > li:hover, .dropdown-item:focus, .dropdown-item:hover,
