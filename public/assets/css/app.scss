@@ -59,6 +59,15 @@ li[role=option]:hover, li[role=option]:active, .selected .active, .select2-resul
   font-weight:600;
 }
 
+.bootstrap-select>.dropdown-toggle:after {
+  opacity: 0.6;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  height: 22px;
+  margin-right: -2px !important;
+}
+
 .check-mark, .dropdown-toggle, .dropdown-toggle::after, .filter-option::after, input[type=search] {
   opacity: 0.8;
 }
