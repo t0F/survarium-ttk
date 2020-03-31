@@ -115,7 +115,6 @@ window.weaponStats.on('draw.dt', function () {
         .addClass('border1px');
     $('#weaponsStats tbody tr').addClass(['cell100']);
     $('table#weaponsStats > tbody > tr > td:first-child').css('cursor', 'pointer');
-    $('.page-item').css('opacity', '.8'); //didn't work in css, dunno why
 });
 
 // SHOW / HIDE COLUMNS
