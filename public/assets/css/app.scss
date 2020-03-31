@@ -112,6 +112,14 @@ li[role=option], .dropdown-menu > li {
   border-top: 1px solid hsla(0,0%,95.4%,0.2);
 }
 
+th {
+  border-top: none !important;
+}
+
+li.previous a, li.next a {
+  border-radius: 0 !important;
+}
+
 
 #message {
   display: inline-block;
