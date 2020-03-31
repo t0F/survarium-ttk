@@ -64,7 +64,7 @@ li[role=option]:hover, li[role=option]:active, .selected .active, .select2-resul
 }
 
 .select2-selection__arrow {
-  height: 22px;
+  height: 22px !important;
   margin-right: -2px !important;
 }
 
