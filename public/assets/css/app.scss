@@ -59,7 +59,7 @@ li[role=option]:hover, li[role=option]:active, .selected .active, .select2-resul
   font-weight:600;
 }
 
-.check-mark, .dropdown-toggle, input[type=search] {
+.check-mark, .dropdown-toggle, .filter-option::after, input[type=search] {
   opacity: 0.8;
 }
 
@@ -205,6 +205,10 @@ input[type=button]:focus,
   outline: none !important;
   outline-color: unset;
   box-shadow: inset 0 0 0 #ddd;
+}
+
+input[type=search] {
+  color: #0a0a0a!important;
 }
 
 .bootstrap-select > select.mobile-device:focus + .dropdown-toggle, .bootstrap-select .dropdown-toggle:focus {
@@ -390,6 +394,7 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 3px;
   font-weight: 600;
+  content: '✖';
 }
 
 .ms-container {
