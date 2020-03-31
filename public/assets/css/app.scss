@@ -59,7 +59,7 @@ li[role=option]:hover, li[role=option]:active, .selected .active, .select2-resul
   font-weight:600;
 }
 
-.check-mark, .dropdown-toggle, .filter-option::after, input[type=search] {
+.check-mark, .dropdown-toggle, .dropdown-toggle::after, .filter-option::after, input[type=search] {
   opacity: 0.8;
 }
 
