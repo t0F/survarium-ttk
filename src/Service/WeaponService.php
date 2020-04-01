@@ -371,6 +371,9 @@ class WeaponService
     public function getROFWithBonus(Weapon $weapon)
     {
         $bonusRof = ($this->sampleBonusROF === true) ? 0.05 : 0;
+        if($weapon->getName() == 'Glock 17 "Legend"') {
+            $bonusRof += 1.25;
+        }
         $bonus = 1 + ($weapon->getRofModifier() + $bonusRof);
         if($weapon->getChamberARoundTime() == 0) {
             return $bonus * $weapon->getRoundsPerMinute();
