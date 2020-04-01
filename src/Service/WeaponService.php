@@ -137,6 +137,7 @@ class WeaponService
             $weapon->setMaterialPierce($stats['material_pierce']);
             $weapon->setGameVersion($version);
             $weapon->setDisplayType($this->displayType($stats['type'], $stats['magazine_capacity'], $name));
+            $weapon->setShotsParams(json_encode($stats['aim_recoil']));
 
             //modifications
             if(isset($stats['default_modifications']) && $stats['default_modifications'] != null) {
@@ -257,8 +258,10 @@ class WeaponService
 
                 $weaponArray[$this->translator->trans('name')] = $name;
                 $weaponArray[$this->translator->trans('sample timetokill')] = round($this->getArmorTimeToKill($weapon, $this->sampleEquipment),2);
-                $weaponArray[$this->translator->trans('sample bullets to kill')] = $this->getArmorBTK($weapon, $this->sampleEquipment);
+                $nbBtK = $this->getArmorBTK($weapon, $this->sampleEquipment);
+                $weaponArray[$this->translator->trans('sample bullets to kill')] = $nbBtK;
                 $weaponArray[$this->translator->trans('sample damage')] = round($this->getArmorDamage($weapon, $this->sampleEquipment),2);
+                $weaponArray[$this->translator->trans('sample avg.  accuracy')] = $this->getAvgAccuracy($weapon, $nbBtK);
                 $weaponArray[$this->translator->trans('type')] = $weapon->getDisplayType();
                 $weaponArray[$this->translator->trans('damage')] = round(100 * $weapon->getBulletDamage(),2);
                 $weaponArray[$this->translator->trans('armor penetration')] = round(100 * $weapon->getPlayerPierce());
@@ -296,6 +299,7 @@ class WeaponService
                         : strtoupper(str_replace('_', ' ', $weapon->getName()))
                 ));
                 $weaponArray[$this->translator->trans('name')] = $name;
+                $nbBtK = $this->getArmorBTK($weapon, $this->sampleEquipment);
                 $weaponArray[$this->translator->trans('type')] = $this->translator->trans($weapon->getDisplayType());
                 $weaponArray[$this->translator->trans('damage')] = round(100 * $weapon->getBulletDamage(), 2);
                 $weaponArray[$this->translator->trans('armor penetration')] = round(100 * $weapon->getPlayerPierce());
@@ -308,8 +312,9 @@ class WeaponService
                 $weaponArray[$this->translator->trans('weight')] = $weapon->getWeight();
                 $weaponArray[$this->translator->trans('reload time')] = $weapon->getReloadTime();
                 $weaponArray[$this->translator->trans('muzzle velocity')] = $weapon->getBulletSpeed();
+                $weaponArray[$this->translator->trans('sample avg.  accuracy')] = $this->getAvgAccuracy($weapon, $nbBtK);
                 $weaponArray[$this->translator->trans('sample damage')] = round($this->getArmorDamage($weapon, $this->sampleEquipment),2);
-                $weaponArray[$this->translator->trans('sample bullets to kill')] = $this->getArmorBTK($weapon, $this->sampleEquipment);
+                $weaponArray[$this->translator->trans('sample bullets to kill')] = $nbBtK;
                 $weaponArray[$this->translator->trans('sample timetokill')] = round($this->getArmorTimeToKill($weapon, $this->sampleEquipment),2);
                 $weaponArray['id'] = $weapon->getId();
                 $weaponsArray[] = $weaponArray;
@@ -331,6 +336,33 @@ class WeaponService
         } else {
             return $weapon->getEffectiveDistance();
         }
+    }
+
+    public function getAvgAccuracy(Weapon $weapon, $nbBtK) {
+        $shotsParam = json_decode($weapon->getShotsParams());
+        $allShotsAccuracies = [];
+
+        if($nbBtK > $weapon->getMagazineCapacity()
+        || $weapon->getDisplayType() == 'SHOTGUN'
+            || $weapon->getDisplayType() == 'SHOTGUN'
+            || $weapon->getDisplayType() == 'SPECIAL') {
+            return '-';
+        }
+
+        $min = 0;
+        for ($i = 1; $i <= $nbBtK; $i++) {
+            if(!isset($shotsParam->shots_params[$i-1])) {
+                return '-';
+            }
+            $allShotsAccuracies[] = $shotsParam->shots_params[$i-1][2]; //0 recoil power, 1 recoil angle, 2 accuracy
+            $min = $shotsParam->shots_params[$i-1][2];
+        }
+        $avg = round($shotsParam->standing_stand_accuracy * (array_sum($allShotsAccuracies) / count($allShotsAccuracies)), 2);
+        $min = round($shotsParam->standing_stand_accuracy * ($min), 2);
+        if($min == $avg) {
+            return $avg;
+        }
+        return $avg . ' - ' . $min;
     }
 
     public function getArmorDamage(Weapon $weapon, Equipment $equipment)
