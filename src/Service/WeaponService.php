@@ -261,8 +261,8 @@ class WeaponService
                 $nbBtK = $this->getArmorBTK($weapon, $this->sampleEquipment);
                 $weaponArray[$this->translator->trans('sample bullets to kill')] = $nbBtK;
                 $weaponArray[$this->translator->trans('sample damage')] = round($this->getArmorDamage($weapon, $this->sampleEquipment),2);
-                $weaponArray[$this->translator->trans('sample avg.  accuracy')] = $this->getAvgAccuracy($weapon, $nbBtK);
                 $weaponArray[$this->translator->trans('type')] = $weapon->getDisplayType();
+                $weaponArray[$this->translator->trans('sample avg.  accuracy')] = $this->getAvgAccuracy($weapon, $nbBtK);
                 $weaponArray[$this->translator->trans('damage')] = round(100 * $weapon->getBulletDamage(),2);
                 $weaponArray[$this->translator->trans('armor penetration')] = round(100 * $weapon->getPlayerPierce());
                 $weaponArray[$this->translator->trans('rate of fire')] = round($this->getROFWithBonus($weapon));
