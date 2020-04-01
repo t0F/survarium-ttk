@@ -349,6 +349,7 @@ class WeaponService
             return '-';
         }
 
+        $max = $shotsParam->shots_params[0][2];
         $min = 0;
         for ($i = 1; $i <= $nbBtK; $i++) {
             if(!isset($shotsParam->shots_params[$i-1])) {
@@ -357,12 +358,13 @@ class WeaponService
             $allShotsAccuracies[] = $shotsParam->shots_params[$i-1][2]; //0 recoil power, 1 recoil angle, 2 accuracy
             $min = $shotsParam->shots_params[$i-1][2];
         }
-        $avg = round($shotsParam->standing_stand_accuracy * (array_sum($allShotsAccuracies) / count($allShotsAccuracies)), 2);
-        $min = round($shotsParam->standing_stand_accuracy * ($min), 2);
+        $avg = round($shotsParam->standing_stand_accuracy * (array_sum($allShotsAccuracies) / count($allShotsAccuracies)), 1);
+        $min = round($shotsParam->standing_stand_accuracy * ($min), 1);
+        $max= round($shotsParam->standing_stand_accuracy * ($max), 1);
         if($min == $avg) {
             return $avg;
         }
-        return $avg . ' - ' . $min;
+        return $max . ' - ' . $avg . ' - ' . $min;
     }
 
     public function getArmorDamage(Weapon $weapon, Equipment $equipment)
