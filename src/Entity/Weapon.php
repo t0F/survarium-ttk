@@ -202,6 +202,11 @@ class Weapon implements TranslatableInterface
      */
     private $rofModifier;
 
+    /**
+     * @ORM\Column(type="string", length=15000, nullable=true)
+     */
+    private $shotsParams;
+
     public function __construct()
     {
         $this->gearSets = new ArrayCollection();
@@ -646,6 +651,18 @@ class Weapon implements TranslatableInterface
     public function setRofModifier(?float $rofModifier): self
     {
         $this->rofModifier = $rofModifier;
+
+        return $this;
+    }
+
+    public function getShotsParams(): ?string
+    {
+        return $this->shotsParams;
+    }
+
+    public function setShotsParams(?string $shotsParams): self
+    {
+        $this->shotsParams = $shotsParams;
 
         return $this;
     }
