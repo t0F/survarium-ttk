@@ -350,13 +350,14 @@ class WeaponService
         }
 
         $max = $shotsParam->shots_params[0][2];
-        $min = 0;
+        $min = $shotsParam->shots_params[0][2];;
         for ($i = 1; $i <= $nbBtK; $i++) {
             if(!isset($shotsParam->shots_params[$i-1])) {
-                return '-';
+                $allShotsAccuracies[] = $shotsParam->shots_params[0][2];
+            } else {
+                $allShotsAccuracies[] = $shotsParam->shots_params[$i-1][2]; //0 recoil power, 1 recoil angle, 2 accuracy
+                $min = $shotsParam->shots_params[$i-1][2];
             }
-            $allShotsAccuracies[] = $shotsParam->shots_params[$i-1][2]; //0 recoil power, 1 recoil angle, 2 accuracy
-            $min = $shotsParam->shots_params[$i-1][2];
         }
         $avg = round($shotsParam->standing_stand_accuracy * (array_sum($allShotsAccuracies) / count($allShotsAccuracies)), 1);
         $min = round($shotsParam->standing_stand_accuracy * ($min), 1);
