@@ -41,6 +41,11 @@ class defaultController extends AbstractController
         return $this->redirectToRoute('stats');
     }
 
+    public function logVisit() {
+        $count = file_get_contents($_ENV['VISITSLOG']);
+        file_put_contents($_ENV['VISITSLOG'], $count + 1);
+    }
+
     /**
      * @Route("/survarium/{param1}/{param2}", name="stats", defaults={"utm_source": false, "utm_lang": false, "param1": false, "param2": false})
      * @param Request $request
@@ -49,6 +54,7 @@ class defaultController extends AbstractController
      */
     public function stats(Request $request, TranslatorInterface $translator)
     {
+        $this->logVisit();
         $source = $request->query->get('utm_source');
         $survariumPro = false;
         $responsive = false;
