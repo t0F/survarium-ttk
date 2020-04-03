@@ -15,6 +15,7 @@ muzzle velocity: Sortie de canon
 sample damage: Dommages sur Cible
 sample bullets to kill: Nb de Balles pour Tuer
 sample timetokill: Temps pour Tuer
+recoil pattern: Pattern du Recul
 
 # weapons categories
 ASSAULT RIFLE: Fusil d'assaut

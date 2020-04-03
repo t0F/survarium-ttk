@@ -27,7 +27,21 @@
         {% endblock %}
     </head>
     <body>
+        <!-- CSS Loader -->
         <div id='progress' class='container-fluid'></div>
+
+        <!-- Modal -->
+        <div class="modal" id="empModal" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content -->
         <div id= 'contentBody' class='container' style='display:none;'>
             <script> const lang = "{{ utm_lang }}"; </script>
             <script> const ajaxStatsUrl = "{{ path('ajaxstats', {utm_source: utm_source, utm_lang: utm_lang }) }}"; </script>

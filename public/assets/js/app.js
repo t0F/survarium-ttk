@@ -12,6 +12,7 @@ require('datatables.net-responsive-bs4');
 require('@fortawesome/fontawesome-free');
 require('../css/select2.css');
 require('./dtLocales.js');
+let CanvasJSChart = require('./jquery.canvasjs.min');
 
 window.weaponStats = $('#weaponsStats');
 window.headersIndex = [];
@@ -100,6 +101,8 @@ window.table = window.weaponStats.dataTable({
             $('table#weaponsStats > tbody > tr > td:first-child').css('cursor', 'pointer');
         }
 
+        showPatterButtons();
+
         $('.select2-container').css('width', 'auto');
 
         //ready to show
@@ -108,6 +111,44 @@ window.table = window.weaponStats.dataTable({
     }
 });
 
+function patternCall(weaponIdVal) {
+
+    $.ajax({
+        url: window.recoilUrl,
+        type: 'get',
+        data: {weaponId: weaponIdVal},
+        success: function(response){
+            $('.modal-body').html(response);
+            let chart = new CanvasJSChart.Chart("chartContainer", {
+                backgroundColor: "rgba(0,0,0,0.2)",
+                //title:{ text: window.weaponName},
+                height: 500,
+                width: 280,
+                axisX:{
+                    minimum: -window.startX,
+                    maximum: window.startX,
+                    gridThickness: 0,
+                },
+                axisY:{ gridThickness: 0 },
+                data: [{
+                    type: "line",
+                    markerSize: 0,
+                    lineThickness: 1,
+                    dataPoints: window.recoilJson
+                }]
+            });
+            chart.render();
+            $('#empModal').modal('show');
+        }
+    });
+}
+
+function showPatterButtons() {
+    $('.showPattern').click(function(){
+        patternCall($(this).data('id'));
+    });
+}
+
 //RESET PARTICULAR CSS ON REDRAW
 window.weaponStats.on('draw.dt', function () {
     //HightLight Time To Kill by selector .border1px
@@ -115,6 +156,7 @@ window.weaponStats.on('draw.dt', function () {
         .addClass('border1px');
     $('#weaponsStats tbody tr').addClass(['cell100']);
     $('table#weaponsStats > tbody > tr > td:first-child').css('cursor', 'pointer');
+    showPatterButtons();
 });
 
 // SHOW / HIDE COLUMNS
@@ -157,6 +199,7 @@ window.ajaxForm.submit(function (e) {
                 window.table.fnAddData(values, false);
             });
             window.table.fnSettings().aaSorting = order;
+            showPatterButtons();
             window.table.fnDraw();
             $('#message').text(response.message);
             formSave.removeClass(['btn-outline-secondary', 'disabled']);
