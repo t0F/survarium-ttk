@@ -26,7 +26,7 @@ player pierce: Player Pierce
 player pierced damage factor: Player Pierce Damage
 chamber a round time: Chamber a round
 tactical reload time: Tactical Reload
-sample avg.  accuracy : Max - Avg - Min Accuracy
+sample avg.  accuracy : First - Avg - Last Accuracy
 
 # weapons categories
 ASSAULT RIFLE: Assault Rifle

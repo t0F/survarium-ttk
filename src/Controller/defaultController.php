@@ -54,7 +54,7 @@ class defaultController extends AbstractController
      */
     public function stats(Request $request, TranslatorInterface $translator)
     {
-        $this->logVisit();
+        //$this->logVisit();
         $source = $request->query->get('utm_source');
         $survariumPro = false;
         $responsive = false;
