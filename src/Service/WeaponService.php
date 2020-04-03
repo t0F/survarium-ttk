@@ -242,14 +242,14 @@ class WeaponService
         }
     }
 
-    public function getWeaponsStats($survariumPro = false)
+    public function getWeaponsStats($survariumPro = false, $ajaxCall = false)
     {
         $weaponRepo = $this->em->getRepository('App:Weapon');
         $weaponsEnt = $weaponRepo->findByGameVersionAndLocale($this->sampleVersion, $this->locale, $this->showSpecial);
-        return $this->weaponsToArray($weaponsEnt, $survariumPro);
+        return $this->weaponsToArray($weaponsEnt, $survariumPro, $ajaxCall);
     }
 
-    public function weaponsToArray($weapons, $survariumPro = false)
+    public function weaponsToArray($weapons, $survariumPro = false, $ajaxCall = false)
     {
         $weaponsArray = [];
 
@@ -274,6 +274,14 @@ class WeaponService
                 $weaponArray[$this->translator->trans('sample damage')] = round($this->armorDamage,2);
                 $weaponArray[$this->translator->trans('type')] = $weapon->getDisplayType();
                 $weaponArray[$this->translator->trans('sample avg.  accuracy')] = $this->getAvgAccuracy($weapon, $this->armorBTK);
+
+                if($ajaxCall == false ) {
+                    $weaponArray[$this->translator->trans('recoil pattern')] = $weapon->getId();
+                } else {
+                    $weaponArray[$this->translator->trans('recoil pattern')] = '<td class="cell100"><a class="showPattern" data-id="'
+                    .$weapon->getId().'">Show</a></td>';
+                }
+
                 $weaponArray[$this->translator->trans('damage')] = round(100 * $weapon->getBulletDamage(),2);
                 $weaponArray[$this->translator->trans('armor penetration')] = round(100 * $weapon->getPlayerPierce());
                 $weaponArray[$this->translator->trans('rate of fire')] = round($this->weaponROF);
@@ -329,6 +337,14 @@ class WeaponService
                 $weaponArray[$this->translator->trans('weight')] = $weapon->getWeight();
                 $weaponArray[$this->translator->trans('reload time')] = $weapon->getReloadTime();
                 $weaponArray[$this->translator->trans('muzzle velocity')] = $weapon->getBulletSpeed();
+
+                if($ajaxCall == false ) {
+                    $weaponArray[$this->translator->trans('recoil pattern')] = $weapon->getId();
+                } else {
+                    $weaponArray[$this->translator->trans('recoil pattern')] = '<td class="cell100"><a class="showPattern" data-id="'
+                        .$weapon->getId().'">Show</a></td>';
+                }
+
                 $weaponArray[$this->translator->trans('sample avg.  accuracy')] = $this->getAvgAccuracy($weapon, $this->armorBTK);
                 $weaponArray[$this->translator->trans('sample damage')] = round($this->armorDamage,2);
                 $weaponArray[$this->translator->trans('sample bullets to kill')] = $this->armorBTK;

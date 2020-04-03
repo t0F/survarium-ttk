@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Entity\Equipment;
 use App\Entity\GameVersion;
+use App\Entity\Weapon;
 use App\Service\WeaponService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
@@ -81,8 +82,9 @@ class defaultController extends AbstractController
         }
 
         $message = $this->weaponService->getSampleMessage();
-        $weaponsArr = $this->weaponService->getWeaponsStats($survariumPro);
+        $weaponsArr = $this->weaponService->getWeaponsStats($survariumPro, false);
         $sampleTTKIndex = $translator->trans('sample timetokill');
+        $recoilUrl = "recoilgraph?utm_lang=".$locale;
 
         return $this->minifiedRender('stats.html.twig', [
             'weapons' => $weaponsArr,
@@ -91,6 +93,7 @@ class defaultController extends AbstractController
             'form' => $form->createView(),
             'utm_source' => $source,
             'utm_lang' => $this->locale,
+            'recoilUrl' => $recoilUrl,
             'responsive' => $responsive,
             'osLang' => $osLang,
             'survariumPro' => $survariumPro,
@@ -109,6 +112,86 @@ class defaultController extends AbstractController
 
         return $response;
     }
+
+    /**
+     * @Route("/recoilgraph", name="recoilGraph", defaults={"weaponId": false, "utm_lang" : false})
+     */
+    public function recoilGraph(Request $request)
+    {
+        $weaponId = $request->query->get('weaponId');
+        if($weaponId === null || $weaponId === false) {
+            throw $this->createNotFoundException('This weapon does not exist');
+        }
+
+        $weaponRepo =  $this->em->getRepository('App:Weapon');
+        /** @var Weapon $weapon */
+        $weapon = $weaponRepo->find($weaponId);
+        if($weapon === null) {
+            throw $this->createNotFoundException('This weapon does not exist');
+        }
+
+        $locale = $request->query->get('utm_lang');
+        if($locale === null) {
+            $locale = 'en';
+        }
+
+        $this->locale = $locale;
+        $request->setLocale($locale);
+        $this->weaponService->setLocale($locale);
+
+        $shotsParam = json_decode($weapon->getShotsParams());
+        $recoilArray = [];
+        $recoilArray[] = ['y' => 0, 'x' => 0, 'label' => 'start', 'lineColor' => "black", 'markerColor' => 'red'];
+
+        $accArray = [];
+        $accArray[] = ['y' => 0, 'x' => 0, 'label' => 'start', 'lineColor' => "black", 'markerColor' => 'red'];
+        $startX = 0;
+        foreach ($shotsParam->shots_params as $index => $shotParams) {
+            $A = ($shotParams[1] < 90 ) ? $shotParams[1] : 90 - ($shotParams[1] - 90);
+            $b = $shotParams[0];
+            $lastCoors = $recoilArray[array_key_last($recoilArray)];
+            if($A == 90) {
+                $a = $b;
+                $c = 0;
+            } else {
+                $B = 90;
+                $C = 180 - $B - $A;
+                $a = $b * sin(deg2rad($A))/sin(deg2rad($B));
+                $c = $b * sin(deg2rad($C))/sin(deg2rad($B));
+                if($shotParams[1] < 90 ) {
+                    $c = -$c;
+                }
+                $c =  $c*10;
+            }
+            if($startX < abs($lastCoors['x'] + $c))  {
+                $startX = abs($lastCoors['x'] + $c);
+            }
+
+            //$acc = (100 - ($shotsParam->standing_stand_accuracy * $shotParams[2]));
+            $shot = [
+                'y' => $lastCoors['y'] + $a,
+                'x' =>  $lastCoors['x'] + $c,
+                'markerSize' => 2
+            ];
+            $recoilArray[] = $shot;
+        }
+        if($startX == 0) { // only vertical recoil
+            $startX = 5;
+        }
+        foreach ($recoilArray as $key => $value) {
+            $recoilArray[$key]['x'] = round($recoilArray[$key]['x'], 1);
+            $recoilArray[$key]['y'] = round($recoilArray[$key]['y'], 1);
+            $recoilArray[$key]['lineColor'] = 'black';
+            $recoilArray[$key]['markerColor'] = 'black';
+        };
+
+        return $this->minifiedRender('recoilGraph.html.twig', [
+            'recoilJson' => $recoilArray,
+            'startX' => $startX * 1.2,
+            'weaponName' => $weapon->translate($this->locale)->getLocalizedName()
+        ]);
+    }
+
 
     public function getDefaultSample() {
         $sampleRepo = $this->em->getRepository('App:GameVersion');
@@ -170,7 +253,7 @@ class defaultController extends AbstractController
         }
 
         $message = $this->weaponService->getSampleMessage();
-        $weaponsArr = $this->weaponService->getWeaponsStats($survariumPro);
+        $weaponsArr = $this->weaponService->getWeaponsStats($survariumPro, true);
         $jsonReturn = ['message' => $message, 'data' => $weaponsArr];
         $encodings = $request->getEncodings();
 

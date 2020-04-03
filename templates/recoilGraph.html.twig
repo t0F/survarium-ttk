@@ -1,0 +1,10 @@
+<div id="chartContainer" style="width:280px; height:500px;"></div>
+{% block javascripts %}
+    <script> window.recoilJson = {{ recoilJson|json_encode|raw }}; </script>
+    <script> window.startX = {{ startX }}; </script>
+    <script> window.weaponName = "{{ weaponName }}"; </script>
+{% endblock %}
+{#<span style="font-size: 10px">#}
+{#    CanvasJS is a paid product and it requires purchasing of license -#}
+{#    <a href="https://canvasjs.com/license/">https://canvasjs.com/license/</a>#}
+{#</span>#}

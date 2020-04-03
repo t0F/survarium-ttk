@@ -125,6 +125,10 @@ li[role=option], .dropdown-menu > li {
   transition: none;
 }
 
+.showPattern {
+  text-decoration: underline !important;
+  cursor:pointer;
+}
 
 .cell100 {
   white-space: nowrap;
