@@ -84,7 +84,7 @@ class defaultController extends AbstractController
         $message = $this->weaponService->getSampleMessage();
         $weaponsArr = $this->weaponService->getWeaponsStats($survariumPro, false);
         $sampleTTKIndex = $translator->trans('sample timetokill');
-        $recoilUrl = "recoilgraph?utm_lang=".$locale;
+        $recoilUrl = $this->generateUrl("recoilGraph", ['utm_lang' => $locale]);
 
         return $this->minifiedRender('stats.html.twig', [
             'weapons' => $weaponsArr,
@@ -141,10 +141,7 @@ class defaultController extends AbstractController
 
         $shotsParam = json_decode($weapon->getShotsParams());
         $recoilArray = [];
-        $recoilArray[] = ['y' => 0, 'x' => 0, 'label' => 'start', 'lineColor' => "black", 'markerColor' => 'red'];
-
-        $accArray = [];
-        $accArray[] = ['y' => 0, 'x' => 0, 'label' => 'start', 'lineColor' => "black", 'markerColor' => 'red'];
+        $recoilArray[0] = ['y' => 0, 'x' => 0, 'label' => 'Start', 'lineColor' => "rgba(10,10,10,.8)", 'markerColor' => 'rgba(10,10,10,.8)'];
         $startX = 0;
         foreach ($shotsParam->shots_params as $index => $shotParams) {
             $A = ($shotParams[1] < 90 ) ? $shotParams[1] : 90 - ($shotParams[1] - 90);
@@ -170,25 +167,33 @@ class defaultController extends AbstractController
             //$acc = (100 - ($shotsParam->standing_stand_accuracy * $shotParams[2]));
             $shot = [
                 'y' => $lastCoors['y'] + $a,
-                'x' =>  $lastCoors['x'] + $c,
-                'markerSize' => 2
+                'x' =>  $lastCoors['x'] - $c,
+                'markerSize' => 6
             ];
+            if($weapon->getMagazineCapacity() > 50) {
+                $shot['markerSize'] = 3;
+            }
             $recoilArray[] = $shot;
         }
         if($startX == 0) { // only vertical recoil
             $startX = 5;
         }
+
         foreach ($recoilArray as $key => $value) {
+            if($key === 0) {
+                continue;
+            }
             $recoilArray[$key]['x'] = round($recoilArray[$key]['x'], 1);
             $recoilArray[$key]['y'] = round($recoilArray[$key]['y'], 1);
-            $recoilArray[$key]['lineColor'] = 'black';
-            $recoilArray[$key]['markerColor'] = 'black';
+            $recoilArray[$key]['lineColor'] = 'rgba(10,10,10,.8)';
+            $recoilArray[$key]['markerColor'] = 'rgba(10,10,10,.8)';
+            $recoilArray[$key]['toolTipContent'] = 'shot: '. ($key) . ', posY: '. $recoilArray[$key]['y'] . ', posX: ' . $recoilArray[$key]['x'];
         };
 
         return $this->minifiedRender('recoilGraph.html.twig', [
             'recoilJson' => $recoilArray,
             'startX' => $startX * 1.2,
-            'weaponName' => $weapon->translate($this->locale)->getLocalizedName()
+            'weaponName' => str_replace('"', "", str_replace("'", "", $weapon->translate($this->locale)->getLocalizedName()))
         ]);
     }
 

@@ -142,6 +142,7 @@ class WeaponService
             $weapon->setThrowGrenadeTime($stats['throw_grenade_time']);
             $weapon->setHideTime($stats['hide_time']);
             $weapon->setMaterialPierce($stats['material_pierce']);
+            
             $weapon->setGameVersion($version);
             $weapon->setDisplayType($this->displayType($stats['type'], $stats['magazine_capacity'], $name));
             $weapon->setShotsParams(json_encode($stats['aim_recoil']));

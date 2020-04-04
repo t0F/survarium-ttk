@@ -112,32 +112,61 @@ window.table = window.weaponStats.dataTable({
 });
 
 function patternCall(weaponIdVal) {
-
+    let closeButton = '<div class="modal-header customHeader"><button type="button" class="close customClose" data-dismiss="modal" aria-label="Close">'
+        + '<span class="cross" aria-hidden="true">&times;</span></button></div>';
     $.ajax({
         url: window.recoilUrl,
         type: 'get',
         data: {weaponId: weaponIdVal},
         success: function(response){
-            $('.modal-body').html(response);
+            $('.modal-body').html(closeButton + response);
             let chart = new CanvasJSChart.Chart("chartContainer", {
-                backgroundColor: "rgba(0,0,0,0.2)",
-                //title:{ text: window.weaponName},
-                height: 500,
-                width: 280,
+                backgroundColor: "rgba(42, 51, 62, .95)",
+                color: 'white',
+                title:{
+                    text: decodeURI(window.weaponName.replace('&amp;', '&')),
+                    fontFamily: 'Play',
+                    fontColor: '#CCCCCCAA',
+                    fontSize: 12
+                },
+                toolTip:{
+                    backgroundColor: "#000000EE",
+                    cornerRadius: 3,
+                    borderColor: '#000000EE',
+                    fontSize: 10,
+                    fontFamily: 'Play',
+                    fontColor: '#CCCCCCAA',
+                },
+                height: 400,
+                width: 240,
+                interactivityEnabled: true,
                 axisX:{
                     minimum: -window.startX,
                     maximum: window.startX,
                     gridThickness: 0,
+                    labelFontColor: '#CCCCCCAA',
+                    labelFontFamily: 'Play',
+                    labelFontSize: 12,
                 },
-                axisY:{ gridThickness: 0 },
+                axisY:{
+                    gridThickness: 0,
+                    labelFontColor: '#CCCCCCAA',
+                    labelFontFamily: 'Play',
+                    labelFontSize: 12,
+                },
                 data: [{
                     type: "line",
+                    labelWrap: true,
+                    labelMaxWidth: 80,
                     markerSize: 0,
+                    toolTipContent: "{label}",
                     lineThickness: 1,
                     dataPoints: window.recoilJson
                 }]
             });
             chart.render();
+            $('.canvasjs-chart-credit').remove();
+            $('#empModal').modal({'backdrop' : true});
             $('#empModal').modal('show');
         }
     });
