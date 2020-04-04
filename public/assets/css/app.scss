@@ -17,6 +17,25 @@
   }
 }
 
+.customModal {
+  border: none !important;
+  background: none !important;
+  width: 242px;
+}
+
+.modal-body {
+  backdrop-filter: blur(2px);
+  border: 1px solid hsla(0,0%,95.3%,.2);
+  padding: 0;
+  margin: 0;
+
+}
+
+#chartContainer {
+  margin-top: -28px;
+  background: transparent;
+}
+
 .noFilter body {
   overflow-x: hidden;
 }
@@ -25,11 +44,20 @@ th {
   cursor: pointer;
 }
 
+.customHeader {
+  padding: 0;
+  border: 0 !important;
+}
+
+.customClose {
+  z-index: 2;
+}
+
+
 .formContainer{
   width: 420px;
   padding: 15px;
-  border: 1px solid hsla(0,0%,95.4%,0.2);;
-  //border-radius: 7px;
+  border: 1px solid hsla(0,0%,95.4%,0.2);
   background-color: #AAA;
 }
 
@@ -87,6 +115,15 @@ li[role=option], .dropdown-menu > li {
 
 .btn, .dropdown-item {
   transition: none !important;
+}
+
+.cross {
+  color: #404040CC;
+  font-size:28px;
+}
+
+.modal-backdrop {
+  background-color: transparent;
 }
 
 .btn-light {
