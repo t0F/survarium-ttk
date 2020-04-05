@@ -142,8 +142,8 @@ class WeaponService
             $weapon->setThrowGrenadeTime($stats['throw_grenade_time']);
             $weapon->setHideTime($stats['hide_time']);
             $weapon->setMaterialPierce($stats['material_pierce']);
-            
             $weapon->setGameVersion($version);
+            $weapon->setHipSpeedFactor($stats['hip_movement_speed_factor']);
             $weapon->setDisplayType($this->displayType($stats['type'], $stats['magazine_capacity'], $name));
             $weapon->setShotsParams(json_encode($stats['aim_recoil']));
 
@@ -279,7 +279,7 @@ class WeaponService
                 if($ajaxCall == false ) {
                     $weaponArray[$this->translator->trans('recoil pattern')] = $weapon->getId();
                 } else {
-                    $weaponArray[$this->translator->trans('recoil pattern')] = '<td class="cell100"><a class="showPattern" data-id="'
+                    $weaponArray[$this->translator->trans('recoil pattern')] = '<td class="cell100"><a onclick="patternCall(this)" class="showPattern" data-id="'
                     .$weapon->getId().'">Show</a></td>';
                 }
 
@@ -291,11 +291,12 @@ class WeaponService
                 $weaponArray[$this->translator->trans('magazine size')] = $weapon->getMagazineCapacity();
                 $weaponArray[$this->translator->trans('bleed chance')] = round(100 * $weapon->getBleedingChance());
                 $weaponArray[$this->translator->trans('material penetration')] = $weapon->getMaterialPierce();
-                $weaponArray[$this->translator->trans('weight')] = $weapon->getWeight();
+                $weaponArray[$this->translator->trans('slowdown')] = round(100 * round((1 - floatval($weapon->getHipSpeedFactor())), 2), 2);
+                $weaponArray[$this->translator->trans('aiming slowdown')] =
+                    round(100 * (1 - (floatval($weapon->getHipSpeedFactor()) * ($weapon->getAimedMovementSpeedFactor()))), 1);
                 $weaponArray[$this->translator->trans('reload time')] = $weapon->getReloadTime();
                 $weaponArray[$this->translator->trans('muzzle velocity')] = $weapon->getBulletSpeed();
                 $weaponArray[$this->translator->trans('unmasking radius')] = $weapon->getUnmaskingRadius();
-                $weaponArray[$this->translator->trans('aimed movement speed factor')] = $weapon->getAimedMovementSpeedFactor();
                 $weaponArray[$this->translator->trans('melee time')] = $weapon->getMeleeTime();
                 $weaponArray[$this->translator->trans('show time')] = $weapon->getShowTime();
                 $weaponArray[$this->translator->trans('aim time')] = $weapon->getAimTime();
@@ -331,19 +332,21 @@ class WeaponService
                 $weaponArray[$this->translator->trans('armor penetration')] = round(100 * $weapon->getPlayerPierce());
                 $weaponArray[$this->translator->trans('rate of fire')] = round($this->weaponROF);
                 $weaponArray[$this->translator->trans('dps')] = round($this->getDPS($weapon));
+                $weaponArray[$this->translator->trans('slowdown')] = round(100 * round((1 - floatval($weapon->getHipSpeedFactor())), 2), 2);
+                $weaponArray[$this->translator->trans('aiming slowdown')] =
+                    round(100 * (1 - (floatval($weapon->getHipSpeedFactor()) * ($weapon->getAimedMovementSpeedFactor()))), 1);
                 $weaponArray[$this->translator->trans('effective range')] = $this->bonusEffectiveRange;
                 $weaponArray[$this->translator->trans('magazine size')] = $weapon->getMagazineCapacity();
                 $weaponArray[$this->translator->trans('bleed chance')] = round(100 * $weapon->getBleedingChance());
                 $weaponArray[$this->translator->trans('material penetration')] = $weapon->getMaterialPierce();
-                $weaponArray[$this->translator->trans('weight')] = $weapon->getWeight();
                 $weaponArray[$this->translator->trans('reload time')] = $weapon->getReloadTime();
                 $weaponArray[$this->translator->trans('muzzle velocity')] = $weapon->getBulletSpeed();
 
                 if($ajaxCall == false ) {
                     $weaponArray[$this->translator->trans('recoil pattern')] = $weapon->getId();
                 } else {
-                    $weaponArray[$this->translator->trans('recoil pattern')] = '<td class="cell100"><a class="showPattern" data-id="'
-                        .$weapon->getId().'">Show</a></td>';
+                    $weaponArray[$this->translator->trans('recoil pattern')] = '<td class="cell100"><a onclick="patternCall(this)" class="showPattern" data-id="'
+                        .$weapon->getId().'">'.$this->translator->trans("show").'</a></td>';
                 }
 
                 $weaponArray[$this->translator->trans('sample avg.  accuracy')] = $this->getAvgAccuracy($weapon, $this->armorBTK);

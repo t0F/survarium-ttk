@@ -28,6 +28,8 @@ chamber a round time: Chamber a round
 tactical reload time: Tactical Reload
 sample avg.  accuracy : First - Avg - Last Accuracy
 recoil pattern: Recoil Pattern
+slowdown: Slowdown
+aiming slowdown: Aiming Slowdown
 
 # weapons categories
 ASSAULT RIFLE: Assault Rifle
@@ -38,6 +40,7 @@ SHOTGUN: Shotgun
 SMG: SMG
 SNIPER RIFLE: Sniper Rifle
 SPECIAL: Special
+show: Show
 
 # sample + form
 Sample is base on: Time to kill based on

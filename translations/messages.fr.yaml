@@ -16,6 +16,19 @@ sample damage: Dommages sur Cible
 sample bullets to kill: Nb de Balles pour Tuer
 sample timetokill: Temps pour Tuer
 recoil pattern: Pattern du Recul
+slowdown: Ralentissement
+aiming slowdown: Ralentissement en Visant
+sample avg.  accuracy: Prem. - Moy. - Dern. Précision
+unmasking radius: Rayon de démasquage
+melee time: Temps de Frappe
+show time: Temps d'Affichage
+aim time: Temps de Viser
+hide time: Temps pour cacher
+stamina damage: Facteur Stamina
+player pierce: Pénétration de joueur
+player pierced damage factor: Dommages Pénétration de joueur
+chamber a round time: Temps de Chambrage
+tactical reload time: Rechargement Tactique
 
 # weapons categories
 ASSAULT RIFLE: Fusil d'assaut
@@ -26,6 +39,7 @@ SHOTGUN: Fusil à pompe
 SMG: Mitraillette
 SNIPER RIFLE: Fusil sniper
 SPECIAL: Spéciale
+show: Afficher
 
 # form
 Sample is base on: "Le Temps pour tuer est basé sur :"
