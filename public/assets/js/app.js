@@ -101,17 +101,21 @@ window.table = window.weaponStats.dataTable({
             $('table#weaponsStats > tbody > tr > td:first-child').css('cursor', 'pointer');
         }
 
-        showPatterButtons();
-
         $('.select2-container').css('width', 'auto');
 
         //ready to show
         $("#contentBody").css('display', 'table');
         $("#progress").hide();
+
+        window.weaponStats.DataTable()
+            .columns.adjust()
+            .responsive.recalc();
     }
 });
 
-function patternCall(weaponIdVal) {
+window.patternCall = function(weaponButton) {
+    let weaponIdVal = $(weaponButton).data('id');
+
     let closeButton = '<div class="modal-header customHeader"><button type="button" class="close customClose" data-dismiss="modal" aria-label="Close">'
         + '<span class="cross" aria-hidden="true">&times;</span></button></div>';
     $.ajax({
@@ -172,11 +176,11 @@ function patternCall(weaponIdVal) {
     });
 }
 
-function showPatterButtons() {
+/*function showPatterButtons() {
     $('.showPattern').click(function(){
         patternCall($(this).data('id'));
     });
-}
+}*/
 
 //RESET PARTICULAR CSS ON REDRAW
 window.weaponStats.on('draw.dt', function () {
@@ -185,7 +189,9 @@ window.weaponStats.on('draw.dt', function () {
         .addClass('border1px');
     $('#weaponsStats tbody tr').addClass(['cell100']);
     $('table#weaponsStats > tbody > tr > td:first-child').css('cursor', 'pointer');
-    showPatterButtons();
+    window.table.DataTable()
+        .columns.adjust()
+        .responsive.recalc();
 });
 
 // SHOW / HIDE COLUMNS
@@ -228,7 +234,6 @@ window.ajaxForm.submit(function (e) {
                 window.table.fnAddData(values, false);
             });
             window.table.fnSettings().aaSorting = order;
-            showPatterButtons();
             window.table.fnDraw();
             $('#message').text(response.message);
             formSave.removeClass(['btn-outline-secondary', 'disabled']);

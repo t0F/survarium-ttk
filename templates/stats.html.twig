@@ -18,7 +18,7 @@
             {% for weapon in weapons %}<tr class="row100 body">{%
                 for stat, value in weapon|cast_to_array %}
                         {% if stat == "recoil pattern"|trans %}
-                            <td class="cell100"><a class="showPattern" data-id="{{ value }}">Show</a></td>
+                            <td class="cell100"><a class="showPattern" onclick="patternCall(this)" data-id="{{ value }}">{{ "show"|trans }}</a></td>
                         {% else %}
                             {% if stat != 'id' %}<td class="cell100 {%
                                 if stat == sampleTTKIndex and responsive == false %}border1px{% endif %}">{{ value }}</td>

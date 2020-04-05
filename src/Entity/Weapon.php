@@ -207,6 +207,11 @@ class Weapon implements TranslatableInterface
      */
     private $shotsParams;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $hipSpeedFactor;
+
     public function __construct()
     {
         $this->gearSets = new ArrayCollection();
@@ -663,6 +668,18 @@ class Weapon implements TranslatableInterface
     public function setShotsParams(?string $shotsParams): self
     {
         $this->shotsParams = $shotsParams;
+
+        return $this;
+    }
+
+    public function getHipSpeedFactor(): ?float
+    {
+        return $this->hipSpeedFactor;
+    }
+
+    public function setHipSpeedFactor(?float $hipSpeedFactor): self
+    {
+        $this->hipSpeedFactor = $hipSpeedFactor;
 
         return $this;
     }
