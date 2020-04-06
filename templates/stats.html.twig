@@ -99,6 +99,8 @@
     <script>
         window.responsive = {% if responsive == true %}1{% else %}0{% endif %};
         window.recoilUrl = "{{ recoilUrl}}";
+        window.fullBaseUri = "{{ absolute_url(asset('assets/img/weapons/weapon_1_1.png')) }}";
+        window.fullBaseUri = window.fullBaseUri.replace( "weapon_1_1.png", "");
         window.translations = {
             'selectToHide' : "{{ 'select to hide' | trans }}", }
     </script>
