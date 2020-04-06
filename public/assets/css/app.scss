@@ -60,7 +60,6 @@ th {
 }
 
 .wIco {
-  filter: invert(1);
   width: 40px;
   transform: rotate(-45deg);
 }
@@ -230,6 +229,10 @@ li.previous a, li.next a {
 .noResponsiveFrame {
   &#weaponStatsDiv {
     margin: 0;
+  }
+
+  &.wIco {
+    filter:invert(1);
   }
 
   &#contentBody {

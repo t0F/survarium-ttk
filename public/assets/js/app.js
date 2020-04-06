@@ -30,7 +30,7 @@ if (window.responsive === 1) {
         {responsivePriority: 1, targets: 0},
         {responsivePriority: 1, targets: 2},
         {targets: 1, render: function (data, type, row, meta) {
-                if(data === "assets/img/weapons/") return "";
+                if(data === "/assets/img/weapons/") return "";
                 return '<div data-toggle="tooltip" title="<img src='+data+' />" onclick="window.showIcon(this);" class="divWIco"><img class="wIco" src="'+data+'" /></div>'
             }
         },

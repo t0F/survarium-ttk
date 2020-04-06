@@ -278,14 +278,19 @@ class WeaponService
                 $this->armorTTK = $this->getArmorTimeToKill($weapon, $this->sampleEquipment);
 
                 $weaponArray[$this->translator->trans('name')] = $name;
-                $weaponArray[$this->translator->trans('icon')] = 'assets/img/weapons/'.$weapon->getIcon();
+                $weaponArray[$this->translator->trans('icon')] = '/assets/img/weapons/'.$weapon->getIcon();
                 $weaponArray[$this->translator->trans('sample timetokill')] = round($this->armorTTK,2);
                 $weaponArray[$this->translator->trans('sample bullets to kill')] = $this->armorBTK;
                 $weaponArray[$this->translator->trans('sample damage')] = round($this->armorDamage,2);
                 $weaponArray[$this->translator->trans('type')] = $weapon->getDisplayType();
                 $weaponArray[$this->translator->trans('sample avg.  accuracy')] = $this->getAvgAccuracy($weapon, $this->armorBTK);
 
-                $weaponArray[$this->translator->trans('icon')] = 'assets/img/weapons/'.$weapon->getIcon();
+                if($ajaxCall == false ) {
+                    $weaponArray[$this->translator->trans('recoil pattern')] = $weapon->getId();
+                } else {
+                    $weaponArray[$this->translator->trans('recoil pattern')] = '<td class="cell100"><a onclick="patternCall(this)" class="showPattern" data-id="'
+                        .$weapon->getId().'">'.$this->translator->trans("show").'</a></td>';
+                }
 
                 $weaponArray[$this->translator->trans('damage')] = round(100 * $weapon->getBulletDamage(),2);
                 $weaponArray[$this->translator->trans('armor penetration')] = round(100 * $weapon->getPlayerPierce());
@@ -332,7 +337,7 @@ class WeaponService
                 ));
                 $weaponArray[$this->translator->trans('name')] = $name;
 
-                $weaponArray[$this->translator->trans('icon')] = 'assets/img/weapons/'.$weapon->getIcon();
+                $weaponArray[$this->translator->trans('icon')] = '/assets/img/weapons/'.$weapon->getIcon();
 
                 $weaponArray[$this->translator->trans('type')] = $this->translator->trans($weapon->getDisplayType());
                 $weaponArray[$this->translator->trans('damage')] = round(100 * $weapon->getBulletDamage(), 2);
