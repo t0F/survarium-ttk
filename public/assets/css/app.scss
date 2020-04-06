@@ -44,6 +44,12 @@ th {
   cursor: pointer;
 }
 
+.iconModal {
+  width: 128px;
+  background: #2a333eCC !important;
+  filter: invert(1);
+}
+
 .customHeader {
   padding: 0;
   border: 0 !important;
@@ -53,6 +59,17 @@ th {
   z-index: 2;
 }
 
+.wIco {
+  filter: invert(1);
+  width: 40px;
+  transform: rotate(-45deg);
+}
+
+.divWIco {
+  width: 40px;
+  height: 32px;
+  overflow: hidden;
+}
 
 .formContainer{
   width: 420px;
