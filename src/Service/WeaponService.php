@@ -147,6 +147,14 @@ class WeaponService
             $weapon->setDisplayType($this->displayType($stats['type'], $stats['magazine_capacity'], $name));
             $weapon->setShotsParams(json_encode($stats['aim_recoil']));
 
+
+            if(!file_exists('public/assets/img/weapons/'.'weapon_'.$fullStats['ui_desc']['icon'][1].'_'.$fullStats['ui_desc']['icon'][0].'.png')) {
+                $weapon->setIcon('');
+            }
+            else {
+                $weapon->setIcon('weapon_'.$fullStats['ui_desc']['icon'][1].'_'.$fullStats['ui_desc']['icon'][0].'.png');
+            }
+
             //modifications
             if(isset($stats['default_modifications']) && $stats['default_modifications'] != null) {
                 foreach ($stats['default_modifications'] as $weaponModification ) {
@@ -270,18 +278,14 @@ class WeaponService
                 $this->armorTTK = $this->getArmorTimeToKill($weapon, $this->sampleEquipment);
 
                 $weaponArray[$this->translator->trans('name')] = $name;
+                $weaponArray[$this->translator->trans('icon')] = 'assets/img/weapons/'.$weapon->getIcon();
                 $weaponArray[$this->translator->trans('sample timetokill')] = round($this->armorTTK,2);
                 $weaponArray[$this->translator->trans('sample bullets to kill')] = $this->armorBTK;
                 $weaponArray[$this->translator->trans('sample damage')] = round($this->armorDamage,2);
                 $weaponArray[$this->translator->trans('type')] = $weapon->getDisplayType();
                 $weaponArray[$this->translator->trans('sample avg.  accuracy')] = $this->getAvgAccuracy($weapon, $this->armorBTK);
 
-                if($ajaxCall == false ) {
-                    $weaponArray[$this->translator->trans('recoil pattern')] = $weapon->getId();
-                } else {
-                    $weaponArray[$this->translator->trans('recoil pattern')] = '<td class="cell100"><a onclick="patternCall(this)" class="showPattern" data-id="'
-                    .$weapon->getId().'">Show</a></td>';
-                }
+                $weaponArray[$this->translator->trans('icon')] = 'assets/img/weapons/'.$weapon->getIcon();
 
                 $weaponArray[$this->translator->trans('damage')] = round(100 * $weapon->getBulletDamage(),2);
                 $weaponArray[$this->translator->trans('armor penetration')] = round(100 * $weapon->getPlayerPierce());
@@ -327,6 +331,9 @@ class WeaponService
                         : strtoupper(str_replace('_', ' ', $weapon->getName()))
                 ));
                 $weaponArray[$this->translator->trans('name')] = $name;
+
+                $weaponArray[$this->translator->trans('icon')] = 'assets/img/weapons/'.$weapon->getIcon();
+
                 $weaponArray[$this->translator->trans('type')] = $this->translator->trans($weapon->getDisplayType());
                 $weaponArray[$this->translator->trans('damage')] = round(100 * $weapon->getBulletDamage(), 2);
                 $weaponArray[$this->translator->trans('armor penetration')] = round(100 * $weapon->getPlayerPierce());

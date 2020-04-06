@@ -212,6 +212,11 @@ class Weapon implements TranslatableInterface
      */
     private $hipSpeedFactor;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $icon;
+
     public function __construct()
     {
         $this->gearSets = new ArrayCollection();
@@ -680,6 +685,18 @@ class Weapon implements TranslatableInterface
     public function setHipSpeedFactor(?float $hipSpeedFactor): self
     {
         $this->hipSpeedFactor = $hipSpeedFactor;
+
+        return $this;
+    }
+
+    public function getIcon(): ?string
+    {
+        return $this->icon;
+    }
+
+    public function setIcon(string $icon): self
+    {
+        $this->icon = $icon;
 
         return $this;
     }

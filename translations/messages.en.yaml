@@ -30,6 +30,7 @@ sample avg.  accuracy : First - Avg - Last Accuracy
 recoil pattern: Recoil Pattern
 slowdown: Slowdown
 aiming slowdown: Aiming Slowdown
+icon: "Icon"
 
 # weapons categories
 ASSAULT RIFLE: Assault Rifle

@@ -28,15 +28,24 @@ if (window.responsive === 1) {
     responsiveCol();
     window.columnsDefs = [
         {responsivePriority: 1, targets: 0},
-        {responsivePriority: 1, targets: 1}
+        {responsivePriority: 1, targets: 2},
+        {targets: 1, render: function (data, type, row, meta) {
+                if(data === "assets/img/weapons/") return "";
+                return '<div data-toggle="tooltip" title="<img src='+data+' />" onclick="window.showIcon(this);" class="divWIco"><img class="wIco" src="'+data+'" /></div>'
+            }
+        },
     ];
-    window.dtSelect = [0, 4];
-    window.dtDefaultSort = [[1, 'asc'], [0, 'asc']];
+    window.dtSelect = [0, 5];
+    window.dtDefaultSort = [[2, 'asc'], [0, 'asc']];
 } else {
     window.bResponsive = false;
-    window.columnsDefs = [];
-    window.dtSelect = [0, 1];
-    window.dtDefaultSort = [[15, 'asc'], [0, 'asc']];
+    window.columnsDefs = [{targets: 1, render: function (data, type, row, meta) {
+            if(data === "assets/img/weapons/") return "";
+            return '<div data-toggle="tooltip" title="<img src='+data+' />" onclick="window.showIcon(this);" class="divWIco"><img class="wIco" src="'+data+'" /></div>'
+        }
+    },];
+    window.dtSelect = [0, 2];
+    window.dtDefaultSort = [[16, 'asc'], [0, 'asc']];
 }
 
 if ($(window).width() > 400) {
@@ -107,6 +116,12 @@ window.table = window.weaponStats.dataTable({
         $("#contentBody").css('display', 'table');
         $("#progress").hide();
 
+        $('[data-toggle="tooltip"]').tooltip({
+            animated: 'fade',
+            placement: 'bottom',
+            html: true
+        });
+
         window.weaponStats.DataTable()
             .columns.adjust()
             .responsive.recalc();
@@ -169,18 +184,13 @@ window.patternCall = function(weaponButton) {
                 }]
             });
             chart.render();
+            $('.customModal').removeClass('iconModal');
             $('.canvasjs-chart-credit').remove();
             $('#empModal').modal({'backdrop' : true});
             $('#empModal').modal('show');
         }
     });
 }
-
-/*function showPatterButtons() {
-    $('.showPattern').click(function(){
-        patternCall($(this).data('id'));
-    });
-}*/
 
 //RESET PARTICULAR CSS ON REDRAW
 window.weaponStats.on('draw.dt', function () {
@@ -192,6 +202,12 @@ window.weaponStats.on('draw.dt', function () {
     window.table.DataTable()
         .columns.adjust()
         .responsive.recalc();
+
+    $('[data-toggle="tooltip"]').tooltip({
+        animated: 'fade',
+        placement: 'bottom',
+        html: true
+    });
 });
 
 // SHOW / HIDE COLUMNS
