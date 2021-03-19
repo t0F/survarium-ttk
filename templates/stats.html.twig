@@ -2,9 +2,10 @@
 {% extends "base.html.twig" %}
 {% block title %}Survarium Weapons{% endblock %}
 {% block body %}
-    <h1>Survarium Stats</h1>
-    <h3>Time To Kill Comparator</h3>
-    <h4>discord.gg/pKG5f4J</h4>
+    <h1>{% trans %}Survarium Stats{% endtrans %}</h1>
+    <h3>{% trans %}Time To Kill Comparator{% endtrans %}</h3>
+    <h4 id="h4-discord">discord.gg/pKG5f4J</h4>
+    <h4 id="h4-sponges" onclick="explosives()">{% trans %}Explosives{% endtrans %}</h4>
     <div id="weaponStatsDiv">
      <table id='weaponsStats'{% if responsive == true %}class="responsive dt-responsive"{% endif %}>
             <thead style="font-weight: bold;">
@@ -102,6 +103,7 @@
         window.fullBaseUri = "{{ absolute_url(asset('assets/img/weapons/weapon_1_1.png')) }}";
         window.fullBaseUri = window.fullBaseUri.replace( "weapon_1_1.png", "");
         window.translations = {
-            'selectToHide' : "{{ 'select to hide' | trans }}", }
+            'selectToHide' : "{{ 'select to hide' | trans }}", };
+        window.explosivesArr = {{ explosives|json_encode(constant('JSON_PRETTY_PRINT'))|raw }};
     </script>
 {% endblock %}

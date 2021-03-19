@@ -28,8 +28,21 @@
   border: 1px solid hsla(0,0%,95.3%,.2);
   padding: 0;
   margin: 0;
-
 }
+
+.modal-header-explosives {
+  margin: 10px;
+  z-index: 2;
+}
+
+.modal-body-explosives {
+  backdrop-filter: blur(2px);
+  border: 1px solid hsla(0,0%,95.3%,.2);
+  width: 100%;
+  margin-top: -39px;
+  padding: 20px 40px;
+}
+
 
 #chartContainer {
   margin-top: -28px;
@@ -42,6 +55,10 @@
 
 th {
   cursor: pointer;
+}
+
+#formExplosives {
+  display: none;
 }
 
 .iconModal {
@@ -60,14 +77,26 @@ th {
 }
 
 .wIco {
-  width: 40px;
+  width: 32px;
+  margin-top: -6px;
   transform: rotate(-45deg);
 }
 
+.tooltip-inner {
+  border-radius: 3px;
+}
+
+.tooltip.show {
+  opacity: 0.96;
+}
+
 .divWIco {
-  width: 40px;
-  height: 32px;
+  width: 46px;
+  height: 20px;
   overflow: hidden;
+  background: rgba(0,0,0,.9);
+  border-radius: 3px;
+  padding-left: 6px;
 }
 
 .formContainer{
@@ -349,6 +378,22 @@ html.noFilter {
   }
 }
 
+.titleModalExplosives{
+  width: 100%;
+  text-align: center;
+}
+.customModalExplosive{
+  width: 340px;
+  background-color: rgba(42, 51, 62, .95);
+}
+
+#empModalExplosives {
+  color: white;
+  span {
+    font-size: 1.03em;
+  }
+}
+
 .displayInlineGrid {
   display: inline-grid;
   white-space: nowrap;
@@ -377,6 +422,18 @@ html.noBackground {
     display: none;
   }
 }
+
+#h4-sponges {
+  display: inline-block;
+  float: right;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+#h4-discord {
+  display: inline;
+}
+
 
 @font-face {
   font-family: 'Play', sans-serif;

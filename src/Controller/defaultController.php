@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Entity\Equipment;
 use App\Entity\GameVersion;
 use App\Entity\Weapon;
+use App\Service\ExplosiveService;
 use App\Service\WeaponService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
@@ -27,11 +28,19 @@ class defaultController extends AbstractController
     private $em;
     private $weaponService;
     private $locale;
+    private $translator;
 
-    public function __construct(EntityManagerInterface $em, WeaponService $weaponService)
+    public function __construct(
+        EntityManagerInterface $em,
+        WeaponService $weaponService,
+        ExplosiveService $explosiveService,
+        TranslatorInterface $translator
+    )
     {
         $this->em = $em;
         $this->weaponService = $weaponService;
+        $this->explosiveService = $explosiveService;
+        $this->translator = $translator;
     }
 
     /**
@@ -70,6 +79,7 @@ class defaultController extends AbstractController
         $this->locale = $locale;
         $osLang = $this->getHtmlLang($this->locale);
         $this->weaponService->setLocale($this->locale);
+        $this->explosiveService->setLocale($this->locale);
 
         $defaultData = $this->getDefaultSample();
         $form = $this->getTTKForm($defaultData);
@@ -83,11 +93,13 @@ class defaultController extends AbstractController
 
         $message = $this->weaponService->getSampleMessage();
         $weaponsArr = $this->weaponService->getWeaponsStats($survariumPro, false);
+        $explosivesArr = $this->explosiveService->getExplosivesStats();
         $sampleTTKIndex = $translator->trans('sample timetokill');
         $recoilUrl = $this->generateUrl("recoilGraph", ['utm_lang' => $locale]);
 
         return $this->minifiedRender('stats.html.twig', [
             'weapons' => $weaponsArr,
+            'explosives' => $explosivesArr,
             'message' => $message,
             'sampleTTKIndex' => $sampleTTKIndex,
             'form' => $form->createView(),
@@ -141,7 +153,7 @@ class defaultController extends AbstractController
 
         $shotsParam = json_decode($weapon->getShotsParams());
         $recoilArray = [];
-        $recoilArray[0] = ['y' => 0, 'x' => 0, 'label' => 'Start', 'lineColor' => "rgba(10,10,10,.8)", 'markerColor' => 'rgba(10,10,10,.8)'];
+        $recoilArray[0] = ['y' => 0, 'x' => 0, 'label' => $this->translator->trans('start'), 'lineColor' => "rgba(10,10,10,.8)", 'markerColor' => 'rgba(10,10,10,.8)'];
         $startX = 0;
         foreach ($shotsParam->shots_params as $index => $shotParams) {
             $A = ($shotParams[1] < 90 ) ? $shotParams[1] : 90 - ($shotParams[1] - 90);
@@ -238,13 +250,11 @@ class defaultController extends AbstractController
         }
 
         $locale = $request->query->get('utm_lang');
-        if($locale === null) {
-            $locale = 'en';
-        }
-
+        if($locale === null)  $locale = 'en';
         $this->locale = $locale;
-        $request->setLocale($locale);
-        $this->weaponService->setLocale($locale);
+        $osLang = $this->getHtmlLang($this->locale);
+        $this->weaponService->setLocale($this->locale);
+        $this->explosiveService->setLocale($this->locale);
 
         $defaultData = $this->getDefaultSample();
 

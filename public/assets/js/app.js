@@ -15,6 +15,7 @@ require('./dtLocales.js');
 let CanvasJSChart = require('./jquery.canvasjs.min');
 
 window.weaponStats = $('#weaponsStats');
+window.explSelect = $('#explosiveSelect');
 window.headersIndex = [];
 
 $('#weaponsStats thead tr th').each(function (indexCol, val) {
@@ -41,7 +42,7 @@ if (window.responsive === 1) {
     window.bResponsive = false;
     window.columnsDefs = [{targets: 1, render: function (data, type, row, meta) {
             if(data === "") return "";
-            return '<div data-toggle="tooltip" title="<img width=\'172\' height=\'172\' src='+window.fullBaseUri+data+' />" onclick="window.showIcon(this);" class="divWIco"><img class="wIco" src="'+window.fullBaseUri+data+'" /></div>'
+            return '<div data-toggle="tooltip" title="<img src='+window.fullBaseUri+data+' />" onclick="window.showIcon(this);" class="divWIco"><img class="wIco" src="'+window.fullBaseUri+data+'" /></div>'
         }
     },];
     window.dtSelect = [0, 2];
@@ -52,6 +53,20 @@ if ($(window).width() > 400) {
     window.dtPagination = 'simple_numbers';
 } else {
     window.dtPagination = 'numbers';
+}
+
+window.convertC = {
+    "Ё":"YO","Й":"I","Ц":"TS","У":"U","К":"K","Е":"E","Н":"N","Г":"G","Ш":"SH","Щ":"SCH","З":"Z","Х":"H","Ъ":"'","ё":
+    "yo","й":"i","ц":"ts","у":"u","к":"k","е":"e","н":"n","г":"g","ш":"sh","щ":"sch","з":"z","х":"h","ъ":"'","Ф":"F",
+    "Ы":"I","В":"V","А":"a","П":"P","Р":"R","О":"O","Л":"L","Д":"D","Ж":"ZH","Э":"E","ф":"f","ы":"i","в":"v","а":"a",
+    "п":"p","р":"r","о":"o","л":"l","д":"d","ж":"zh","э":"e","Я":"Ya","Ч":"CH","С":"S","М":"M","И":"I","Т":"T","Ь":"'",
+    "Б":"B","Ю":"YU","я":"ya","ч":"ch","с":"s","м":"m","и":"i","т":"t","ь":"'","б":"b","ю":"yu"
+};
+
+window.transliterate = function(word){
+    return word.split('').map(function (char) {
+        return window.convertC[char] || char;
+    }).join("");
 }
 
 window.lang = lang;
@@ -106,6 +121,55 @@ window.table = window.weaponStats.dataTable({
             spanOnyx.html(valueOnyx.val() + '%');
         });
 
+        const spanStrength = $('#spanStrength');
+        spanStrength.prev().append(spanStrength).addClass('displayBlock');
+        const valueStrength = $('#form_strength_actif');
+        spanStrength.html(valueStrength.val() + '%');
+        valueStrength.on('input change', () => {
+            spanStrength.html(valueStrength.val() + '%');
+            explosiveCalc();
+        });
+
+        const spanDuration = $('#spanDuration');
+        const valueDuration = $('#form_duration');
+        spanDuration.html(valueDuration.val() + '%');
+        valueDuration.on('input change', () => {
+            spanDuration.html(valueDuration.val() + '%');
+            explosiveCalc();
+        });
+
+        const spanExplReduc = $('#spanExplReduc');
+        const valueExplReduc = $('#form_expl_reduc');
+        spanExplReduc.html(valueExplReduc.val() + '%');
+        valueExplReduc.on('input change', () => {
+            spanExplReduc.html(valueExplReduc.val() + '%');
+            explosiveCalc();
+        });
+
+        const spanDistance = $('#spanDistance');
+        const valueDistance = $('#form_distance');
+        spanDistance.html(valueDistance.val() + 'm');
+        valueDistance.on('input change', () => {
+            spanDistance.html(valueDistance.val() + 'm');
+            explosiveCalc();
+        });
+
+        const spanOnyxSponge = $('#spanOnyxSponge');
+        const valueOnyxSponge = $('#form_onyx_sponge');
+        spanOnyxSponge.html(valueOnyxSponge.val() + '%');
+        valueOnyxSponge.on('input change', () => {
+            spanOnyxSponge.html(valueOnyxSponge.val() + '%');
+            explosiveCalc();
+        });
+
+        const spanSponge = $('#spanSponge');
+        const valueSponge = $('#form_sponge');
+        spanSponge.html(valueSponge.val() + '%');
+        valueSponge.on('input change', () => {
+            spanSponge.html(valueSponge.val() + '%');
+            explosiveCalc();
+        });
+
         if(window.bResponsive === true) {
             $('table#weaponsStats > tbody > tr > td:first-child').css('cursor', 'pointer');
         }
@@ -128,6 +192,95 @@ window.table = window.weaponStats.dataTable({
     }
 });
 
+window.explSelect.change(function () {
+    explForm();
+});
+window.explForm = function() {
+    if($( "#explosiveSelect option:selected" ).data('type') == 'sponge') {
+        $( "#formExplosives").css('display', 'none');
+        $( "#formSponge").css('display', 'block');
+        $( "#resultSponge").css('display', 'block');
+    } else {
+        $( "#formExplosives").css('display', 'block');
+        $( "#formSponge").css('display', 'none');
+        $( "#resultSponge").css('display', 'none');
+    }
+    explosiveCalc()
+}
+
+window.explosives = function() {
+    $('#empModalExplosives').modal({'backdrop' : true});
+    $('#empModalExplosives').modal('show');
+    explosiveCalc();
+}
+
+window.explosiveCalc = function () {
+    const formDist = $('#form_distance');
+    const valueStrength =  $('#form_strength_actif').val();
+    const valueDuration = $('#form_duration').val();
+    let valueDistance = formDist.val();
+    const valueExplReduc = $('#form_expl_reduc').val();
+    const valueOnyxRange = $('#form_onyx_sponge').val();
+    const valueSponge = $('#form_sponge').val();
+    let explosive = $.grep(window.explosivesArr, function( e ) {
+        return e.name === $( "#explosiveSelect option:selected" ).val();
+    })[0];
+    const baseDamage = explosive.maxDamage * 100;
+    const maxRange = explosive.maxRange;
+    formDist.attr("max", maxRange);
+    if(valueDistance > maxRange) {
+        valueDistance = maxRange;
+        formDist.val(maxRange);
+        $('#spanDistance').html(valueDistance + 'm');
+    }
+    const baseDps = 20;
+
+    let strengthRatio = 1 + (valueStrength / 100);
+    let type = $( "#explosiveSelect option:selected" ).data('type');
+    let ratioOnyx = (1 - (valueOnyxRange / 100));
+    let ratioSponge = (1 - (valueSponge / 100));
+    let ratioDistance = (maxRange - valueDistance) / maxRange;
+    let explReducRatio = (1 - (valueExplReduc / 100));
+    let damageExplosion = (type == "explosive")
+        ? baseDamage * explReducRatio * ratioOnyx * ratioSponge * ratioDistance
+        : baseDamage * strengthRatio * ratioOnyx;
+
+
+    let dps = baseDps * ratioDistance * ratioOnyx * strengthRatio;
+    let duration = 15 * (1 + (valueDuration / 100))
+    duration = duration.toFixed(0);
+
+    $('#spanDamageOnExplosion').html(damageExplosion.toFixed(2));
+    $('#spanDamagePerSecond').html(dps.toFixed(2));
+
+    let TTKW = 'N/A';
+    for (let i = 0; i <= duration * 100; i++) {
+        if (damageExplosion + (i / 100) * dps >= 100) {
+            TTKW = (i / 100) + 's';
+            break;
+        }
+    }
+    if (TTKW == 'N/A') {
+        let damageMax = damageExplosion + duration * dps;
+        TTKW = TTKW + ' (' + damageMax.toFixed(0) + ' dmg)';
+    }
+
+    let TTKWO = 'N/A';
+    for (let i = 0; i <= duration * 100; i++) {
+        if ((i / 100) * dps >= 100) {
+            TTKWO = (i / 100) + 's';
+            break;
+        }
+    }
+    if (TTKWO == 'N/A') {
+        let damageMaxWO = duration * dps;
+        TTKWO = TTKWO + ' (' + damageMaxWO.toFixed(0) + ' dmg)';
+    }
+    $('#spanTTKWithExplosion').html(TTKW);
+    $('#spanTTKWithoutExplosion').html(TTKWO);
+}
+
+
 window.patternCall = function(weaponButton) {
     let weaponIdVal = $(weaponButton).data('id');
 
@@ -138,7 +291,7 @@ window.patternCall = function(weaponButton) {
         type: 'get',
         data: {weaponId: weaponIdVal},
         success: function(response){
-            $('.modal-body').html(closeButton + response);
+            $('#modalRecoil').html(closeButton + response);
             let chart = new CanvasJSChart.Chart("chartContainer", {
                 backgroundColor: "rgba(42, 51, 62, .95)",
                 color: 'white',

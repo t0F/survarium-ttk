@@ -32,6 +32,8 @@
         "fs": "^0.0.1-security",
         "install": "^0.13.0",
         "jquery": "^3.4.1",
+        "jquery.quicksearch": "^2.4.0",
+        "multiselect": "^0.9.12",
         "net": "^1.0.2",
         "number-polyfill": "^1.0.0",
         "perfect-scrollbar": "^1.5.0",

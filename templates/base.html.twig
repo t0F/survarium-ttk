@@ -30,10 +30,73 @@
         <!-- CSS Loader -->
         <div id='progress' class='container-fluid'></div>
 
-        <!-- Modal -->
+        <!-- Modals -->
         <div class="modal" id="empModal">
             <div class="modal-content customModal">
-                <div class="modal-body">
+                <div id="modalRecoil" class="modal-body">
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="empModalExplosives">
+            <div class="modal-content customModalExplosive">
+                <div class="modal-header-explosives customHeader">
+                    <button type="button" class="close customClose" data-dismiss="modal" aria-label="Close">
+                        <span class="cross" aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="modalExplosives" class="modal-body-explosives">
+                    <h4 class="titleModalExplosives">{% trans %}Explosives{% endtrans %}</h4>
+                    <br />
+                    <select id="explosiveSelect" class="form-control selectpicker customWidth">
+                        {% set first = true %}
+                        {% for explosive in explosives %}
+                            <option value="{{ explosive.name }}"
+                                {% if first %}
+                                    selected="selected"
+                                    data-type="sponge"
+                                    {% set first = false %}
+                                {% else %}
+                                    data-type="explosive"
+                                {% endif %}>
+                                {{ explosive.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <br />
+                    <br />
+                    <div id="formSponge">
+                        <span>{% trans %}Strength of active artefact bonus{% endtrans %}: </span><span id="spanStrength"></span>
+                        <input type="range" id="form_strength_actif" name="form[strengthActif]" step="5" min="0" max="50" class="form-control rangeSlider" value="25">
+                        <br />
+                        <span>{% trans %}Artefact active duration modifier{% endtrans %}: </span><span id="spanDuration"></span>
+                        <input type="range" id="form_duration" name="form[duration]" step="5" min="0" max="75" class="form-control rangeSlider" value="25">
+                    </div>
+                    <div id="formExplosives">
+                        <span>{% trans %}Explosives protection bonus{% endtrans %}: </span><span id="spanExplReduc"></span>
+                        <input type="range" id="form_expl_reduc" name="form[duration]" step="1" min="0" max="100" class="form-control rangeSlider" value="30">
+                        <br />
+                        <span>{% trans %}Sponge protection{% endtrans %}: </span><span id="spanSponge"></span>
+                        <input type="range" id="form_sponge" name="form[spanSponge]" step="1" min="0" max="99" class="form-control rangeSlider" value="12">
+                    </div>
+                    <br />
+                    <span>{% trans %}Distance{% endtrans %}: </span><span id="spanDistance"></span>
+                    <input type="range" id="form_distance" name="form[distance]" step="0.1" min="0" max="5.5" class="form-control rangeSlider" value="1">
+                    <br />
+                    <span>{% trans %}Onyx protection{% endtrans %}: </span><span id="spanOnyxSponge"></span>
+                    <input type="range" id="form_onyx_sponge" name="form[spanOnyxSponge]" step="1" min="0" max="99" class="form-control rangeSlider" value="12">
+                    <br />
+                    <span>{% trans %}Damage on explosion{% endtrans %}: </span><span id="spanDamageOnExplosion"></span>
+                    <br />
+                    <div id="resultSponge">
+                        <br />
+                        <span>{% trans %}Damage per second{% endtrans %}: </span><span id="spanDamagePerSecond"></span>
+                        <br/>
+                        <br />
+                        <span>{% trans %}Time to kill with explosion{% endtrans %}: </span><span id="spanTTKWithExplosion"></span>
+                        <br />
+                        <br />
+                        <span>{% trans %}Time to kill without explosion{% endtrans %}: </span><span id="spanTTKWithoutExplosion"></span>
+                    </div>
                 </div>
             </div>
         </div>

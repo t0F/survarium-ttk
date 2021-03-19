@@ -49,6 +49,7 @@ class GameVersionService
                 break;
             }
         }
+
         return $version;
     }
 

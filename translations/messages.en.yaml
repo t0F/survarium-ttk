@@ -33,21 +33,20 @@ aiming slowdown: Aiming Slowdown
 icon: "Icon"
 
 # weapons categories
-ASSAULT RIFLE: Assault Rifle
-CARBINE: Carbine
-MACHINE GUNS: Machine Guns
-PISTOLS: Pistols
-SHOTGUN: Shotgun
-SMG: SMG
-SNIPER RIFLE: Sniper Rifle
-SPECIAL: Special
-show: Show
+ASSAULT RIFLE : Assault Rifle
+CARBINE : Carbine
+MACHINE GUNS : Machine Guns
+PISTOLS : Pistols
+SHOTGUN : Shotgun
+SMG : SMG
+SNIPER RIFLE : Sniper Rifle
+SPECIAL : Special
+show : Show
 
 # sample + form
 Sample is base on: Time to kill based on
 Rate of Fire: Rate of Fire
 Onyx: Onyx
-no skills Armor bonus: no skills Armor bonus
 Show Specials: Show Specials
 Use Silencers: Silencers
 Version: Version
@@ -60,6 +59,22 @@ Range: "Range:"
 Range.: "Range."
 Effective Range: Effective Range
 UPDATE: UPDATE
+Time To Kill Comparator: Time To Kill Comparator
+Survarium Stats: Survarium Stats
 
 # js
 select to hide: "Select to hide column(s):"
+start: Start
+
+#explosives
+Explosives: Explosives
+Strength of active artefact bonus: Strength of active artefact bonus
+Artefact active duration modifier: Artefact active duration modifier
+Explosives protection bonus: Explosives protection bonus
+Sponge protection: Sponge protection
+Distance: Distance
+Onyx protection: Onyx protection
+Damage on explosion: Damage on explosion
+Damage per second: Damage per second
+Time to kill with explosion: Time to kill with explosion
+Time to kill without explosion: Time to kill without explosion

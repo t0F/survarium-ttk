@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Service\EquipmentService;
+use App\Service\ExplosiveService;
 use App\Service\GameVersionService;
 use App\Service\GearSetService;
 use App\Service\WeaponService;
@@ -27,12 +28,19 @@ class ImportOptionsCommand extends Command
             ->setHelp('Sorry no options, read/edit execute function to locate game.option file');
     }
 
-    public function __construct(WeaponService $weaponService, EquipmentService $equipmentService, GearSetService $gearSetService, GameVersionService $gameVersionService)
+    public function __construct(
+        WeaponService $weaponService,
+        EquipmentService $equipmentService,
+        GearSetService $gearSetService,
+        GameVersionService $gameVersionService,
+        ExplosiveService    $explosiveService
+    )
     {
         $this->weaponService = $weaponService;
         $this->equipmentService = $equipmentService;
         $this->gearSetService = $gearSetService;
         $this->gameVersionService = $gameVersionService;
+        $this->explosiveService = $explosiveService;
 
         parent::__construct();
     }
@@ -76,12 +84,12 @@ class ImportOptionsCommand extends Command
 
 
         //########## GET GAME DATA ##########
-        if (!file_exists('src/Command/game.json')) {
+        if (!file_exists('./inputFiles/game.json')) {
             $output->writeln('No file to Upload.');
             return 0;
         }
 
-        $gameJson = file_get_contents('src/Command/game.json');
+        $gameJson = file_get_contents('./inputFiles/game.json');
         $output->writeln('Filesize : ' . strlen($gameJson));
 
         $gameArray = json_decode($gameJson, true);
@@ -89,6 +97,7 @@ class ImportOptionsCommand extends Command
         //$weapon_modules = $gameArray[0]['value']['weapon_modules']; // not used yet
         $gearsets = $gameArray['gear_sets'];
         $equipments = $gameArray['equipment'];
+        $explosives = $gameArray['ammo_grenades_etc'];
 
         $weaponsModulelink = $gameArray['module_to_item_links'];
 
@@ -161,12 +170,17 @@ class ImportOptionsCommand extends Command
         $this->equipmentService->makeNewEquipement($equipments, $version, $allLocales);
         $this->gearSetService->makeNewGearSet($gearsets, $version, $allLocales);
 
+
+        $this->explosiveService->deleteOldExplosives();
+        $nbExplosives = $this->explosiveService->importExplosives($explosives, $allLocales);
+
         //########## GET ALL DONE, OUTPUT ##########
         $output->writeln('');
         $output->writeln('=======================================================');
         $output->writeln('Nb weapons : ' . count($weapons));
         $output->writeln('Nb equipments : ' . count($equipments));
         $output->writeln('Nb gearSet : ' . count($gearsets));
+        $output->writeln('Nb explosives : ' . $nbExplosives);
         $output->writeln('New version: : ' . $version->getName());
         $output->writeln('Date : ' . $version->getDate()->format('d/m/Y'));
         $output->writeln('=======================================================');
