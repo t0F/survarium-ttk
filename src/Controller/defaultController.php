@@ -249,8 +249,18 @@ class defaultController extends AbstractController
             $survariumPro = true;
         }
 
-        $locale = $request->query->get('utm_lang');
-        if($locale === null)  $locale = 'en';
+        $uri = $request->getUri();
+        if (strpos($uri, 'utm_lang=ua') !== false) {
+            $locale = 'ua';
+        } elseif (strpos($uri, 'utm_lang=ru') !== false) {
+            $locale = 'ru';
+        }  elseif (strpos($uri, 'utm_lang=es') !== false) {
+            $locale = 'es';
+        }  elseif (strpos($uri, 'utm_lang=pl') !== false) {
+            $locale = 'pl';
+        } else {
+            $locale = 'en';
+        }
         $this->locale = $locale;
         $osLang = $this->getHtmlLang($this->locale);
         $this->weaponService->setLocale($this->locale);
