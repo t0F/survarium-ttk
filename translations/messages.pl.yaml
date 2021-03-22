@@ -1,0 +1,81 @@
+# table header (and sample message)
+name: Nazwa
+type: Rodzaj
+damage: Obrażenia
+armor penetration: Przebicie pancerza
+rate of fire: Szybkostrzelność
+dps: DPS
+effective range: Efektywny zasięg
+magazine size: Pojemność magazynka
+bleed chance: Szansa krwawienia
+material penetration: Przebicie materiału
+weight: Waga
+reload time: Przeładowanie
+muzzle velocity: Prędkość wylotowa
+sample damage: Rzeczywiste obrażenia
+sample bullets to kill: Pociski do zabicia
+sample timetokill: Czas do zabicia
+unmasking radius: Promień zdemaskowania
+aimed movement speed factor: Celność w ruchu
+melee time: Szybkość uderzenia
+show time: Szybkość wyjmowania broni
+aim time: Szybkość celowania
+hide time: Szybkość chowania broni
+stamina damage: Obrażenia w wytrzymałość
+player pierce: Przebicie gracza
+player pierced damage factor: Obrażenia przebicia gracza
+chamber a round time: Prędkość wkładania pocisku
+tactical reload time: Taktyczne przeładowanie
+sample avg.  accuracy : Początkowa - Średnia - Końcowa Celność
+recoil pattern: Krzywa odrzutu
+slowdown: Spowolnienie
+aiming slowdown: Spowolnienie przy celowaniu
+icon: "Miniatura"
+
+# weapons categories
+ASSAULT RIFLE: Karabin szturmowy
+CARBINE: Karabinek
+MACHINE GUNS: Karabin maszynowy
+PISTOLS: Pistolet
+SHOTGUN: Strzelba
+SMG: Pistolet maszynowy
+SNIPER RIFLE: Karabin snajperski
+SPECIAL: Broń specjalna
+show: Pokaż
+
+# sample + form
+Sample is base on: Czas do zabicia bazuje na
+Rate of Fire: Szybkostrzelność
+Onyx: Onyx
+Show Specials: Pokaż bonusy
+Use Silencers: Tłumiki
+Version: Wersja
+Armor: Pancerz
+Onix %: "Onyx:"
++5% RoF: Szybkostrzelność +5%
++5 Armor: Pancerz +5
++15% Range: Zasięg +15%
+Range: "Zasięg:"
+Range.: "Zasięg."
+Effective Range: Efektywny zasięg
+UPDATE: AKTUALIZACJA
+
+# js
+select to hide: "Zaznacz aby ukryć kolumnę(y):"
+start: Start
+
+#explosives
+Explosives: Materiały wybuchowe
+Strength of active artefact bonus: Bonus do siły aktywnego artefaktu
+Artefact active duration modifier: Czas trwania aktywnego artefaktu
+Explosives protection bonus: Premia do ochrony przed wybuchami
+Sponge protection: Ochrona przed gąbką
+Distance: Zasięg
+Onyx protection: Ochrona Onyxu
+Damage on explosion: Obrażenia od eksplozji
+Damage per second: Obrażenia na sekundę
+Time to kill with explosion: Czas do zabicia od eksplozji
+Time to kill without explosion: Czas do zabicia bez eksplozji
+
+#title
+Time To Kill Comparator: Kalkulator TTK
