@@ -223,7 +223,7 @@ class defaultController extends AbstractController
         $sampleBonusRange = true;
         $sampleOnyx = "4";
         $showSpecial = false;
-        $useSilencer = true;
+        $backpackArmor = false;
         return array(
             'version' => $sampleVersion,
             'bonusArmor' => $sampleBonusArmor,
@@ -233,7 +233,7 @@ class defaultController extends AbstractController
             'equipment' => $sampleEquipment,
             'onyx' => $sampleOnyx,
             'showSpecial' => $showSpecial,
-            'useSilencer' => $useSilencer
+            'backpackArmor' => $backpackArmor
         );
     }
 
@@ -345,9 +345,9 @@ class defaultController extends AbstractController
             ->add('showSpecial', CheckboxType::class, [
                 'label' => 'Show special weapons',
                 'required' => false,])
-            ->add('useSilencer', CheckboxType::class, [
-                'label' => 'Use Silencers',
-                'data' => true,
+            ->add('backpackArmor', CheckboxType::class, [
+                'label' => 'Backpack +5 armor',
+                'data' => false,
                 'required' => false,])
             ->add('save', SubmitType::class, ['label' => 'UPDATE'])
             ->getForm();

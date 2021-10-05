@@ -21,7 +21,7 @@ class WeaponService
     private $sampleRange;
     private $sampleVersion;
     private $showSpecial;
-    private $useSilencer;
+    private $backpackArmor;
     private $sampleBonusROF;
     private $locale;
 
@@ -42,7 +42,7 @@ class WeaponService
         $this->sampleBonusRange = true;
         $this->sampleBonusROF = true;
         $this->showSpecial = false;
-        $this->useSilencer = true;
+        $this->backpackArmor = true;
     }
 
     public function setSample($sample)
@@ -57,7 +57,7 @@ class WeaponService
             $this->sampleBonusRange = $sample['bonusRange'];
             $this->sampleOnyx = $sample['onyx'];
             $this->showSpecial = $sample['showSpecial'];
-            $this->useSilencer = $sample['useSilencer'];
+            $this->backpackArmor = $sample['backpackArmor'];
         }
     }
 
@@ -72,27 +72,27 @@ class WeaponService
     {
         // body part ratio
         $ratioWeapon = 1;
-	if ($this->sampleEquipment->getFormattedType() == 'HLMT' || $this->sampleEquipment->getFormattedType() == 'MASK') {
-		if( $this->sampleVersion->getId() > 44 && $this->sampleVersion->getId() < 75) {
-			$ratioWeapon = 2.5;
-		}
-		else {
-			$ratioWeapon = 3;
-		}
-	}
-        elseif ($this->sampleEquipment->getFormattedType() == 'BOOT')
-            $ratioWeapon = 0.6;
 
         //Sample is base on "Zubr UM-4" bulletproof vest (100% Damage), +5% Rate of Fire, 71 + 5 Armor, 4% Onyx, no skills Armor bonus, 40m Range.
         $message = $this->translator->trans('Sample is base on'). ' '
-            . $this->sampleEquipment->translate($this->locale)->getLocalizedName() . " ("
-            . $ratioWeapon * 100 . '% ' . $this->translator->trans('damage').'), ';
+            . $this->sampleEquipment->translate($this->locale)->getLocalizedName() . ", ";
 
         if($this->sampleBonusROF === true) {
             $message .= '+5% '.$this->translator->trans('Rate of Fire').', ';
         }
 
-        if($this->sampleBonusArmor === true && $this->sampleEquipment->getFormattedType() !== 'MASK' && $this->sampleEquipment->getArmor() != 0) {
+        if($this->sampleBonusArmor === true
+            && $this->sampleEquipment->getFormattedType() !== 'MASK'
+            && $this->sampleEquipment->getArmor() != 0
+            && $this->backpackArmor === true
+            && $this->sampleEquipment->getFormattedType() == 'TORS'
+        ) {
+            $message .= $this->sampleEquipment->getArmor() * 100 . " + 10 ". $this->translator->trans('Armor'). ", ";
+        }
+        elseif($this->backpackArmor === true && $this->sampleEquipment->getFormattedType() == 'VEST' && $this->sampleEquipment->getArmor() != 0) {
+            $message .= $this->sampleEquipment->getArmor() * 100 . " + 5 ". $this->translator->trans('Armor'). ", ";
+        }
+        elseif($this->sampleBonusArmor === true && $this->sampleEquipment->getFormattedType() !== 'MASK' && $this->sampleEquipment->getArmor() != 0) {
             $message .= $this->sampleEquipment->getArmor() * 100 . " + 5 ". $this->translator->trans('Armor'). ", ";
         } else {
             $message .= $this->sampleEquipment->getArmor() * 100 . " ". $this->translator->trans('Armor'). ", ";
@@ -127,7 +127,13 @@ class WeaponService
             $weapon->setWeight($stats['weight']);
             $weapon->setIneffectiveDistance($stats['ineffective_distance']);
             $weapon->setPlayerPierce($stats['player_pierce']);
-            $weapon->setPlayerPiercedDamageFactor($stats['player_pierced_damage_factor']);
+
+            $player_pierced_damage_factor = 0;
+            if($stats['player_pierced_damage_factor'] !== null) {
+                $player_pierced_damage_factor = $stats['player_pierced_damage_factor'];
+            }
+            $weapon->setPlayerPiercedDamageFactor($player_pierced_damage_factor);
+
             $weapon->setRoundsPerMinuteModifier($stats['rounds_per_minute_modifier']);
             $weapon->setAimTime($stats['aim_time']);
             $weapon->setBreathVibrationFactor($stats['breath_vibration_factor']);
@@ -190,10 +196,6 @@ class WeaponService
                 $weaponCatUse = [];
                 foreach($weaponsModules[$name] as $weaponModule) {
                     if(!in_array($weaponModule['category'], $weaponCatUse)) {
-                        if($weaponModule['modifier'] == 'effective_distance') {
-                            $weaponCatUse[] = $weaponModule['category'];
-                            $weapon->setSilencerModifier($weaponModule['modifierValue']);
-                        }
                         if($weaponModule['modifier'] == 'rounds_per_minute') {
                             $weaponCatUse[] = $weaponModule['category'];
                             $weapon->setRofModifier( $weapon->getRofModifier() + $weaponModule['modifierValue']);
@@ -379,13 +381,7 @@ class WeaponService
     }
 
     public function getBonusEffectiveRange(Weapon $weapon) {
-        if(($this->useSilencer === true || $this->useSilencer === 1)
-            && ($this->sampleBonusRange === true || $this->sampleBonusRange === 1)
-        ) {
-            return round($weapon->getEffectiveDistance() * (1 + $weapon->getSilencerModifier() + 0.15));
-        } elseif($this->useSilencer === true || $this->useSilencer === 1) {
-            return round($weapon->getEffectiveDistance() * (1 + $weapon->getSilencerModifier()));
-        } elseif($this->sampleBonusRange === true || $this->sampleBonusRange === 1) {
+        if($this->sampleBonusRange === true || $this->sampleBonusRange === 1) {
             return round($weapon->getEffectiveDistance() * (1 + 0.15));
         } else {
             return $weapon->getEffectiveDistance();
@@ -426,7 +422,16 @@ class WeaponService
     {
         $ratioWeapon = 1;        // body part ratio
         if ($equipment->getFormattedType() == 'HLMT' || $equipment->getFormattedType() == 'MASK' ) {
-            if ($this->sampleVersion->getId() > 44 && $this->sampleVersion->getId() < 75) {
+            if($this->sampleVersion->getId() > 91) {
+                if($weapon->getType() == 'wpn_apst') {
+                    $ratioWeapon = 2.5;
+                } elseif($weapon->getDisplayType() == 'SHOTGUN') {
+                    $ratioWeapon = 2;
+                } else {
+                    $ratioWeapon = 3;
+                }
+            }
+            elseif ($this->sampleVersion->getId() > 44 && $this->sampleVersion->getId() < 75) {
                 $ratioWeapon = 2.5;
             } else {
                 $ratioWeapon = 3;
@@ -451,9 +456,14 @@ class WeaponService
         // onyx ratio (user input, passive to active)
         $onyx = 1 - ($this->sampleOnyx / 100);
 
-	//armor ratio : armor + armor modifier - armor penetration
-	$sampleArmor = ($this->sampleBonusArmor === true && $equipment->getFormattedType() !== 'MASK' && $equipment->getArmor() != 0) ? 0.05 : 0;
+        //armor ratio : armor + armor modifier - armor penetration
+        $sampleArmor = ($this->sampleBonusArmor === true && $equipment->getFormattedType() !== 'MASK' && $equipment->getArmor() != 0) ? 0.05 : 0;
+        if($equipment->getFormattedType() == 'TORS' && ($this->backpackArmor === true || $this->backpackArmor === 1)){
+            $sampleArmor = $sampleArmor + 0.05;
+        }
         $armor = 1 - (($sampleArmor + $equipment->getArmor()) - $weapon->getPlayerPierce());
+
+
 
         return $armor * $ratioWeapon * $range * $onyx * $weapon->getBulletDamage() * 100;
     }

@@ -312,6 +312,7 @@ body {
 
 .tableWidth100 {
     width: auto !important;
+    backdrop-filter: blur(2px) brightness(0.6);
 }
 
 #progress {

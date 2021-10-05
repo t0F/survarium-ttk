@@ -210,6 +210,10 @@ li[role=option], .dropdown-menu > li {
 .showPattern {
   text-decoration: underline !important;
   cursor:pointer;
+  color: #AAA;
+  &:hover {
+    color: #AAA;
+  }
 }
 
 .cell100 {
