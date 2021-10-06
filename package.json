@@ -31,7 +31,7 @@
         "font-awesome": "^4.7.0",
         "fs": "^0.0.1-security",
         "install": "^0.13.0",
-        "jquery": "^3.4.1",
+        "jquery": "^3.5.0",
         "jquery.quicksearch": "^2.4.0",
         "multiselect": "^0.9.12",
         "net": "^1.0.2",
