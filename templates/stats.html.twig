@@ -2,38 +2,37 @@
 {% extends "base.html.twig" %}
 {% block title %}Survarium Weapons{% endblock %}
 {% block body %}
-    <h1>Survarium Stats</h1>
-    <h3>Time To Kill Comparator</h3>
-    <div style="background-color: #CCC;">
-    <div>
-        <table id='weaponsStats'>
+    <h1>{% trans %}Survarium Stats{% endtrans %}</h1>
+    <h3>{% trans %}Time To Kill Comparator{% endtrans %}</h3>
+    <h4 id="h4-discord">discord.gg/pKG5f4J</h4>
+    <h4 id="h4-sponges" onclick="explosives()">{% trans %}Explosives{% endtrans %}</h4>
+    <div id="weaponStatsDiv">
+     <table id='weaponsStats'{% if responsive == true %}class="responsive dt-responsive"{% endif %}>
             <thead style="font-weight: bold;">
             <tr class="row100 head">
                 {% for key, value in weapons[0]|cast_to_array %}
-                    {% if key != 'id' %}
-                        <th class="cell100 columnHeader {% if key == 'Sample TimeToKill' %}border1px{% endif %} ">{{ key }}</th>
-                    {% endif %}
+                    {% if key != 'id' %}<th class="cell100 columnHeader {% if key == sampleTTKIndex and responsive == false %}never border1px{% endif %} ">{{ key }}</th>{% endif %}
                 {% endfor %}
             </tr>
             </thead>
             <tbody>
-            {% for weapon in weapons %}
-                <tr class="row100 body">
-                    {% for stat, value in weapon|cast_to_array %}
-                        {% if stat != 'id' %}
-                            <td class="cell100 column  {% if stat == 'Sample TimeToKill' %}border1px{% endif %}"
-                                id="col">{{ value }}</td>
+            {% for weapon in weapons %}<tr class="row100 body">{%
+                for stat, value in weapon|cast_to_array %}
+                        {% if stat == "recoil pattern"|trans %}
+                            <td class="cell100"><a class="showPattern" onclick="patternCall(this)" data-id="{{ value }}">{{ "show"|trans }}</a></td>
+                        {% else %}
+                            {% if stat != 'id' %}<td class="cell100 {%
+                                if stat == sampleTTKIndex and responsive == false %}border1px{% endif %}">{{ value }}</td>
+                            {% endif %}
                         {% endif %}
-                    {% endfor %}
+                {% endfor %}
                 </tr>
             {% endfor %}
             </tbody>
             <tfoot style="font-weight: bold;">
             <tr class="row100 head">
                 {% for key, value in weapons[0]|cast_to_array %}
-                    {% if key != 'id' %}
-                        <td class="cell100 columnHeader {% if key == 'Sample TimeToKill' %}border1px{% endif %}">{{ key }}</td>
-                    {% endif %}
+                    {% if key != 'id' %}<td class="cell100 columnHeader {% if key == sampleTTKIndex and responsive == false %}border1px{% endif %}">{{ key }}</td>{% endif %}
                 {% endfor %}
             </tr>
             </tfoot>
@@ -45,36 +44,66 @@
     <div class="row">
         <div class="formContainer container">
             {{ form_start(form, {'attr': {'id': 'ajaxForm', 'class': 'form-inline'}}) }}
-            <div class="form-row customFormRow">
-                <div class="col">
-                    {{ form_label(form.version, null, {'attr': {'class': 'sr-only'}}) }}
-                    {{ form_widget(form.version, {'attr': {'class': 'form-control select2JS'}}) }}
+            <div class="form-row customFormRow width100">
+                <div class="col displayInlineGrid"><span class="no-wrap">{% trans %}Show Specials{% endtrans %}</span><label class="switch" for="{{ form.showSpecial.vars.id }}">
+                        {{ form_widget(form.showSpecial, {'attr': {'class': 'form-control'}}) }}
+                        <span class="slider round"></span>
+                    </label>
                 </div>
-                <div class="col">
+                <div class="col displayInlineGrid">{% trans %}+5 Armor{% endtrans %}<label class="switch" for="{{ form.bonusArmor.vars.id }}">
+                        {{ form_widget(form.bonusArmor, {'attr': {'class': 'form-control'}}) }}
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="col displayInlineGrid">
                     {{ form_label(form.equipment, null, {'attr': {'class': 'sr-only min-width-armor'}}) }}
                     {{ form_widget(form.equipment, {'attr': {'class': 'form-control select2JS'}}) }}
                 </div>
+                <div class="col displayNone">
+                    {{ form_widget(form.save, { 'label': 'UPDATE', 'attr': {'class': 'btn btn-secondary'}}) }}
+                </div>
             </div>
-            <div class="form-row customFormRow">
-                <div class="col">
-                    {{ form_label(form.onyx, null, {'attr': {'class': 'sr-only'}}) }}
-                    {{ form_widget(form.onyx, {'attr': {'class': 'form-control form-number'}}) }}
-
+            <div class="form-row customFormRow width100">
+                <div class="col displayInlineGrid"><span class="no-wrap">{% trans %}backpack armor{% endtrans %}</span><label class="switch" for="{{ form.backpackArmor.vars.id }}">
+                        {{ form_widget(form.backpackArmor, {'attr': {'class': 'form-control'}}) }}
+                        <span class="slider round"></span>
+                    </label>
                 </div>
-
-                <div class="col">
-                    {{ form_label(form.bonusArmor, null, {'attr': {'class': 'sr-only'}}) }}
-                    {{ form_widget(form.bonusArmor, {'attr': {'class': 'marginRight form-control form-number'}}) }}
+                <div class="col displayInlineGrid"><span class="no-wrap">{% trans %}+15% Range{% endtrans %}</span><label class="switch" for="{{ form.bonusRange.vars.id }}">
+                        {{ form_widget(form.bonusRange, {'attr': {'class': 'form-control'}}) }}
+                        <span class="slider round"></span>
+                    </label>
                 </div>
-                <div class="col">
-                    {{ form_label(form.range, null, {'attr': {'class': 'sr-only'}}) }}
-                    {{ form_widget(form.range, {'attr': {'class': 'marginRight form-control form-number'}}) }}
+                <div class="col displayInlineGrid"><span class="no-wrap">{% trans %}+5% RoF{% endtrans %}</span><label class="switch" for="{{ form.bonusROF.vars.id }}">
+                        {{ form_widget(form.bonusROF, {'attr': {'class': 'form-control'}}) }}
+                        <span class="slider round"></span>
+                    </label>
                 </div>
-                <div class="col">
-                    {{ form_widget(form.save, { 'label': 'UPDATE', 'attr': {'class': 'saveMarging btn btn-secondary'}}) }}
+                <div class="col displayInlineGrid">
+                    {{ form_label(form.onyx, null, {'attr': {'class': 'sr-only'}}) }}<span id="spanOnyx" class="valueSpan2"></span>
+                    {{ form_widget(form.onyx, {'attr': {'class': 'form-control rangeSlider'}}) }}
+                </div>
+            </div>
+            <div class="form-row customFormRow width100 paddingBot0">
+                <div class="col displayInlineGrid">
+                    {{ form_label(form.range, null, {'attr': {'class': 'sr-only'}}) }}<span id="spanRange" class="valueSpan2"></span>
+                    {{ form_widget(form.range, {'attr': {'class': 'form-control rangeSlider'}}) }}
+                </div>
+                <div class="col displayInlineGrid">
+                    {{ form_label(form.version, null, {'attr': {'class': 'sr-only'}}) }}
+                    {{ form_widget(form.version, {'attr': {'class': 'form-control select2JS'}}) }}
                 </div>
             </div>
             {{ form_end(form) }}
         </div>
     </div>
+    <script>
+        window.responsive = {% if responsive == true %}1{% else %}0{% endif %};
+        window.recoilUrl = "{{ recoilUrl}}";
+        window.fullBaseUri = "{{ absolute_url(asset('assets/img/weapons/weapon_1_1.png')) }}";
+        window.fullBaseUri = window.fullBaseUri.replace( "weapon_1_1.png", "");
+        window.translations = {
+            'selectToHide' : "{{ 'select to hide' | trans }}", };
+        window.explosivesArr = {{ explosives|json_encode(constant('JSON_PRETTY_PRINT'))|raw }};
+    </script>
 {% endblock %}

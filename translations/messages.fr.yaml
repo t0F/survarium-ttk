@@ -1,0 +1,63 @@
+# table header
+name: Nom
+type: Type
+damage: Dégats
+armor penetration: Péné. Armure
+rate of fire: Cadence
+dps: DPS
+effective range: Distance Effective
+magazine size: Chargeur
+bleed chance: Chance de Saignement
+material penetration: Péné. Matériaux
+weight: Poids
+reload time: Rechargement
+muzzle velocity: Sortie de canon
+sample damage: Dommages sur Cible
+sample bullets to kill: Nb de Balles pour Tuer
+sample timetokill: Temps pour Tuer
+recoil pattern: Pattern du Recul
+slowdown: Ralentissement
+aiming slowdown: Ralentissement en Visant
+sample avg.  accuracy: Prem. - Moy. - Dern. Précision
+unmasking radius: Rayon de démasquage
+melee time: Temps de Frappe
+show time: Temps d'Affichage
+aim time: Temps de Viser
+hide time: Temps pour cacher
+stamina damage: Facteur Stamina
+player pierce: Pénétration de joueur
+player pierced damage factor: Dommages Pénétration de joueur
+chamber a round time: Temps de Chambrage
+tactical reload time: Rechargement Tactique
+
+# weapons categories
+ASSAULT RIFLE: Fusil d'assaut
+CARBINE: Carabine
+MACHINE GUNS: Mitrailleuse
+PISTOLS: Pistolet
+SHOTGUN: Fusil à pompe
+SMG: Mitraillette
+SNIPER RIFLE: Fusil sniper
+SPECIAL: Spéciale
+show: Afficher
+
+# form
+Sample is base on: "Le Temps pour tuer est basé sur :"
+Rate of Fire: Cadence de tir
+Onyx: Onyx
+no skills Armor bonus: pas de bonus d'armure par les compétence
+Show Specials: Armes spéciales
+Use Silencers: Silencieux
+Version: Version
+Armor: Armure
+Onix %: "Onix :"
++5% RoF: +5% RoF
++5 Armor: +5 Armure
++15% Range: +15% Distance
+Range: "Distance :"
+Range.: "Distance."
+UPDATE: MODIFIER
+Effective Range: Distance effective
+
+# js
+select to hide: "Cacher des colonnes :"

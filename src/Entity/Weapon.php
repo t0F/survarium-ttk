@@ -4,12 +4,16 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Knp\DoctrineBehaviors\Contract\Entity\TranslatableInterface;
+use Knp\DoctrineBehaviors\Model\Translatable\TranslatableTrait;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\WeaponRepository")
  */
-class Weapon
+class Weapon implements TranslatableInterface
 {
+    use TranslatableTrait;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -182,6 +186,36 @@ class Weapon
      * @ORM\Column(type="string", length=60, nullable=true)
      */
     private $displayType;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isSpecial;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $silencerModifier;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $rofModifier;
+
+    /**
+     * @ORM\Column(type="string", length=15000, nullable=true)
+     */
+    private $shotsParams;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $hipSpeedFactor;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $icon;
 
     public function __construct()
     {
@@ -591,6 +625,78 @@ class Weapon
     public function setDisplayType(?string $displayType): self
     {
         $this->displayType = $displayType;
+
+        return $this;
+    }
+
+    public function getIsSpecial(): ?bool
+    {
+        return $this->isSpecial;
+    }
+
+    public function setIsSpecial(?bool $isSpecial): self
+    {
+        $this->isSpecial = $isSpecial;
+
+        return $this;
+    }
+
+    public function getSilencerModifier(): ?float
+    {
+        return $this->silencerModifier;
+    }
+
+    public function setSilencerModifier(?float $silencerModifier): self
+    {
+        $this->silencerModifier = $silencerModifier;
+
+        return $this;
+    }
+
+    public function getRofModifier(): ?float
+    {
+        return $this->rofModifier;
+    }
+
+    public function setRofModifier(?float $rofModifier): self
+    {
+        $this->rofModifier = $rofModifier;
+
+        return $this;
+    }
+
+    public function getShotsParams(): ?string
+    {
+        return $this->shotsParams;
+    }
+
+    public function setShotsParams(?string $shotsParams): self
+    {
+        $this->shotsParams = $shotsParams;
+
+        return $this;
+    }
+
+    public function getHipSpeedFactor(): ?float
+    {
+        return $this->hipSpeedFactor;
+    }
+
+    public function setHipSpeedFactor(?float $hipSpeedFactor): self
+    {
+        $this->hipSpeedFactor = $hipSpeedFactor;
+
+        return $this;
+    }
+
+    public function getIcon(): ?string
+    {
+        return $this->icon;
+    }
+
+    public function setIcon(string $icon): self
+    {
+        $this->icon = $icon;
 
         return $this;
     }

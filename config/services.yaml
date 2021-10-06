@@ -25,3 +25,8 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+parameters:
+    doctrine_behaviors_translatable_fetch_mode: "EAGER"
+    doctrine_behaviors_translation_fetch_mode: "EAGER"
+    container.dumper.inline_factories: true

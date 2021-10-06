@@ -4,12 +4,16 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Knp\DoctrineBehaviors\Contract\Entity\TranslatableInterface;
+use Knp\DoctrineBehaviors\Model\Translatable\TranslatableTrait;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EquipmentRepository")
  */
-class Equipment
+class Equipment implements TranslatableInterface
 {
+    use TranslatableTrait;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -52,16 +56,6 @@ class Equipment
      * @ORM\JoinColumn(nullable=false)
      */
     private $gameVersion;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $displayName;
-
-    /**
-     * @ORM\Column(type="string", length=50, nullable=true)
-     */
-    private $displayType;
 
     public function __construct()
     {
@@ -162,27 +156,7 @@ class Equipment
         return $this;
     }
 
-    public function getDisplayName(): ?string
-    {
-        return $this->displayName;
-    }
-
-    public function setDisplayName(?string $displayName): self
-    {
-        $this->displayName = $displayName;
-
-        return $this;
-    }
-
-    public function getDisplayType(): ?string
-    {
-        return $this->displayType;
-    }
-
-    public function setDisplayType(?string $displayType): self
-    {
-        $this->displayType = $displayType;
-
-        return $this;
+    public function getGearSetName() {
+        return $this->gearSet ? $this->gearSet->getName() : 'No set';
     }
 }

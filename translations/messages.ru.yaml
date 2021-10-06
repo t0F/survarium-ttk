@@ -1,0 +1,80 @@
+# table header (and sample message)
+name: Имя
+type: Тип
+damage: Урон
+armor penetration: Бронепробиваемость
+rate of fire: Скорострельность
+dps: Урон в секунду
+effective range: Эффективная дистанция
+magazine size: Размер магазина
+bleed chance: Шанс кровотечения
+material penetration: Проникающая способность
+weight: Вес
+reload time: Время перезарядки
+muzzle velocity: Начальная скорость
+sample damage: Чистый урон
+sample bullets to kill: Нужное кол-во патронов для убийства
+sample timetokill: Время необходимое для убийства
+unmasking radius: Радиус демаскировки
+aimed movement speed factor: Скорость передвижения в прицеливании
+melee time: Время удара ближнего боя
+show time: Время необходимое чтобы достать оружие
+aim time: Время прицеливания
+hide time: Время необходимое чтобы убрать оружие
+stamina damage: Урон выносливости
+player pierce: Игроков простреливает:
+player pierced damage factor: Урон после прострела игрока
+chamber a round time: Время досылки патрона
+tactical reload time: Время не полной перезарядки
+sample avg.  accuracy : Первый - В среднем - Последний
+recoil pattern: Образец отдачи
+slowdown: Замедление
+aiming slowdown: Задержка прицеливания
+icon: "Значок"
+
+# weapons categories
+ASSAULT RIFLE : Штурмовая винтовка
+CARBINE : Карабин
+MACHINE GUNS : Пулемёт
+PISTOLS : Пистолет
+SHOTGUN : Дробовик
+SMG : ПП
+SNIPER RIFLE : Снайперская пинтовка
+SPECIAL : Особое
+show : Показать
+
+# sample + form
+Sample is base on: Сформировано исходя из:
+Rate of Fire: Скорострельность
+Onyx: Onyx
+Show Specials: Показать/скрыть раскраску
+Use Silencers: Глушители
+Version: Версия
+Armor: Броня
+Onix %: "Оникс %:"
++5% RoF: +5% скорострельности
++5 Armor: +5 брони
++15% Range: +15% радиуса
+Range: "Радиус:"
+Range.: "Радиус."
+Effective Range: Эффективная дистанция
+UPDATE: ОБНОВЛЕНИЕ
+Time To Kill Comparator: Калькулятор урона:
+Survarium Stats: Статистика Survarium
+
+# js
+select to hide: "Нажмите чтобы стрятать стобец:"
+start: Начать
+
+#explosives
+Explosives: Взрывчатка
+Strength of active artefact bonus: Бонус к силе актефакта
+Artefact active duration modifier: Бонус к продолжительности артефакта
+Explosives protection bonus: Бонус к взрывоустойчивости
+Sponge protection: Защита от губки
+Distance: Дистанция
+Onyx protection: Защита Оникс
+Damage on explosion: Урон от взрыва
+Damage per second: Урон в секунду
+Time to kill with explosion: Время убийства начального урона взрыва губки
+Time to kill without explosion: Время убийства вне радиусе взрыва губки

@@ -1,1 +1,602 @@
 @import "~select2-bootstrap4-theme/dist/select2-bootstrap4.min.css";
+
+.responsiveFrame {
+  &#weaponStatsDiv {
+    margin: auto;
+  }
+
+  &#contentBody {
+    display: block !important;
+    max-width: none;
+    margin: auto;
+
+  }
+
+  &#weaponsStats_wrapper {
+    margin: auto !important;
+  }
+}
+
+.customModal {
+  border: none !important;
+  background: none !important;
+  width: 242px;
+}
+
+.modal-body {
+  backdrop-filter: blur(2px);
+  border: 1px solid hsla(0,0%,95.3%,.2);
+  padding: 0;
+  margin: 0;
+}
+
+.modal-header-explosives {
+  margin: 10px;
+  z-index: 2;
+}
+
+.modal-body-explosives {
+  backdrop-filter: blur(2px);
+  border: 1px solid hsla(0,0%,95.3%,.2);
+  width: 100%;
+  margin-top: -39px;
+  padding: 20px 40px;
+}
+
+
+#chartContainer {
+  margin-top: -28px;
+  background: transparent;
+}
+
+.noFilter body {
+  overflow-x: hidden;
+}
+
+th {
+  cursor: pointer;
+}
+
+#formExplosives {
+  display: none;
+}
+
+.iconModal {
+  width: 128px;
+  background: #2a333eCC !important;
+  filter: invert(1);
+}
+
+.customHeader {
+  padding: 0;
+  border: 0 !important;
+}
+
+.customClose {
+  z-index: 2;
+}
+
+.wIco {
+  width: 32px;
+  margin-top: -6px;
+  transform: rotate(-45deg);
+}
+
+.tooltip-inner {
+  border-radius: 3px;
+}
+
+.tooltip.show {
+  opacity: 0.96;
+}
+
+.divWIco {
+  width: 46px;
+  height: 20px;
+  overflow: hidden;
+  background: rgba(0,0,0,.9);
+  border-radius: 3px;
+  padding-left: 6px;
+}
+
+.formContainer{
+  width: 420px;
+  padding: 15px;
+  border: 1px solid hsla(0,0%,95.4%,0.2);
+  background-color: #AAA;
+}
+
+li[role=option]:hover, li[role=option]:active, .selected .active, .select2-results__option--highlighted {
+  cursor: pointer !important;
+  color: hsla(0,0%,3.9%,1)!important;
+  background: #CCC !important;
+  //background: #007bff!important;
+  text-decoration: none !important;
+  transition: none;
+  font-family:Play, sans-serif;
+  font-size:12px;
+  font-weight:600;
+}
+
+.dropdown-toggle {
+  transition: none !important;
+  color: hsla(0,0%,3.9%,1)!important;
+  background-color: #ffffff96 !important;
+}
+
+.bootstrap-select {
+  transition: none !important;
+  background: none;
+}
+
+.select2-search, .select2-results, .filter-option {
+  opacity: 0.6;
+  font-weight:600;
+}
+
+.bootstrap-select>.dropdown-toggle:after {
+  opacity: 0.6;
+}
+
+div.dropdown {
+  border-radius: 23px;
+}
+
+.select2-selection__arrow {
+  height: 22px !important;
+  margin-right: -2px !important;
+}
+
+.check-mark, .dropdown-toggle, .dropdown-toggle::after, .filter-option::after, input[type=search] {
+  opacity: 0.8;
+}
+
+li[role=option], .dropdown-menu > li {
+  color: hsla(0,0%,3.9%,1)!important;
+  font-family:Play, sans-serif;
+  font-size:12px;
+  font-weight:600;
+}
+
+.btn, .dropdown-item {
+  transition: none !important;
+}
+
+.cross {
+  color: #404040CC;
+  font-size:28px;
+}
+
+.modal-backdrop {
+  background-color: transparent;
+}
+
+.btn-light {
+  background: white !important;
+  color: hsla(0,0%,3.9%,1)!important;
+  font-family:Play, sans-serif;
+  font-size:12px;
+  font-weight:600;
+  border: 1px !important;;
+  box-shadow: inset 0 0 0 #ddd !important;
+}
+
+.btn-light.hover, .btn-light:hover, .btn-light.active, .btn-light[aria-expanded="true"], .btn-light:active, .btn-light.focus, .btn-light:focus {
+  background: white !important;
+  color: hsla(0,0%, 3.9% ,1)!important;
+  font-family:Play, sans-serif;
+  font-size:12px;
+  font-weight:600;
+}
+
+.btn-light:not(:disabled):not(.disabled).active, .btn-light:not(:disabled):not(.disabled):active, .show>.btn-light.dropdown-toggle {
+  background: white !important;
+}
+
+.dropdown.bootstrap-select.show-tick.form-control.customWidth button {
+  opacity: .98;
+}
+
+.dropdown-menu > li:hover, .dropdown-item:focus, .dropdown-item:hover,
+.dropdown-menu > li:active, .dropdown-item:active, .dropdown-item:active {
+  cursor: pointer !important;
+  color: hsla(0,0%,3.9%,1)!important;
+  background: #CCC !important;
+  //background: #007bff!important;
+  text-decoration: none !important;
+  transition: none;
+}
+
+.showPattern {
+  text-decoration: underline !important;
+  cursor:pointer;
+  color: #AAA;
+  &:hover {
+    color: #AAA;
+  }
+}
+
+.cell100 {
+  white-space: nowrap;
+  max-width: 230px;
+  border-top: 1px solid hsla(0,0%,95.4%,0.2);
+}
+
+th {
+  border-top: none !important;
+}
+
+li.previous a, li.next a {
+  border-radius: 0 !important;
+}
+
+
+#message {
+  display: inline-block;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+#form_onyx {
+  min-width: 140px;
+}
+
+#form_range {
+  min-width: 140px;
+}
+
+.select2-container--default, .select2-selection--single {
+  border-radius: 3px !important;
+}
+
+.select2-choice:focus, .select2-choice:hover {
+  background: blue !important;
+  color: #000;
+}
+
+.select2-highlighted:focus, .select2-highlighted:hover {
+  background: blue !important;
+  color: #000;
+}
+
+.noResponsiveFrame {
+  &#weaponStatsDiv {
+    margin: 0;
+  }
+
+  &.wIco {
+    filter:invert(1);
+  }
+
+  &#contentBody {
+    display: table;
+  }
+
+  &#weaponsStats_wrapper {
+    margin: 0 !important;
+  }
+}
+
+a.page-link {
+  padding-top: 4px;
+}
+
+button:focus, .button:focus, .form-control:focus, .page-item:focus {
+  outline: none !important;
+  outline-color: unset;
+  border: 0;
+}
+
+th:focus, td:focus {
+  outline: none !important;
+  outline-color: unset;
+}
+
+textarea:focus,
+textarea.form-control:focus,
+input.form-control:focus,
+input[type=text]:focus,
+input[type=search]:focus,
+input[type=password]:focus,
+input[type=email]:focus,
+input[type=number]:focus,
+input[type=button]:focus,
+.page-link:focus,
+.select2-selection__rendered:focus,
+.select2-selection:focus,
+.select2-container:focus,
+  //select2-selection__arrow
+[type=text].form-control:focus,
+[type=password].form-control:focus,
+[type=email].form-control:focus,
+[type=tel].form-control:focus,
+[contenteditable].form-control:focus {
+  outline: none !important;
+  outline-color: unset;
+  box-shadow: inset 0 0 0 #ddd;
+}
+
+input[type=search] {
+  color: #0a0a0a!important;
+  border-radius: 3px;
+}
+
+.bootstrap-select > select.mobile-device:focus + .dropdown-toggle, .bootstrap-select .dropdown-toggle:focus {
+  outline: none !important;
+}
+
+a.page-link, .form-control, .dropdown-toggle {
+  height: 24px;
+}
+
+.filter-option-inner-inner, a.page-link {
+  margin-top: -2px !important;
+  font-weight: 600;
+}
+
+.select2-container--default, .select2-selection--single {
+  border: 0 !important;
+  color: hsla(0,0%,3.9%,.65)!important;
+}
+
+.select2-selection, .select2-selection__rendered {
+  height: 22px !important;
+  border: 0;
+  font-family:Play, sans-serif;
+  font-size:12px;
+  font-weight:600;
+  color: hsla(0,0%,3.9%,.65)!important;
+}
+
+.select2-selection__rendered {
+  display: inline-flex !important;
+  align-items: center !important;;
+}
+
+html.noFilter {
+  -webkit-filter: none;
+  filter: none;
+
+  input, .select2-container, .paginate_button, .dropdown-menu, .inner, .dropdown-toggle, .select2-search--dropdown, .slider {
+    filter: invert(100%)
+  }
+
+  .slider, .rangeSlider {
+    filter: invert(100%) opacity(0.8);
+  }
+
+  .select2-container--default .select2-selection--single {
+    border: none;
+    filter: opacity(0.8);
+  }
+
+  scrollbar-width: none; //firefox & firefoxMobile
+
+  ::-webkit-scrollbar { //other browsers
+    width: 0;
+    background: transparent;
+  }
+
+  .dropdown {
+    border-radius: 4px;
+  }
+}
+
+.titleModalExplosives{
+  width: 100%;
+  text-align: center;
+}
+.customModalExplosive{
+  width: 340px;
+  background-color: rgba(42, 51, 62, .95);
+}
+
+#empModalExplosives {
+  color: white;
+  span {
+    font-size: 1.03em;
+  }
+}
+
+.displayInlineGrid {
+  display: inline-grid;
+  white-space: nowrap;
+}
+
+html.noBackground {
+  background-color: transparent;
+
+  body, #weaponStatsDiv, .row100 {
+    background-color: transparent !important;
+  }
+
+  .border1px, .formContainer {
+    background-color: #aaaaaa15;
+  }
+
+  .formContainer .col {
+    max-width: 210px;
+  }
+
+  h3 {
+    font-weight: 700;
+  }
+
+  h1 {
+    display: none;
+  }
+}
+
+#h4-sponges {
+  display: inline-block;
+  float: right;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+#h4-discord {
+  display: inline;
+}
+
+
+@font-face {
+  font-family: 'Play', sans-serif;
+  src: url('../fonts/Play/Play-Bold.ttf');
+}
+
+html.survariumProFonts {
+  font-family: 'Play', sans-serif !important;
+  color: rgba(245, 245, 245, 0.65) !important;;
+  -webkit-font-smoothing: antialiased;
+
+  body {
+    font-family: 'Play', sans-serif !important;
+    color: rgba(245, 245, 245, 0.65) !important;;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .select2-container {
+    color: black;
+  }
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 22px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: white;
+  -webkit-transition: .2s;
+  transition: .2s;
+}
+
+.pagination {
+  opacity: .8;
+}
+
+.page-item.disabled .page-link {
+  border-color: #ccc;
+  color: #ccc;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 21px;
+  left: 2px;
+  bottom: 2px;
+  color: white;
+  background: #808080;
+  -webkit-transition: .2s;
+  transition: .2s;
+}
+
+/*input:checked + .slider {
+  background-color: #BBB;
+}*/
+
+input:focus + .slider {
+  box-shadow: 0 0 0 #DDD !important;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(11px);
+  -ms-transform: translateX(11px);
+  transform: translateX(11px);
+  content: '\2713';
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 3px;
+}
+
+.slider.round:before {
+  border-radius: 3px;
+  font-weight: 600;
+  content: '✖';
+}
+
+.ms-container {
+  width: auto;
+}
+
+.search-input {
+  font-size: 16px;
+}
+
+.displayNone {
+  display: none;
+}
+
+.displayBlock {
+  display: block !important;
+}
+
+.valueSpan2 {
+  display: inline-block;
+  min-width: 3em;
+  font-weight: unset !important;
+  margin-left: 0 !important;
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+
+/* The rangeSlider itself */
+.rangeSlider {
+  -webkit-appearance: none; /* Override default CSS styles */
+  appearance: none;
+  width: 100%; /* Full-width */
+  height: 22px; /* Specified height */
+  background: white; /* Grey background */
+  outline: none; /* Remove outline */
+  /* opacity: 0.7; Set transparency (for mouse-over effects on hover) */
+  /*-webkit-transition: .2s; 0.2 seconds transition on hover
+  transition: opacity .2s;*/
+}
+
+/* Mouse-over effects */
+.rangeSlider:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+}
+
+/* The rangeSlider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.rangeSlider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 22px; /* Set a specific rangeSlider handle width */
+  height: 18px; /* rangeSlider handle height */
+  background: #808080; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+  border-radius: 3px;
+}
+
+.rangeSlider::-moz-range-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 22px; /* Set a specific rangeSlider handle width */
+  height: 18px; /* rangeSlider handle height */
+  background: #808080; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+  border-radius: 3px;
+}

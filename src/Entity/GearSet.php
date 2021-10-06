@@ -5,7 +5,6 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
 /**
  * @ORM\Entity(repositoryClass="App\Repository\GearSetRepository")
  */
@@ -29,7 +28,7 @@ class GearSet
     private $gears;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\GameVersion", inversedBy="GearSets")
+     * @ORM\ManyToOne(targetEntity="App\Entity\GameVersion", inversedBy="gearSets")
      * @ORM\JoinColumn(nullable=false)
      */
     private $gameVersion;

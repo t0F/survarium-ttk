@@ -5,63 +5,116 @@ namespace App\Service;
 use App\Entity\Equipment;
 use App\Entity\GameVersion;
 use App\Entity\Weapon;
+use App\Entity\WeaponConfiguration;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 
 class WeaponService
 {
     private $em;
+    /** @var Equipment $sampleEquipment */
     private $sampleEquipment;
     private $sampleBonusArmor;
+    private $sampleBonusRange;
     private $sampleOnyx;
     private $sampleRange;
     private $sampleVersion;
+    private $showSpecial;
+    private $backpackArmor;
+    private $sampleBonusROF;
+    private $locale;
 
-    public function __construct(EntityManagerInterface $em)
+    private $armorDamage;
+    private $weaponROF;
+    private $armorTTK;
+    private $armorBTK;
+    private $bonusEffectiveRange;
+
+
+    public function __construct(EntityManagerInterface $em, TranslatorInterface $translator)
     {
         $this->em = $em;
+        $this->translator = $translator;
         $this->sampleRange = 1;
         $this->sampleOnyx = 0;
-        $this->sampleBonusArmor = 5;
-        $sampleRepo = $this->em->getRepository('App:GameVersion');
-        $this->sampleVersion = $sampleRepo->findOneBy([], ['date' => 'DESC']);
-        $equipmentRepo = $this->em->getRepository('App:Equipment');
-        $this->sampleEquipment = $equipmentRepo->findOneBy(['name' => 'renesanse_torso_10', 'gameVersion' => $this->sampleVersion]);
+        $this->sampleBonusArmor = true;
+        $this->sampleBonusRange = true;
+        $this->sampleBonusROF = true;
+        $this->showSpecial = false;
+        $this->backpackArmor = true;
     }
 
     public function setSample($sample)
     {
         if ($sample !== null) {
+            /** @var Equipment sampleEquipment */
             $this->sampleEquipment = $sample['equipment'];
             $this->sampleVersion = $sample['version'];
             $this->sampleRange = $sample['range'];
+            $this->sampleBonusROF = $sample['bonusROF'];
             $this->sampleBonusArmor = $sample['bonusArmor'];
+            $this->sampleBonusRange = $sample['bonusRange'];
             $this->sampleOnyx = $sample['onyx'];
+            $this->showSpecial = $sample['showSpecial'];
+            $this->backpackArmor = $sample['backpackArmor'];
         }
     }
+
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+        $this->translator->setLocale($this->locale);
+    }
+
 
     public function getSampleMessage()
     {
         // body part ratio
         $ratioWeapon = 1;
-        if ($this->sampleEquipment->getFormattedType() == 'HLMT' || $this->sampleEquipment->getFormattedType() == 'MASK')
-            $ratioWeapon = 3;
-        elseif ($this->sampleEquipment->getFormattedType() == 'BOOT')
-            $ratioWeapon = 0.8;
 
-        //"Sample is base on ZUBR VEST (100% damage), with +5 armor, no onyx, no skills armor bonus, point blank.";
-        return "Sample is base on "
-            . $this->sampleEquipment->getDisplayName() . " ("
-            . $ratioWeapon * 100 . '% damage), '
-            . $this->sampleEquipment->getArmor() * 100 . " + " . $this->sampleBonusArmor . " armor, "
-            . (($this->sampleOnyx == 0) ? 'no' : $this->sampleOnyx . '%') . ' onyx, no skills armor bonus, '
-            . $this->sampleRange . 'm range.';
+        //Sample is base on "Zubr UM-4" bulletproof vest (100% Damage), +5% Rate of Fire, 71 + 5 Armor, 4% Onyx, no skills Armor bonus, 40m Range.
+        $message = $this->translator->trans('Sample is base on'). ' '
+            . $this->sampleEquipment->translate($this->locale)->getLocalizedName() . ", ";
+
+        if($this->sampleBonusROF === true) {
+            $message .= '+5% '.$this->translator->trans('Rate of Fire').', ';
+        }
+
+        if($this->sampleBonusArmor === true
+            && $this->sampleEquipment->getFormattedType() !== 'MASK'
+            && $this->sampleEquipment->getArmor() != 0
+            && $this->backpackArmor === true
+            && $this->sampleEquipment->getFormattedType() == 'TORS'
+        ) {
+            $message .= $this->sampleEquipment->getArmor() * 100 . " + 10 ". $this->translator->trans('Armor'). ", ";
+        }
+        elseif($this->backpackArmor === true && $this->sampleEquipment->getFormattedType() == 'VEST' && $this->sampleEquipment->getArmor() != 0) {
+            $message .= $this->sampleEquipment->getArmor() * 100 . " + 5 ". $this->translator->trans('Armor'). ", ";
+        }
+        elseif($this->sampleBonusArmor === true && $this->sampleEquipment->getFormattedType() !== 'MASK' && $this->sampleEquipment->getArmor() != 0) {
+            $message .= $this->sampleEquipment->getArmor() * 100 . " + 5 ". $this->translator->trans('Armor'). ", ";
+        } else {
+            $message .= $this->sampleEquipment->getArmor() * 100 . " ". $this->translator->trans('Armor'). ", ";
+        }
+
+        if($this->sampleBonusRange === true) {
+            $message .= "+15% ".$this->translator->trans('Effective Range').", ";
+        }
+
+        $message .= (($this->sampleOnyx == 0) ? 'no ' : $this->sampleOnyx . '% ') .$this->translator->trans('Onyx')
+            . ', ' . $this->translator->trans('no skills Armor bonus') . ', '
+            . $this->sampleRange . 'm '. $this->translator->trans('Range.');
+
+        return $message;
     }
 
-
-    public function makeNewWeapons(array $weaponsArray, GameVersion $version)
+    public function makeNewWeapons(array $weaponsArray, GameVersion $version, array $allLocales, $modifications, $weaponsModules)
     {
-        foreach ($weaponsArray as $name => $stats) {
+        $weaponConfRepo = $this->em->getRepository('App:WeaponConfiguration');
+        $weaponRepo = $this->em->getRepository('App:Weapon');
+        foreach ($weaponsArray as $name => $fullStats) {
+            $stats = $fullStats['parameters'];
             $weapon = new weapon();
             $weapon->setName($name);
             $weapon->setMagazineCapacity($stats['magazine_capacity']);
@@ -74,7 +127,13 @@ class WeaponService
             $weapon->setWeight($stats['weight']);
             $weapon->setIneffectiveDistance($stats['ineffective_distance']);
             $weapon->setPlayerPierce($stats['player_pierce']);
-            $weapon->setPlayerPiercedDamageFactor($stats['player_pierced_damage_factor']);
+
+            $player_pierced_damage_factor = 0;
+            if($stats['player_pierced_damage_factor'] !== null) {
+                $player_pierced_damage_factor = $stats['player_pierced_damage_factor'];
+            }
+            $weapon->setPlayerPiercedDamageFactor($player_pierced_damage_factor);
+
             $weapon->setRoundsPerMinuteModifier($stats['rounds_per_minute_modifier']);
             $weapon->setAimTime($stats['aim_time']);
             $weapon->setBreathVibrationFactor($stats['breath_vibration_factor']);
@@ -95,67 +154,300 @@ class WeaponService
             $weapon->setHideTime($stats['hide_time']);
             $weapon->setMaterialPierce($stats['material_pierce']);
             $weapon->setGameVersion($version);
-            $weapon->setDisplayType($this->displayType($stats['type'], $stats['magazine_capacity']));
+            $weapon->setHipSpeedFactor($stats['hip_movement_speed_factor']);
+            $weapon->setDisplayType($this->displayType($stats['type'], $stats['magazine_capacity'], $name));
+            $weapon->setShotsParams(json_encode($stats['aim_recoil']));
 
-            $this->em->persist($weapon);
+
+            if(!file_exists('public/assets/img/weapons/'.'weapon_'.$fullStats['ui_desc']['icon'][1].'_'.$fullStats['ui_desc']['icon'][0].'.png')) {
+                $weapon->setIcon('');
+            }
+            else {
+                $weapon->setIcon('weapon_'.$fullStats['ui_desc']['icon'][1].'_'.$fullStats['ui_desc']['icon'][0].'.png');
+            }
+
+            //modifications
+            if(isset($stats['default_modifications']) && $stats['default_modifications'] != null) {
+                foreach ($stats['default_modifications'] as $weaponModification ) {
+                    if(isset($modifications[$weaponModification[0].'_'.$weaponModification[1]])) {
+                        $modification = $modifications[$weaponModification[0].'_'.$weaponModification[1]];
+                        foreach ($modification['modifiers'] as $modifier ) {
+                            if($modifier['path'][1] == 'bullet_damage') {
+                                $weapon->setBulletDamage($weapon->getBulletDamage() + ($weapon->getBulletDamage() * $modifier['value']));
+                            }
+                            if($modifier['path'][1] == 'magazine_capacity') {
+                                $weapon->setMagazineCapacity($modifier['value']);
+                            }
+
+                            if($modifier['path'][1] == 'unmasking_radius') {
+                                $radius = $weapon->getUnmaskingRadius();
+                                $radius = $radius * (1 + $modifier['value']);
+                                $weapon->setUnmaskingRadius($radius);
+                            }
+                        }
+                    }
+                }
+            }
+            $weapon->setRofModifier(0);
+            $weapon->setSilencerModifier(0);
+
+            //modules
+            if(isset($weaponsModules[$name])) {
+                $weaponCatUse = [];
+                foreach($weaponsModules[$name] as $weaponModule) {
+                    if(!in_array($weaponModule['category'], $weaponCatUse)) {
+                        if($weaponModule['modifier'] == 'rounds_per_minute') {
+                            $weaponCatUse[] = $weaponModule['category'];
+                            $weapon->setRofModifier( $weapon->getRofModifier() + $weaponModule['modifierValue']);
+                        }
+                    }
+                }
+            }
+
+            $this->translateWeaponName($weapon, $allLocales, $fullStats['ui_desc']['text_descriptions']['name']);
+            $alreadyExist = $weaponRepo->findOneBy(['name' => $weapon->getName(), 'gameVersion' => $weapon->getGameVersion()]);
+            if($alreadyExist === null) {
+                $this->makeWeaponConfiguration($weapon);
+
+                //Check if need to flag as special weapon (events, premium, etc)
+                $weaponConf = $weaponConfRepo->findOneByName($weapon->getName());
+                if($weaponConf !== null) {
+                    /** @var WeaponConfiguration $weaponConf */
+                    $weapon->setIsSpecial($weaponConf->getIsSpecial());
+                }
+                $this->em->persist($weapon);
+                $this->em->flush();
+            }
+
+            $weapon->mergeNewTranslations();
         }
+
         $this->em->flush();
         return true;
     }
 
-    public function getWeaponsStats()
-    {
-        $versionRepo = $this->em->getRepository('App:GameVersion');
-        $version = $versionRepo->findOneBy(array(), array('id' => 'DESC'));
-        $weaponRepo = $this->em->getRepository('App:Weapon');
-        $weaponsEnt = $weaponRepo->findByGameVersion($version);
-        return $this->weaponsToArray($weaponsEnt);
+    public function makeWeaponConfiguration(Weapon $weapon) {
+        $weaponConfRepo = $this->em->getRepository('App:WeaponConfiguration');
+        $weaponConf = $weaponConfRepo->findOneByName($weapon->getName());
+
+        if($weaponConf === null) {
+            $weaponConf = new WeaponConfiguration();
+            $weaponConf->setName($weapon->getName());
+
+            if(preg_match('(premium|2015|2016|2017|2018|2019|2020|2021|2022|Snowball|summer|legend)', $weapon->getName()) === 1) {
+                $weaponConf->setIsSpecial(true);
+            } else {
+                $weaponConf->setIsSpecial(false);
+            }
+            $this->em->persist($weaponConf);
+        }
+        $this->em->flush();
     }
 
-    public function weaponsToArray($weapons)
+    public function translateWeaponName(Weapon &$weapon, array $allLocales, string $stringToFind) {
+        foreach ($allLocales as $localeName => $locales) {
+            if(array_key_exists ($stringToFind, $locales)) {
+                $weapon->translate($localeName)->setLocalizedName($locales[$stringToFind]);
+            }
+        }
+
+        if(array_key_exists ($stringToFind, $allLocales['ba'])) {
+            $weapon->setName($allLocales['ba'][$stringToFind]);
+        } elseif(array_key_exists ($stringToFind, $allLocales['en'])) {
+            $weapon->setName($allLocales['en'][$stringToFind]);
+        }
+    }
+
+    public function getWeaponsStats($survariumPro = false, $ajaxCall = false)
+    {
+        $weaponRepo = $this->em->getRepository('App:Weapon');
+        $weaponsEnt = $weaponRepo->findByGameVersionAndLocale($this->sampleVersion, $this->locale, $this->showSpecial);
+        return $this->weaponsToArray($weaponsEnt, $survariumPro, $ajaxCall);
+    }
+
+    public function weaponsToArray($weapons, $survariumPro = false, $ajaxCall = false)
     {
         $weaponsArray = [];
-        /** @var Weapon $weapon */
-        foreach ($weapons as $weapon) {
-            $weaponArray = [];
-            $weaponArray['Name'] = $weapon->getFormattedName();
-            $weaponArray['Type'] = $weapon->getDisplayType();
-            $weaponArray['Damage'] = round(100 * $weapon->getBulletDamage());
-            $weaponArray['Armor Penetration'] = round(100 * $weapon->getPlayerPierce());
-            $weaponArray['Rate of Fire'] = $weapon->getRoundsPerMinute();
-            $weaponArray['Effective Range'] = $weapon->getEffectiveDistance();
-            $weaponArray['Magazine Size'] = $weapon->getMagazineCapacity();
-            $weaponArray['Bleed Chance'] = round(100 * $weapon->getBleedingChance());
-            $weaponArray['Material Penetration'] = $weapon->getMaterialPierce();
-            $weaponArray['Weight'] = $weapon->getWeight();
-            $weaponArray['Reload Time'] = $weapon->getReloadTime();
-            $weaponArray['Muzzle Velocity'] = $weapon->getBulletSpeed();
-            $weaponArray['Sample Damage'] = round($this->getArmorDamage($weapon, $this->sampleEquipment));
-            $weaponArray['Sample Bullets To Kill'] = $this->getArmorBTK($weapon, $this->sampleEquipment);
-            $weaponArray['Sample TimeToKill'] = $this->getArmorTimeToKill($weapon, $this->sampleEquipment);
-            $weaponArray['id'] = $weapon->getId();
-            $weaponsArray[] = $weaponArray;
+
+        if($survariumPro === true) {
+            /** @var Weapon $weapon */
+            foreach ($weapons as $weapon) {
+                $weaponArray = [];
+                $name = str_replace("'", "",str_replace('"', "",
+                    ($weapon->translate($this->locale)->getLocalizedName() !== null) ?
+                        $weapon->translate($this->locale)->getLocalizedName()
+                        : strtoupper(str_replace('_', ' ', $weapon->getName()))
+                ));
+                $this->bonusEffectiveRange = $this->getBonusEffectiveRange($weapon);
+                $this->armorDamage = $this->getArmorDamage($weapon, $this->sampleEquipment);
+                $this->armorBTK = $this->getArmorBTK($weapon, $this->sampleEquipment);
+                $this->weaponROF = $this->getROFWithBonus($weapon);
+                $this->armorTTK = $this->getArmorTimeToKill($weapon, $this->sampleEquipment);
+
+                $weaponArray[$this->translator->trans('name')] = $name;
+                $weaponArray[$this->translator->trans('icon')] = $weapon->getIcon();
+                $weaponArray[$this->translator->trans('sample timetokill')] = round($this->armorTTK,2);
+                $weaponArray[$this->translator->trans('sample bullets to kill')] = $this->armorBTK;
+                $weaponArray[$this->translator->trans('sample damage')] = round($this->armorDamage,2);
+                $weaponArray[$this->translator->trans('type')] = $this->translator->trans(strtoupper($weapon->getDisplayType()));
+                $weaponArray[$this->translator->trans('sample avg.  accuracy')] = $this->getAvgAccuracy($weapon, $this->armorBTK);
+
+                if($ajaxCall == false ) {
+                    $weaponArray[$this->translator->trans('recoil pattern')] = $weapon->getId();
+                } else {
+                    $weaponArray[$this->translator->trans('recoil pattern')] = '<td class="cell100"><a onclick="patternCall(this)" class="showPattern" data-id="'
+                        .$weapon->getId().'">'.$this->translator->trans("show").'</a></td>';
+                }
+
+                $weaponArray[$this->translator->trans('damage')] = round(100 * $weapon->getBulletDamage(),2);
+                $weaponArray[$this->translator->trans('armor penetration')] = round(100 * $weapon->getPlayerPierce());
+                $weaponArray[$this->translator->trans('rate of fire')] = round($this->weaponROF);
+                $weaponArray[$this->translator->trans('dps')] = round($this->getDPS($weapon));
+                $weaponArray[$this->translator->trans('effective range')] = $this->bonusEffectiveRange;
+                $weaponArray[$this->translator->trans('magazine size')] = $weapon->getMagazineCapacity();
+                $weaponArray[$this->translator->trans('bleed chance')] = round(100 * $weapon->getBleedingChance());
+                $weaponArray[$this->translator->trans('material penetration')] = $weapon->getMaterialPierce();
+                $weaponArray[$this->translator->trans('slowdown')] = round(100 * round((1 - floatval($weapon->getHipSpeedFactor())), 2), 2);
+                $weaponArray[$this->translator->trans('aiming slowdown')] =
+                    round(100 * (1 - (floatval($weapon->getHipSpeedFactor()) * ($weapon->getAimedMovementSpeedFactor()))), 1);
+                $weaponArray[$this->translator->trans('reload time')] = $weapon->getReloadTime();
+                $weaponArray[$this->translator->trans('muzzle velocity')] = $weapon->getBulletSpeed();
+                $weaponArray[$this->translator->trans('unmasking radius')] = $weapon->getUnmaskingRadius();
+                $weaponArray[$this->translator->trans('melee time')] = $weapon->getMeleeTime();
+                $weaponArray[$this->translator->trans('show time')] = $weapon->getShowTime();
+                $weaponArray[$this->translator->trans('aim time')] = $weapon->getAimTime();
+                $weaponArray[$this->translator->trans('hide time')] = $weapon->getHideTime();
+                $weaponArray[$this->translator->trans('stamina damage')] = $weapon->getStaminaDamage();
+                $weaponArray[$this->translator->trans('player pierce')] = $weapon->getPlayerPierce();
+                $weaponArray[$this->translator->trans('player pierced damage factor')] = $weapon->getPlayerPiercedDamageFactor();
+                $weaponArray[$this->translator->trans('chamber a round time')] = $weapon->getChamberARoundTime();
+                $weaponArray[$this->translator->trans('tactical reload time')] = $weapon->getTacticalReloadTime();
+
+                $weaponArray['id'] = $weapon->getId();
+                $weaponsArray[] = $weaponArray;
+            }
+        } else {
+            /** @var Weapon $weapon */
+            foreach ($weapons as $weapon) {
+                $this->bonusEffectiveRange = $this->getBonusEffectiveRange($weapon);
+                $this->armorDamage = $this->getArmorDamage($weapon, $this->sampleEquipment);
+                $this->armorBTK = $this->getArmorBTK($weapon, $this->sampleEquipment);
+                $this->weaponROF = $this->getROFWithBonus($weapon);
+                $this->armorTTK = $this->getArmorTimeToKill($weapon, $this->sampleEquipment);
+
+
+                $weaponArray = [];
+                $name = str_replace("'", "",str_replace('"', "",
+                    ($weapon->translate($this->locale)->getLocalizedName() !== null) ?
+                        $weapon->translate($this->locale)->getLocalizedName()
+                        : strtoupper(str_replace('_', ' ', $weapon->getName()))
+                ));
+                $weaponArray[$this->translator->trans('name')] = $name;
+
+                $weaponArray[$this->translator->trans('icon')] = $weapon->getIcon();
+
+                $weaponArray[$this->translator->trans('type')] = $this->translator->trans(strtoupper($weapon->getDisplayType()));
+                $weaponArray[$this->translator->trans('damage')] = round(100 * $weapon->getBulletDamage(), 2);
+                $weaponArray[$this->translator->trans('armor penetration')] = round(100 * $weapon->getPlayerPierce());
+                $weaponArray[$this->translator->trans('rate of fire')] = round($this->weaponROF);
+                $weaponArray[$this->translator->trans('dps')] = round($this->getDPS($weapon));
+                $weaponArray[$this->translator->trans('slowdown')] = round(100 * round((1 - floatval($weapon->getHipSpeedFactor())), 2), 2);
+                $weaponArray[$this->translator->trans('aiming slowdown')] =
+                    round(100 * (1 - (floatval($weapon->getHipSpeedFactor()) * ($weapon->getAimedMovementSpeedFactor()))), 1);
+                $weaponArray[$this->translator->trans('effective range')] = $this->bonusEffectiveRange;
+                $weaponArray[$this->translator->trans('magazine size')] = $weapon->getMagazineCapacity();
+                $weaponArray[$this->translator->trans('bleed chance')] = round(100 * $weapon->getBleedingChance());
+                $weaponArray[$this->translator->trans('material penetration')] = $weapon->getMaterialPierce();
+                $weaponArray[$this->translator->trans('reload time')] = $weapon->getReloadTime();
+                $weaponArray[$this->translator->trans('muzzle velocity')] = $weapon->getBulletSpeed();
+
+                if($ajaxCall == false ) {
+                    $weaponArray[$this->translator->trans('recoil pattern')] = $weapon->getId();
+                } else {
+                    $weaponArray[$this->translator->trans('recoil pattern')] = '<td class="cell100"><a onclick="patternCall(this)" class="showPattern" data-id="'
+                        .$weapon->getId().'">'.$this->translator->trans("show").'</a></td>';
+                }
+
+                $weaponArray[$this->translator->trans('sample avg.  accuracy')] = $this->getAvgAccuracy($weapon, $this->armorBTK);
+                $weaponArray[$this->translator->trans('sample damage')] = round($this->armorDamage,2);
+                $weaponArray[$this->translator->trans('sample bullets to kill')] = $this->armorBTK;
+                $weaponArray[$this->translator->trans('sample timetokill')] = round($this->armorTTK,2);
+                $weaponArray['id'] = $weapon->getId();
+                $weaponsArray[] = $weaponArray;
+            }
         }
 
         return $weaponsArray;
     }
 
+    public function getBonusEffectiveRange(Weapon $weapon) {
+        if($this->sampleBonusRange === true || $this->sampleBonusRange === 1) {
+            return round($weapon->getEffectiveDistance() * (1 + 0.15));
+        } else {
+            return $weapon->getEffectiveDistance();
+        }
+    }
+
+    public function getAvgAccuracy(Weapon $weapon, $nbBtK) {
+        $shotsParam = json_decode($weapon->getShotsParams());
+        $allShotsAccuracies = [];
+
+        if($nbBtK > $weapon->getMagazineCapacity()
+        || $weapon->getDisplayType() == 'SHOTGUN'
+            || $weapon->getDisplayType() == 'SHOTGUN'
+            || $weapon->getDisplayType() == 'SPECIAL') {
+            return '-';
+        }
+
+        $max = $shotsParam->shots_params[0][2];
+        $min = $shotsParam->shots_params[0][2];;
+        for ($i = 1; $i <= $nbBtK; $i++) {
+            if(!isset($shotsParam->shots_params[$i-1])) {
+                $allShotsAccuracies[] = $shotsParam->shots_params[0][2];
+            } else {
+                $allShotsAccuracies[] = $shotsParam->shots_params[$i-1][2]; //0 recoil power, 1 recoil angle, 2 accuracy
+                $min = $shotsParam->shots_params[$i-1][2];
+            }
+        }
+        $avg = round($shotsParam->standing_stand_accuracy * (array_sum($allShotsAccuracies) / count($allShotsAccuracies)), 1);
+        $min = round($shotsParam->standing_stand_accuracy * ($min), 1);
+        $max= round($shotsParam->standing_stand_accuracy * ($max), 1);
+        if($min == $avg) {
+            return $avg;
+        }
+        return $max . ' - ' . $avg . ' - ' . $min;
+    }
+
     public function getArmorDamage(Weapon $weapon, Equipment $equipment)
     {
         $ratioWeapon = 1;        // body part ratio
-        if ($equipment->getFormattedType() == 'HLMT' || $equipment->getFormattedType() == 'MASK')
-            $ratioWeapon = 3;
+        if ($equipment->getFormattedType() == 'HLMT' || $equipment->getFormattedType() == 'MASK' ) {
+            if($this->sampleVersion->getId() > 91) {
+                if($weapon->getType() == 'wpn_apst') {
+                    $ratioWeapon = 2.5;
+                } elseif($weapon->getDisplayType() == 'SHOTGUN') {
+                    $ratioWeapon = 2;
+                } else {
+                    $ratioWeapon = 3;
+                }
+            }
+            elseif ($this->sampleVersion->getId() > 44 && $this->sampleVersion->getId() < 75) {
+                $ratioWeapon = 2.5;
+            } else {
+                $ratioWeapon = 3;
+            }
+        }
         elseif ($equipment->getFormattedType() == 'BOOT')
-            $ratioWeapon = 0.8;
+            $ratioWeapon = 0.6;
 
         // range ratio
-        if ($weapon->getEffectiveDistance() >= $this->sampleRange)
+        if ($this->bonusEffectiveRange >= $this->sampleRange)
             $range = 1;
-        elseif ($weapon->getIneffectiveDistance() <= $this->sampleRange) {
+        elseif (($this->bonusEffectiveRange * 2) <= $this->sampleRange) {
             $range = $weapon->getIneffectiveDistanceDamageFactor();
         } else {
-            $damageRange = $this->sampleRange - $weapon->getEffectiveDistance();
-            $rangeReductionRatio = $damageRange / ($weapon->getIneffectiveDistance() - $weapon->getEffectiveDistance());
+            $damageRange = $this->sampleRange - $this->bonusEffectiveRange;
+            $rangeReductionRatio = $damageRange / (($this->bonusEffectiveRange * 2) - $this->bonusEffectiveRange);
             if ($rangeReductionRatio > 1) $rangeReductionRatio = 1;
 
             $range = 1 - (1 - $weapon->getIneffectiveDistanceDamageFactor()) * $rangeReductionRatio;
@@ -165,63 +457,73 @@ class WeaponService
         $onyx = 1 - ($this->sampleOnyx / 100);
 
         //armor ratio : armor + armor modifier - armor penetration
-        $armor = 1 - (($this->sampleBonusArmor / 100) + $equipment->getArmor() - $weapon->getPlayerPierce());
+        $sampleArmor = ($this->sampleBonusArmor === true && $equipment->getFormattedType() !== 'MASK' && $equipment->getArmor() != 0) ? 0.05 : 0;
+        if($equipment->getFormattedType() == 'TORS' && ($this->backpackArmor === true || $this->backpackArmor === 1)){
+            $sampleArmor = $sampleArmor + 0.05;
+        }
+        $armor = 1 - (($sampleArmor + $equipment->getArmor()) - $weapon->getPlayerPierce());
 
-        /*
-                if($weapon->getFormattedName() == "A545 NEWYEAR2018") {
-                    dump($weapon->getName());
-                    dump($armor);
-                    dump($onyx);
-                    dump($range);
-                    dump($ratioWeapon);
-                    dump($weapon->getBulletDamage() * 100);
-                    dump($armor * $onyx * $range * $ratioWeapon * ($weapon->getBulletDamage() * 100));
-                 }
-        */
+
 
         return $armor * $ratioWeapon * $range * $onyx * $weapon->getBulletDamage() * 100;
     }
 
     public function getArmorBTK(Weapon $weapon, Equipment $equipment)
     {
-        return ceil(100 / $this->getArmorDamage($weapon, $equipment));
+        return ceil(100 / $this->armorDamage);
     }
+
+    public function getROFWithBonus(Weapon $weapon)
+    {
+        $bonusRof = ($this->sampleBonusROF === true) ? 0.05 : 0;
+        if($weapon->getName() == 'Glock 17 "Legend"') {
+            $bonusRof += 1.25;
+        }
+        $bonus = 1 + ($weapon->getRofModifier() + $bonusRof);
+        if($weapon->getChamberARoundTime() == 0) {
+            return $bonus * $weapon->getRoundsPerMinute();
+        }
+        $rof = $bonus * $weapon->getRoundsPerMinute();
+        $realRof = 60 / ( (60 / $rof) + $weapon->getChamberARoundTime());
+        if(round($realRof != round($realRof))) {
+            $realRof = floor($realRof);
+        }
+        return $realRof;
+    }
+
+    public function getDPS(Weapon $weapon)
+    {
+        return ($this->weaponROF * ($weapon->getBulletDamage() * 100)) / 60;
+    }
+
 
     public function getArmorTimeToKill(Weapon $weapon, Equipment $equipment)
     {
-        return round(($this->getArmorBTK($weapon, $equipment) - 1)
-            * 1 / ($weapon->getRoundsPerMinute() / 60), 3);
+        return round(($this->armorBTK - 1)
+            * 1 / ( $this->weaponROF / 60), 3);
     }
 
-    public function weaponTTKToArray(Weapon $weapon)
-    {
-        $gearSetRepo = $this->em->getRepository('App:GearSet');
-        $gearSets = $gearSetRepo->getGearSets();
-
-        $formatGearSet = array();
-        foreach ($gearSets as $gearSet) {
-            $formatGearSet[$gearSet->getFormattedName()] = array();
-            $formattedEquipment = array();
-            foreach ($gearSet->getGears() as $equipment) {/*tors,boot,hlmt,hand,legs,mask,*/
-                $formattedEquipment[$equipment->getFormattedType()] = array();
-                $formattedEquipment[$equipment->getFormattedType()]['Bulllets To Kill'] = $this->getArmorBTK($weapon, $equipment);
-                $formattedEquipment[$equipment->getFormattedType()]['Time To Kill'] = $this->getArmorTimeToKill($weapon, $equipment);
-            }
-            $formatGearSet[$gearSet->getFormattedName()] = $formattedEquipment;
-        }
-
-        return $formatGearSet;
-    }
-
-    public function displayType($type, $magazine)
+    public function displayType($type, $magazine, $name)
     {
         switch ($type) {
             case 'wpn_aslt':
+                if(stripos($name, 'mp7') !== false
+                    || stripos($name, 'ppsh') !== false
+                    || stripos($name, 'mp5') !== false ) {
+                    $displayType = 'SMG';
+                    break;
+                }
+
+                if(stripos($name, 'icicle') !== false) {
+                    $displayType = 'SPECIAL';
+                    break;
+                }
+
                 if ($magazine > 40) {
                     $displayType = 'MACHINE GUNS';
-                } else {
-                    $displayType = 'ASSAULT RIFLE';
+                    break;
                 }
+                $displayType = 'ASSAULT RIFLE';
                 break;
             case 'wpn_smg':
                 $displayType = 'SMG';
@@ -236,15 +538,17 @@ class WeaponService
             case 'wpn_apst':
             case 'wpn_rvlr':
             case 'wpn_pstl':
-                $displayType = 'GUNS';
+                $displayType = 'PISTOLS';
                 break;
             case 'wpn_dbrl':
             case 'wpn_stgn':
             case 'wpn_asgn':
-                $displayType = 'SHOTGUN';
-                break;
             case 'wpn_bstgn':
-                $displayType = 'OXY';
+                if(stripos($name, 'snowball') !== false) {
+                    $displayType = 'SPECIAL';
+                    break;
+                }
+                $displayType = 'SHOTGUN';
                 break;
             default:
                 $displayType = 'TYPE UNKNOWN';

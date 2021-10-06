@@ -1,0 +1,80 @@
+# table header (and sample message)
+name: Arma
+type: Clase
+damage: Daño
+armor penetration: Penetración de blindaje
+rate of fire: Cadencia de tiro
+dps: DPS
+effective range: Alcance efectivo
+magazine size: Tamaño del cargador
+bleed chance: Posibilidad de sangrado
+material penetration: Penetración de material:
+weight: Peso
+reload time: Recarga:
+muzzle velocity: Velocidad del proyectil:
+sample damage: Daño real
+sample bullets to kill: Tiros para matar
+sample timetokill: Tiempo para matar
+unmasking radius: Radio de desenmascarado:
+aimed movement speed factor: Aimed Movement Factor
+melee time: Melee Time:
+show time: Show Time:
+aim time: Tiempo de apuntado:
+hide time: Hide Time:
+stamina damage: Daño de aguante:
+player pierce: Perforación del jugador:
+player pierced damage factor: Player Pierce Damage:
+chamber a round time: Expulsión del cartucho:
+tactical reload time: Recarga táctica:
+sample avg.  accuracy : Precisión Primero - Medio - Último
+recoil pattern : "Patrón de retroceso"
+slowdown: Ralentización:
+aiming slowdown: Ralentización al apuntar:
+icon: "Icono"
+
+# weapons categories
+ASSAULT RIFLE: Rifle de asalto
+CARBINE: Carabina
+MACHINE GUNS: Ametralladora
+PISTOLS: Pistola
+SHOTGUN: Escopeta
+SMG: Subfusil
+SNIPER RIFLE: Rifle de francotirador
+SPECIAL: Especial
+show: Mostrar
+
+
+# sample + form
+Sample is base on: Tiempo para matar basándose en
+Rate of Fire: Cadencia de tiro
+Onyx: Ónice
+no skills Armor bonus: no skills Armor bonus
+Show Specials: Mostrar únicos
+Use Silencers: Silenciadores
+Version: Versión
+Armor: de blindaje
+Onix %: "Ónice:"
++5% RoF: Tasa de tiro +5 %
++5 Armor: Blindaje +5
++15% Range: Alcance efectivo +15 %
+Range: "Rango:"
+Range.: "de distancia."
+Effective Range: Alcance efectivo
+UPDATE: ACTUALIZAR
+
+# js
+select to hide: "Selección de columnas a ocultar:"
+Start: "Inicio"
+
+#explosives
+Explosives: Explosivos
+Strength of active artefact bonus: Fuerza del efecto activo del artefacto
+Artefact active duration modifier: Modificador de la duración del artefacto activo
+Explosives protection bonus: Reducción de daño explosivo
+Sponge protection: Protección del artefacto Esponja
+Distance: Distancia
+Onyx protection: Protección del artefacto Ónice
+Damage on explosion: Daño al explotar
+Damage per second: Daño por segundo
+Time to kill with explosion: Tiempo para matar con la explosión
+Time to kill without explosion: Tiempo para matar sin la explosión
